@@ -8,12 +8,14 @@ import frc.team5115.subsystems.*;
 public class Robot extends TimedRobot {
 
     public static InputLoop main;
+    public static Drivetrain dt;
     public static ShuffleboardTab tab = Shuffleboard.getTab("debug");
 
     Thread thread = new Thread(new Debug());
 
   public void robotInit() {
     main = new InputLoop();
+    dt = new Drivetrain();
     thread.start();
   }
 
@@ -21,13 +23,13 @@ public class Robot extends TimedRobot {
       main.setState(InputLoop.INPUT);
       main.resetControllers();
       main.controllerCheck();
+      dt.update();
   }
 
   public void teleopPeriodic() {
       main.update();
   }
   public void testInit(){
-    main.limelight.scannerMode();
       //H 70-80
       //S 155-185
       //V 194-223

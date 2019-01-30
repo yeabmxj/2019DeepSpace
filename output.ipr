@@ -12,8 +12,8 @@
       <entry name="!?*.java" />
     </wildcardResourcePatterns>
     <bytecodeTargetLevel target="11">
-      <module name="2019DeepSpace_main" target="1.8" />
-      <module name="2019DeepSpace_test" target="1.8" />
+      <module name="2019DeepSpace_main" target="11" />
+      <module name="2019DeepSpace_test" target="11" />
       <module name="output_main" target="11" />
       <module name="output_test" target="11" />
     </bytecodeTargetLevel>
@@ -191,7 +191,7 @@
   </component>
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/2019DeepSpace.iml" filepath="$PROJECT_DIR$/2019DeepSpace.iml" />
+      <module fileurl="file://$PROJECT_DIR$/2019DeepSpace.iml" filepath="$PROJECT_DIR$/2019DeepSpace.iml" group="2019DeepSpace" />
       <module fileurl="file://$PROJECT_DIR$/2019DeepSpace_main.iml" filepath="$PROJECT_DIR$/2019DeepSpace_main.iml" group="2019DeepSpace" />
       <module fileurl="file://$PROJECT_DIR$/2019DeepSpace_test.iml" filepath="$PROJECT_DIR$/2019DeepSpace_test.iml" group="2019DeepSpace" />
     </modules>
@@ -209,19 +209,23 @@
     <library name="Gradle: com.ctre.phoenix:api-java:5.12.0">
       <CLASSES>
         <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.ctre.phoenix/api-java/5.12.0/67bee152c70e47d981b1ecb1b7d6b59465aa506e/api-java-5.12.0.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../../Public/frc2019/maven/com/ctre/phoenix/api-java/5.12.0/api-java-5.12.0.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES>
         <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.ctre.phoenix/api-java/5.12.0/aca8d84775394631caa2992da07e3b11f14bc513/api-java-5.12.0-sources.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../../Public/frc2019/maven/com/ctre/phoenix/api-java/5.12.0/api-java-5.12.0-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Gradle: com.ctre.phoenix:wpiapi-java:5.12.0">
       <CLASSES>
         <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.ctre.phoenix/wpiapi-java/5.12.0/a355071240b46081f86795119258fa2ffa1401e5/wpiapi-java-5.12.0.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../../Public/frc2019/maven/com/ctre/phoenix/wpiapi-java/5.12.0/wpiapi-java-5.12.0.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES>
         <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.ctre.phoenix/wpiapi-java/5.12.0/7ba7915eee25afd745d0c76be698132d71c8f519/wpiapi-java-5.12.0-sources.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../../Public/frc2019/maven/com/ctre/phoenix/wpiapi-java/5.12.0/wpiapi-java-5.12.0-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Gradle: com.kauailabs.navx.frc:navx-java:3.1.344">

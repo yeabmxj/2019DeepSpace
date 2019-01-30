@@ -1,6 +1,7 @@
 package frc.team5115.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Timer;
 import frc.team5115.PID;
 import frc.team5115.joysticks.Controller;
 import frc.team5115.joysticks.LogitechPad;
@@ -12,27 +13,15 @@ import frc.team5115.subsystems.Drivetrain;
 
 public class InputLoop extends StateMachineBase {
 
-    Controller primary;
-    Controller secondary;
+    public static Controller primary;
+    public static Controller secondary;
 
-    Limelight limelight;
-    Drivetrain drivetrain;
+
 
     public static final int INPUT = 1;
-    public static final int VALID = 2;
-    public static final int AUTO = 3;
+    public static final int DEBOUNCE = 2;
 
-    PID forwardControl;
-    PID turnControl;
-
-    double forwardVal;
-    double turnVal;
-
-    public InputLoop(){
-        drivetrain = new Drivetrain();
-        limelight = new Limelight();
-
-    }
+    double time;
 
     public void controllerCheck(){
         switch(new Joystick(0).getName()){
@@ -88,30 +77,14 @@ public class InputLoop extends StateMachineBase {
     public void update(){
         switch(state){
             case INPUT:
-                drivetrain.drive(primary.getForward(), primary.getTurn(), primary.processThrottle());
                 if(secondary.scanPressed()){
-                    System.out.println("wow");
-                    setState(AUTO);
+                    Robot.dt.addTask("Search Target");
+                    time = Timer.getFPGATimestamp();
+                    setState(DEBOUNCE);
                 }
                 break;
-            case VALID:
-                if(limelight.isValid()){
-                    limelight.scannerMode();
-                    forwardControl = new PID("forward");
-                    turnControl = new PID("turn");
-                    setState(AUTO);
-                } else {
-                    setState(INPUT);
-                }
-                break;
-            case AUTO:
-                forwardVal = forwardControl.getPID(0, limelight.getYOffset(), drivetrain.averageSpeed());
-                turnVal = turnControl.getPID(0, limelight.getXOffset(), drivetrain.getTurnVelocity());
-                drivetrain.drive(forwardVal, turnVal, 1);
-                if((forwardControl.isFinished(0.03, 0.5) && turnControl.isFinished(0.03, 0.5) || !primary.scanPressed())){
-                    forwardControl = null;
-                    turnControl = null;
-                    limelight.cameraMode();
+            case DEBOUNCE:
+                if(Timer.getFPGATimestamp() > time + 2){
                     setState(INPUT);
                 }
                 break;

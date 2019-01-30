@@ -8,14 +8,15 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import frc.team5115.PID;
+import frc.team5115.robot.InputLoop;
 import frc.team5115.robot.Robot;
 
 import java.util.HashMap;
 import java.util.Map;
 
 
-public class Drivetrain {
-    public boolean inuse;
+public class Drivetrain extends Subsystem{
     //define motor objects
     TalonSRX frontleft;
     TalonSRX frontright;
@@ -23,6 +24,13 @@ public class Drivetrain {
     TalonSRX backright;
     //define gyroscope object
     AHRS navx;
+
+    Limelight limelight;
+
+    PID forwardControl;
+    PID turnControl;
+    double forwardVal;
+    double turnVal;
 
     NetworkTableEntry throttleDisplay;
     NetworkTableEntry gyroDisplay;
@@ -39,6 +47,8 @@ public class Drivetrain {
         backleft = new TalonSRX(1);
         backright = new TalonSRX(2);
 
+        limelight = new Limelight();
+
         //front left and front right motors will do the same thing that the back left and back right motor does
         frontright.set(ControlMode.Follower, 2);
         frontleft.set(ControlMode.Follower, 1);
@@ -47,6 +57,7 @@ public class Drivetrain {
         backright.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 5);
         backleft.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 5);
         navx.reset();
+
         settings.put("min", 0);
         settings.put("max", 1);
         throttleDisplay = Robot.tab.add("Max Speed", 0.5)
@@ -76,25 +87,10 @@ public class Drivetrain {
         backright.set(ControlMode.PercentOutput, rightspeed*throttle);
     }
 
-    public double leftDist() {
-        double leftDist = -direction * backleft.getSelectedSensorPosition(0);
-        return leftDist / 1440 * 6 * Math.PI / 12;
-    }
-
     public double rightDist() {
         System.out.println(backright.getSelectedSensorPosition(0));
         double rightDist = direction * backright.getSelectedSensorPosition(0);
         return rightDist / 1440 * 6 * Math.PI / 12;
-    }
-
-    public double distanceTraveled() {
-        return rightDist();
-    }
-
-    public double leftSpeed() {
-        double leftspeed = -backleft.getSelectedSensorVelocity(0);
-        return ((leftspeed * 6 * Math.PI * 10) / (1440 * 12));
-
     }
 
     public double rightSpeed() {
@@ -102,37 +98,51 @@ public class Drivetrain {
         return ((rightspeed * 6 * Math.PI * 10) / (1440 * 12));
     }
 
-    public double leftSpeedRaw(){
-        return backleft.getSelectedSensorVelocity(0);
-    }
-    public double rightSpeedRaw(){
-        return backright.getSelectedSensorVelocity(0);
-    }
-    public double leftPosRaw(){
-        return backleft.getSelectedSensorPosition(0);
-    }
-    public double rightPosRaw(){
-        return backright.getSelectedSensorPosition(0);
-    }
-
     public double averageSpeed() {
         return rightSpeed();
     }
-    public double getYaw() {
-        return navx.getYaw();
-    }
-    public double getPitch(){ return navx.getPitch();}
-    public double getRoll(){return navx.getRoll();}
     public double getTurnVelocity(){
         return navx.getRate();
     }
-    public void resetEncoders() {
-        backleft.setSelectedSensorPosition(0, 0, 5); //5 ms
-        backright.setSelectedSensorPosition(0, 0, 5);
-    }
-    public void resetGyro(){
-        navx.reset(); //takes some time
-    }
 
+    public void update(){
+        try {
+            state = queue.peek();
+        } catch (NullPointerException e){
+            state = "nothing in queue";
+        }
+        switch (state){
+            default:
+                drive(0, 0, 0);
+                break;
+            case "Drive":
+                drive(InputLoop.primary.getForward(), InputLoop.primary.getTurn(), InputLoop.primary.processThrottle());
+                break;
+            case "Search Target":
+                if(limelight.isValid()){
+                    limelight.scannerMode();
+                    forwardControl = new PID("forward");
+                    turnControl = new PID("turn");
+                    addTask("Auto");
+                    removeCurrentTask();
+                } else {
+                    addTask("Drive");
+                    removeCurrentTask();
+                }
+                break;
+            case "Auto":
+                forwardVal = forwardControl.getPID(0, limelight.getYOffset(), averageSpeed());
+                turnVal = turnControl.getPID(0, limelight.getXOffset(), getTurnVelocity());
+                drive(forwardVal, turnVal, 1);
+                if((forwardControl.isFinished(0.03, 0.5) && turnControl.isFinished(0.03, 0.5) || !InputLoop.primary.scanPressed())){
+                    forwardControl = null;
+                    turnControl = null;
+                    limelight.cameraMode();
+                    addTask("Drive");
+                    removeCurrentTask();
+                }
+                break;
+        }
+    }
 
 }

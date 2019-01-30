@@ -7,11 +7,17 @@ import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
-import frc.team5115.PID;
-import frc.team5115.robot.InputLoop;
 import frc.team5115.robot.Robot;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,15 +28,12 @@ public class Drivetrain extends Subsystem{
     TalonSRX frontright;
     TalonSRX backleft;
     TalonSRX backright;
+
+
     //define gyroscope object
     AHRS navx;
 
     Limelight limelight;
-
-    PID forwardControl;
-    PID turnControl;
-    double forwardVal;
-    double turnVal;
 
     NetworkTableEntry throttleDisplay;
     NetworkTableEntry gyroDisplay;
@@ -41,11 +44,12 @@ public class Drivetrain extends Subsystem{
 
     public Drivetrain(){
         //instantiate the things
-        navx = new AHRS(SPI.Port.kMXP);
         frontleft = new TalonSRX(3);
         frontright = new TalonSRX(4);
         backleft = new TalonSRX(1);
         backright = new TalonSRX(2);
+
+        navx = new AHRS(SPI.Port.kMXP);
 
         limelight = new Limelight();
 
@@ -68,6 +72,7 @@ public class Drivetrain extends Subsystem{
                 .withWidget(BuiltInWidgets.kGyro)
                 .getEntry();
     }
+
 
 
     public void drive(double speed, double turn, double throttle){
@@ -105,43 +110,21 @@ public class Drivetrain extends Subsystem{
         return navx.getRate();
     }
 
-    public void update(){
-        try {
-            state = queue.peek();
-        } catch (NullPointerException e){
-            state = "nothing in queue";
+    private static String readAll(Reader rd) throws IOException {
+        StringBuilder sb = new StringBuilder();
+        int cp;
+        while ((cp = rd.read()) != -1) {
+            sb.append((char) cp);
         }
-        switch (state){
-            default:
-                drive(0, 0, 0);
-                break;
-            case "Drive":
-                drive(InputLoop.primary.getForward(), InputLoop.primary.getTurn(), InputLoop.primary.processThrottle());
-                break;
-            case "Search Target":
-                if(limelight.isValid()){
-                    limelight.scannerMode();
-                    forwardControl = new PID("forward");
-                    turnControl = new PID("turn");
-                    addTask("Auto");
-                    removeCurrentTask();
-                } else {
-                    addTask("Drive");
-                    removeCurrentTask();
-                }
-                break;
-            case "Auto":
-                forwardVal = forwardControl.getPID(0, limelight.getYOffset(), averageSpeed());
-                turnVal = turnControl.getPID(0, limelight.getXOffset(), getTurnVelocity());
-                drive(forwardVal, turnVal, 1);
-                if((forwardControl.isFinished(0.03, 0.5) && turnControl.isFinished(0.03, 0.5) || !InputLoop.primary.scanPressed())){
-                    forwardControl = null;
-                    turnControl = null;
-                    limelight.cameraMode();
-                    addTask("Drive");
-                    removeCurrentTask();
-                }
-                break;
+        return sb.toString();
+    }
+
+    public static JSONObject readJsonFromUrl() throws IOException, JSONException {
+        try (InputStream is = new URL("http://172.22.11.2:1250/?action=getversion").openStream()) {
+            BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
+            String jsonText = readAll(rd);
+            JSONObject json = new JSONObject(jsonText);
+            return json;
         }
     }
 

@@ -18,6 +18,7 @@ public class Controller {
     int throttleDecrease;
 
     int scanBind;
+    int killBind;
 
     public Controller(){ this(0); }
 

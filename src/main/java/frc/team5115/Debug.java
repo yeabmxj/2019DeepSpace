@@ -5,18 +5,15 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import frc.team5115.robot.Robot;
-import frc.team5115.subsystems.Drivetrain;
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Map;
 
 public class Debug implements Runnable{
 
     DriverStation DS;
     PowerDistributionPanel PDP;
 
-    JSONObject CANBus;
 
     NetworkTableEntry voltage;
 
@@ -32,12 +29,6 @@ public class Debug implements Runnable{
         PDP = new PowerDistributionPanel();
         current = new double[PortsJNI.getNumPDPChannels()];
         voltage = Robot.tab.add("Voltage", 0).getEntry();
-        try {
-            CANBus = Drivetrain.readJsonFromUrl();
-            CANBus.getInt("UniqID");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     private void PDPCheck(){

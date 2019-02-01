@@ -5,6 +5,7 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import frc.team5115.robot.Robot;
+import frc.team5115.subsystems.Drivetrain;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -13,7 +14,7 @@ public class Debug implements Runnable{
 
     DriverStation DS;
     PowerDistributionPanel PDP;
-
+    Map<Object, ArrayList<Object>> CANBus;
 
     NetworkTableEntry voltage;
 
@@ -29,6 +30,22 @@ public class Debug implements Runnable{
         PDP = new PowerDistributionPanel();
         current = new double[PortsJNI.getNumPDPChannels()];
         voltage = Robot.tab.add("Voltage", 0).getEntry();
+        try {
+            CANBus = Drivetrain.returnCANBus();
+            for(int i = 0; i < CANBus.size(); i++){
+                ArrayList<Object> device = CANBus.get(i);
+                for(Object value: device){
+                    switch(value.toString()){
+                        //TO DO: think of a way to compare observed values to expected values
+                        //possible logic could involve having another "dictionary" array list that is a clone
+                        //of the multimap "CANBus" with expected values
+                    }
+                }
+
+            }
+        } catch (Exception e){
+            DS.reportWarning("Something went wrong while trying to get phoenix diagnosics!", e.getStackTrace());
+        }
     }
 
     private void PDPCheck(){

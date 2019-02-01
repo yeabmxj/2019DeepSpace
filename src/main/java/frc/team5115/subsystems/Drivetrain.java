@@ -113,4 +113,42 @@ public class Drivetrain extends Subsystem{
         return navx.getRate();
     }
 
+    private static String readAll(Reader rd) throws IOException {
+        StringBuilder sb = new StringBuilder();
+        int cp;
+        while ((cp = rd.read()) != -1) {
+            sb.append((char) cp);
+        }
+        return sb.toString();
+    }
+
+    public static JSONObject readJsonFromUrl() throws IOException, JSONException {
+        try (InputStream is = new URL("https://next.json-generator.com/api/json/get/VyYLk52QL").openStream()) {
+            BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
+            String jsonText = readAll(rd);
+            JSONObject json = new JSONObject(jsonText);
+            return json;
+        }
+    }
+
+    public static Map<Object, ArrayList<Object>> returnCANBus(){
+        try {
+            JSONArray server = readJsonFromUrl().getJSONArray("Device Array");
+            Map<Object, ArrayList<Object>> CANBus = new HashMap<>();
+            for(int i = 0; i < 4/*This should be the number of expected device*/; i++){
+                JSONObject current = server.getJSONObject(i);
+                ArrayList<Object> metadata = new ArrayList<>();
+                metadata.add(current.get("Name"));
+                metadata.add(current.get("Model"));
+                metadata.add(current.get("SoftStatus"));
+                CANBus.put(current.get("UniqID"), metadata);
+            }
+            return CANBus;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
 }

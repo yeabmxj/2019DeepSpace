@@ -12,6 +12,8 @@
       <entry name="!?*.java" />
     </wildcardResourcePatterns>
     <bytecodeTargetLevel target="11">
+      <module name="2019DeepSpace(Real_Copy)_main" target="11" />
+      <module name="2019DeepSpace(Real_Copy)_test" target="11" />
       <module name="2019DeepSpace_main" target="11" />
       <module name="2019DeepSpace_test" target="11" />
       <module name="output_main" target="11" />
@@ -191,9 +193,9 @@
   </component>
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/2019DeepSpace.iml" filepath="$PROJECT_DIR$/2019DeepSpace.iml" />
-      <module fileurl="file://$PROJECT_DIR$/2019DeepSpace_main.iml" filepath="$PROJECT_DIR$/2019DeepSpace_main.iml" group="2019DeepSpace" />
-      <module fileurl="file://$PROJECT_DIR$/2019DeepSpace_test.iml" filepath="$PROJECT_DIR$/2019DeepSpace_test.iml" group="2019DeepSpace" />
+      <module fileurl="file://$PROJECT_DIR$/2019DeepSpace(Real_Copy).iml" filepath="$PROJECT_DIR$/2019DeepSpace(Real_Copy).iml" group="2019DeepSpace(Real_Copy)" />
+      <module fileurl="file://$PROJECT_DIR$/2019DeepSpace(Real_Copy)_main.iml" filepath="$PROJECT_DIR$/2019DeepSpace(Real_Copy)_main.iml" group="2019DeepSpace(Real_Copy)" />
+      <module fileurl="file://$PROJECT_DIR$/2019DeepSpace(Real_Copy)_test.iml" filepath="$PROJECT_DIR$/2019DeepSpace(Real_Copy)_test.iml" group="2019DeepSpace(Real_Copy)" />
     </modules>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="11" project-jdk-type="JavaSDK">

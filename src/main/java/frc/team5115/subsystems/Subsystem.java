@@ -1,12 +1,12 @@
 package frc.team5115.subsystems;
 
+import java.util.Deque;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
-import java.util.Queue;
 
 public class Subsystem {
 
-    Queue<String> queue = new LinkedList<String>();
+    Deque<String> queue = new LinkedList<String>();
     String state;
 
     public void update(){
@@ -14,16 +14,24 @@ public class Subsystem {
     }
 
     public String returnCurrentState(){
-        return state;
+        return queue.peekFirst();
     }
 
+    public void changeDefaultTask(String state){ queue.addLast(state);}
+
     public void addTask(String state){
-        queue.add(state);
+        if(!queue.contains(state)){
+            queue.addFirst(state);
+        }
     }
 
     public void removeCurrentTask(){
         try {
-            queue.remove();
+            if(queue.size() >= 2){
+                queue.removeFirst();
+            } else {
+                throw new NoSuchElementException("First element should always stay in queue");
+            }
         } catch (NoSuchElementException e){
             System.out.println("Nothing to remove...");
         }

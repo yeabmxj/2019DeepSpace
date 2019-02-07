@@ -1,6 +1,8 @@
 package frc.team5115.joysticks;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.team5115.commands.Drivetrain.Stop;
 
 public class XboxController extends Controller{
 
@@ -13,6 +15,9 @@ public class XboxController extends Controller{
         throttleIncreaseAxis = 3;
         throttleDecreaseAxis = 2;
         scanBind = 1;
+
+        stop = new JoystickButton(stick, scanBind);
+        stop.whenPressed(new Stop());
     }
 
     @Override

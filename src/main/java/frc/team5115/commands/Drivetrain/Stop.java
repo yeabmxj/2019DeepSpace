@@ -21,6 +21,6 @@ public class Stop extends Command {
     }
 
     protected boolean isFinished() {
-        return false;
+        return true;
     }
 }

@@ -5,6 +5,7 @@ import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
 import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -16,16 +17,19 @@ import frc.team5115.subsystems.*;
 public class Robot extends TimedRobot {
 
     public static Drivetrain dt;
+    public static Wrist wr;
     public static InputManager im;
     public static ShuffleboardTab tab = Shuffleboard.getTab("debug");
 
     TalonSRX test;
 
+    CommandGroup main;
 
     Thread thread = new Thread(new Debug());
 
     public void robotInit() {
         dt = new Drivetrain();
+        wr = new Wrist();
         im = new InputManager();
         thread.start();
   }
@@ -34,7 +38,7 @@ public class Robot extends TimedRobot {
         dt.setState("Driving");
         im.checkControllers();
       //start subsystem thread
-
+        main = new MainLoop();
     }
 
   public void teleopPeriodic() {

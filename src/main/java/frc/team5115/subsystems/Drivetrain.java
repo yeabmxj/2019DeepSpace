@@ -7,31 +7,27 @@ import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import frc.team5115.joysticks.InputManager;
 import frc.team5115.robot.Robot;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.io.*;
-import java.lang.reflect.Array;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 
-public class Drivetrain extends Subsystem{
+public class Drivetrain {
+
+    ArrayList<String> dictionary = new ArrayList<>(Arrays.asList("Driving",
+            "Transition",
+            "Stopped"));
+
     //define motor objects
     TalonSRX frontleft;
     TalonSRX frontright;
     TalonSRX backleft;
     TalonSRX backright;
-
 
     //define gyroscope object
     AHRS navx;
@@ -42,6 +38,8 @@ public class Drivetrain extends Subsystem{
     NetworkTableEntry gyroDisplay;
 
     Map<String, Object> settings = new HashMap<String, Object>();
+
+    String state = "Stopped";
 
     public int direction = 1;
 
@@ -78,21 +76,19 @@ public class Drivetrain extends Subsystem{
 
 
 
-    public void drive(double speed, double turn, double throttle){
+    public void drive(double left, double right, double throttle){
         throttleDisplay.setDouble(throttle);
-        double leftspeed = -speed + turn;
-        double rightspeed = speed + turn;
         //if our joystick gets weird, and somehow surpasses 1.0
         //assume it's 1.0
-        if(Math.abs(leftspeed) > 1){
-            leftspeed = Math.signum(leftspeed);
+        if(Math.abs(left) > 1){
+            left = Math.signum(left);
         }
-        if(Math.abs(rightspeed) > 1){
-            rightspeed = Math.signum(rightspeed);
+        if(Math.abs(right) > 1){
+            right = Math.signum(right);
         }
         //set our "speed" or voltage output to left and right speeds
-        backleft.set(ControlMode.PercentOutput, leftspeed*throttle);
-        backright.set(ControlMode.PercentOutput, rightspeed*throttle);
+        backleft.set(ControlMode.PercentOutput, left*throttle);
+        backright.set(ControlMode.PercentOutput, right*throttle);
     }
 
     public double rightDist() {
@@ -113,40 +109,32 @@ public class Drivetrain extends Subsystem{
         return navx.getRate();
     }
 
-    private static String readAll(Reader rd) throws IOException {
-        StringBuilder sb = new StringBuilder();
-        int cp;
-        while ((cp = rd.read()) != -1) {
-            sb.append((char) cp);
-        }
-        return sb.toString();
-    }
-
-    public static JSONObject readJsonFromUrl() throws IOException, JSONException {
-        try (InputStream is = new URL("https://next.json-generator.com/api/json/get/VyYLk52QL").openStream()) {
-            BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
-            String jsonText = readAll(rd);
-            JSONObject json = new JSONObject(jsonText);
-            return json;
+    public int setState(String state){
+        if(dictionary.contains(state)){
+            this.state = state;
+            return 0;
+        } else {
+            return -1;
         }
     }
 
-    public static Map<Object, ArrayList<Object>> returnCANBus(){
-        try {
-            JSONArray server = readJsonFromUrl().getJSONArray("Device Array");
-            Map<Object, ArrayList<Object>> CANBus = new HashMap<>();
-            for(int i = 0; i < 4/*This should be the number of expected device*/; i++){
-                JSONObject current = server.getJSONObject(i);
-                ArrayList<Object> metadata = new ArrayList<>();
-                metadata.add(current.get("Name"));
-                metadata.add(current.get("Model"));
-                metadata.add(current.get("SoftStatus"));
-                CANBus.put(current.get("UniqID"), metadata);
-            }
-            return CANBus;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+    public String currentState(){
+        return this.state;
+    }
+
+    public void update(){
+        switch(this.state){
+            case "Driving":
+                drive(InputManager.primary.getLeft(),
+                        InputManager.primary.getRight(),
+                        InputManager.primary.processThrottle());
+                break;
+            case "Transition":
+                System.out.println("fancy transition");
+                break;
+            case "Stopped":
+                System.out.println("stopped");
+                break;
         }
     }
 

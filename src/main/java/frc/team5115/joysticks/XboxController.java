@@ -2,9 +2,9 @@ package frc.team5115.joysticks;
 
 import edu.wpi.first.wpilibj.Joystick;
 
-public class LogitechPadAlt extends Controller{
+public class XboxController extends Controller{
 
-    public LogitechPadAlt(int port){
+    public XboxController(int port){
         this.port = port;
         stick = new Joystick(this.port);
 
@@ -25,5 +25,15 @@ public class LogitechPadAlt extends Controller{
         }
         return throttle;
     }
+
+    @Override
+    public double getLeft(){
+        return stick.getRawAxis(forwardAxis);
+    }
+
+    public double getRight(){
+        return stick.getRawAxis(turnAxis);
+    }
+
 
 }

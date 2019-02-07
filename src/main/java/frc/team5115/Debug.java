@@ -6,8 +6,15 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import frc.team5115.robot.Robot;
 import frc.team5115.subsystems.Drivetrain;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.*;
+import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 public class Debug implements Runnable{
@@ -25,25 +32,59 @@ public class Debug implements Runnable{
     //0 ok, 1 low, 2 critical
     int batteryState = 0;
 
+    private static String readAll(Reader rd) throws IOException {
+        StringBuilder sb = new StringBuilder();
+        int cp;
+        while ((cp = rd.read()) != -1) {
+            sb.append((char) cp);
+        }
+        return sb.toString();
+    }
+
+    public static JSONObject readJsonFromUrl() throws IOException, JSONException {
+        try (InputStream is = new URL("http://172.22.11.2:1250/?action=getdevices").openStream()) {
+            BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
+            String jsonText = readAll(rd);
+            JSONObject json = new JSONObject(jsonText);
+            return json;
+        }
+    }
+
+    public static Map<Object, ArrayList<Object>> returnCANBus(){
+        try {
+            JSONArray server = readJsonFromUrl().getJSONArray("DeviceArray");
+            Map<Object, ArrayList<Object>> CANBus = new HashMap<>();
+            for(int i = 0; i < 5/*This should be the number of expected device*/; i++){
+                JSONObject current = server.getJSONObject(i);
+                ArrayList<Object> metadata = new ArrayList<>();
+                metadata.add(current.get("Name"));
+                metadata.add(current.get("Model"));
+                metadata.add(current.get("SoftStatus"));
+                CANBus.put(current.get("UniqID"), metadata);
+            }
+            return CANBus;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public Debug(){
         DS = DriverStation.getInstance();
         PDP = new PowerDistributionPanel();
         current = new double[PortsJNI.getNumPDPChannels()];
         voltage = Robot.tab.add("Voltage", 0).getEntry();
         try {
-            CANBus = Drivetrain.returnCANBus();
+            CANBus = returnCANBus();
             for(int i = 0; i < CANBus.size(); i++){
                 ArrayList<Object> device = CANBus.get(i);
                 for(Object value: device){
-                    switch(value.toString()){
-                        //TO DO: think of a way to compare observed values to expected values
-                        //possible logic could involve having another "dictionary" array list that is a clone
-                        //of the multimap "CANBus" with expected values
-                    }
+                    System.out.println(value);
                 }
 
             }
         } catch (Exception e){
+            e.printStackTrace();
             DS.reportWarning("Something went wrong while trying to get phoenix diagnosics!", e.getStackTrace());
         }
     }
@@ -97,6 +138,7 @@ public class Debug implements Runnable{
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 DS.reportWarning("Monitor interrupted! stopping thread", e.getStackTrace());
+                break;
             }
         }
     }

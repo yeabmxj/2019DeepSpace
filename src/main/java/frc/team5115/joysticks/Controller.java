@@ -1,6 +1,9 @@
 package frc.team5115.joysticks;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.team5115.commands.Drivetrain.Stop;
 
 public class Controller {
 
@@ -20,6 +23,8 @@ public class Controller {
     int scanBind;
     int killBind;
 
+    Button stop;
+
     public Controller(){ this(0); }
 
     public Controller(int port){
@@ -32,6 +37,9 @@ public class Controller {
         throttleIncrease = 1;
         throttleDecrease = 2;
         scanBind = 1;
+
+        stop = new JoystickButton(stick, scanBind);
+        stop.whenPressed(new Stop());
     }
 
     public boolean controllerExists(){
@@ -54,12 +62,12 @@ public class Controller {
         return throttle;
     }
 
-    public double getForward(){
-        return stick.getRawAxis(forwardAxis);
+    public double getLeft(){
+        return -stick.getRawAxis(forwardAxis) + stick.getRawAxis(turnAxis);
     }
 
-    public double getTurn(){
-        return stick.getRawAxis(turnAxis);
+    public double getRight(){
+        return stick.getRawAxis(forwardAxis) + stick.getRawAxis(turnAxis);
     }
 
     public boolean scanPressed(){

@@ -6,7 +6,7 @@ public class LogitechPad extends Controller{
 
     public LogitechPad(int port){
         this.port = port;
-        stick = new Joystick(port);
+        stick = new Joystick(this.port);
 
         forwardAxis = 1;
         turnAxis = 2;

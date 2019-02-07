@@ -3,9 +3,8 @@ package frc.team5115.subsystems;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import frc.team5115.statemachines.StateMachineBase;
 
-public class Limelight extends StateMachineBase {
+public class Limelight {
 
     NetworkTable limelight;
     NetworkTableEntry tx;

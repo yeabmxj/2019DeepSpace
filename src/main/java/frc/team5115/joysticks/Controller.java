@@ -5,6 +5,9 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.team5115.commands.Drivetrain.Stop;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class Controller {
 
@@ -26,14 +29,13 @@ public class Controller {
 
     Button stop;
 
-    public Controller(){ this(0); }
-
-    public Controller(int port){
+    public Controller(int port, JSONObject data) throws JSONException {
         this.port = port;
         stick = new Joystick(this.port);
 
+        JSONArray properties = data.getJSONArray(new Joystick(this.port).getName());
 
-        forwardAxis = 0;
+        forwardAxis = properties.getInt(1);
         turnAxis = 1;
         throttleIncrease = 1;
         throttleDecrease = 2;

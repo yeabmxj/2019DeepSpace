@@ -39,6 +39,7 @@ deploy {
 dependencies {
 	compile 'com.opencsv:opencsv:4.4'
     compile group: 'org.json', name: 'json', version: '20090211'
+    compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
     compile wpi.deps.wpilib()
     compile wpi.deps.vendor.java()
     nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)

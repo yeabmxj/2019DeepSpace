@@ -1,9 +1,11 @@
 package frc.team5115.joysticks;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.team5115.Debug;
 import frc.team5115.commands.Drivetrain.Stop;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,17 +31,27 @@ public class Controller {
 
     Button stop;
 
-    public Controller(int port, JSONObject data) throws JSONException {
+    public Controller(int port, JSONObject data) {
         this.port = port;
         stick = new Joystick(this.port);
 
-        JSONArray properties = data.getJSONArray(new Joystick(this.port).getName());
+        try {
+            forwardAxis = data.getInt("Forward");
+            turnAxis = data.getInt("Turn");
+            scanBind = data.getInt("scanBind");
+        } catch (JSONException e) {
+            DriverStation.getInstance().reportError("Critical values not detected!", false);
+        }
 
-        forwardAxis = properties.getInt(1);
-        turnAxis = 1;
-        throttleIncrease = 1;
-        throttleDecrease = 2;
-        scanBind = 1;
+        try{
+            throttleAxis = data.getInt("Throttle Axis");
+            throttleIncrease = data.getInt("Throttle Increase");
+            throttleDecrease = data.getInt("Throttle Decrease");
+            throttleIncreaseAxis = data.getInt("Throttle Increase Axis");
+            throttleDecreaseAxis = data.getInt("Throttle Decrease Axis");
+        } catch (JSONException e){
+            DriverStation.getInstance().reportWarning("Some values (that aren't neccessarily required) aren't being detected for this specific controller", false);
+        }
 
         stop = new JoystickButton(stick, scanBind);
         stop.whenPressed(new Stop());

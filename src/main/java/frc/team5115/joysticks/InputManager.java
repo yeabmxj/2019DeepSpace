@@ -17,13 +17,31 @@ public class InputManager {
 
     JSONObject controllerData;
 
-    public InputManager() throws JSONException, IOException, ParseException {
-        controllerData = new JSONObject(new JSONParser().parse(new FileReader("Controllers.JSON")));
-        primary = new Controller(0, controllerData);
-        if(new Joystick(1).getButtonCount() > 0){
-            secondary = new Controller(1, controllerData);
-        } else {
-            secondary = primary;
+    public InputManager() {
+        try {
+            controllerData = new JSONObject(new JSONParser().parse(new FileReader("Controllers.json")));
+            primary = new Controller(0, controllerData.getJSONObject(new Joystick(0).getName()));
+            if (new Joystick(1).getButtonCount() > 0) {
+                secondary = new Controller(1, controllerData.getJSONObject(new Joystick(0).getName()));
+            } else {
+                secondary = primary;
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void checkControllers(){
+        try {
+            controllerData = new JSONObject(new JSONParser().parse(new FileReader("Controllers.json")));
+            primary = new Controller(0, controllerData.getJSONObject(new Joystick(0).getName()));
+            if (new Joystick(1).getButtonCount() > 0) {
+                secondary = new Controller(1, controllerData.getJSONObject(new Joystick(0).getName()));
+            } else {
+                secondary = primary;
+            }
+        } catch (Exception e){
+            e.printStackTrace();
         }
     }
 

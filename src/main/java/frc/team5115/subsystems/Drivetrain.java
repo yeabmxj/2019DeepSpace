@@ -17,11 +17,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class Drivetrain {
+public class Drivetrain extends Subsystem{
 
-    ArrayList<String> dictionary = new ArrayList<>(Arrays.asList("Driving",
-            "Transition",
-            "Stopped"));
 
     //define motor objects
     TalonSRX frontleft;
@@ -39,11 +36,15 @@ public class Drivetrain {
 
     Map<String, Object> settings = new HashMap<String, Object>();
 
-    String state = "Stopped";
+
 
     public int direction = 1;
 
     public Drivetrain(){
+        dictionary = new ArrayList<>(Arrays.asList("Driving",
+                "Transition",
+                "Stopped"));
+
         //instantiate the things
         frontleft = new TalonSRX(3);
         frontright = new TalonSRX(4);
@@ -107,19 +108,6 @@ public class Drivetrain {
     }
     public double getTurnVelocity(){
         return navx.getRate();
-    }
-
-    public int setState(String state){
-        if(dictionary.contains(state)){
-            this.state = state;
-            return 0;
-        } else {
-            return -1;
-        }
-    }
-
-    public String currentState(){
-        return this.state;
     }
 
     public void update(){

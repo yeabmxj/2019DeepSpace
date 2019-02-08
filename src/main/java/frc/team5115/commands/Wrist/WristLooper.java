@@ -6,7 +6,6 @@ import frc.team5115.robot.Robot;
 public class WristLooper extends Command {
 
     protected void execute() {
-        System.out.println("executing");
         Robot.wr.update();
     }
 

@@ -7,7 +7,6 @@ public class DrivetrainLooper extends Command {
 
 
     protected void execute() {
-        System.out.println("executing");
         Robot.dt.update();
     }
 

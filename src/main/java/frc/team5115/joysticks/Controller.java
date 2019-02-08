@@ -54,7 +54,7 @@ public class Controller {
             }
             scanBind = data.getInt("Scan Bind");
         } catch (JSONException e) {
-            DriverStation.getInstance().reportError("Critical values not detected, using defaults...", false);
+            DriverStation.getInstance().reportError("Critical controller binds not detected, using defaults...", false);
             forwardAxis = 0;
             turnAxis = 1;
             throttleMethod = "Triggers";

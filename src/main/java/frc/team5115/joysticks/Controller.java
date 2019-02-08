@@ -20,6 +20,7 @@ public class Controller {
     public int turnAxis;
 
     double throttle;
+    String throttleMethod;
     int throttleAxis;
     int throttleIncreaseAxis;
     int throttleDecreaseAxis;
@@ -38,34 +39,49 @@ public class Controller {
         try {
             forwardAxis = data.getInt("Forward");
             turnAxis = data.getInt("Turn");
-            scanBind = data.getInt("scanBind");
+            throttleMethod = data.getString("Throttle Method");
+            switch(throttleMethod){
+                case "Dedicated Axis":
+                    throttleAxis = data.getInt("Throttle Axis");
+                    break;
+                case "Triggers":
+                    throttleIncrease = data.getInt("Throttle Increase");
+                    throttleDecrease = data.getInt("Throttle Decrease");
+                case "Analog Triggers":
+                    throttleIncreaseAxis = data.getInt("Throttle Increase Axis");
+                    throttleDecreaseAxis = data.getInt("Throttle Decrease Axis");
+                    break;
+            }
+            scanBind = data.getInt("Scan Bind");
         } catch (JSONException e) {
-            DriverStation.getInstance().reportError("Critical values not detected!", false);
-        }
-
-        try{
-            throttleAxis = data.getInt("Throttle Axis");
-            throttleIncrease = data.getInt("Throttle Increase");
-            throttleDecrease = data.getInt("Throttle Decrease");
-            throttleIncreaseAxis = data.getInt("Throttle Increase Axis");
-            throttleDecreaseAxis = data.getInt("Throttle Decrease Axis");
-        } catch (JSONException e){
-            DriverStation.getInstance().reportWarning("Some values (that aren't neccessarily required) aren't being detected for this specific controller", false);
+            DriverStation.getInstance().reportError("Critical values not detected, using defaults...", false);
+            forwardAxis = 0;
+            turnAxis = 1;
+            throttleMethod = "Triggers";
+            throttleIncrease = 1;
+            throttleDecrease = 2;
+            scanBind = 1;
         }
 
         stop = new JoystickButton(stick, scanBind);
         stop.whenPressed(new Stop());
     }
 
-    public boolean controllerExists(){
-        return stick.getButtonCount() > 0;
-    }
-
     public double processThrottle(){
-        if(stick.getRawButton(throttleIncrease)){
-            throttle += 0.005;
-        } else if (stick.getRawButton(throttleDecrease)){
-            throttle -= 0.005;
+        switch(throttleMethod){
+            case "Dedicated Axis":
+                throttle = (-stick.getRawAxis(throttleAxis) + 1) / 2;
+                break;
+            case "Triggers":
+                if(stick.getRawButton(throttleIncrease)){
+                    throttle += 0.005;
+                } else if (stick.getRawButton(throttleDecrease)){
+                    throttle -= 0.005;
+                }
+                break;
+            case "AnalogTriggers":
+                throttle += 0.01 *(stick.getRawAxis(throttleIncreaseAxis) - stick.getRawAxis(throttleDecreaseAxis));
+                break;
         }
 
         if (throttle > 1){
@@ -73,7 +89,6 @@ public class Controller {
         } else if(throttle < 0){
             throttle = 0;
         }
-
         return throttle;
     }
 

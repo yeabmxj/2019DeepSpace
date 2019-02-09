@@ -30,8 +30,6 @@ public class Controller {
     int scanBind;
     int killBind;
 
-    Button stop;
-
     public Controller(int port, JSONObject data) {
         this.port = port;
         stick = new Joystick(this.port);
@@ -47,6 +45,7 @@ public class Controller {
                 case "Triggers":
                     throttleIncrease = data.getInt("Throttle Increase");
                     throttleDecrease = data.getInt("Throttle Decrease");
+                    break;
                 case "Analog Triggers":
                     throttleIncreaseAxis = data.getInt("Throttle Increase Axis");
                     throttleDecreaseAxis = data.getInt("Throttle Decrease Axis");
@@ -55,6 +54,7 @@ public class Controller {
             scanBind = data.getInt("Scan Bind");
         } catch (JSONException e) {
             DriverStation.getInstance().reportError("Critical controller binds not detected, using defaults...", false);
+            e.printStackTrace();
             forwardAxis = 0;
             turnAxis = 1;
             throttleMethod = "Triggers";
@@ -63,8 +63,6 @@ public class Controller {
             scanBind = 1;
         }
 
-        stop = new JoystickButton(stick, scanBind);
-        stop.whenPressed(new Stop());
     }
 
     public double processThrottle(){
@@ -79,7 +77,7 @@ public class Controller {
                     throttle -= 0.005;
                 }
                 break;
-            case "AnalogTriggers":
+            case "Analog Triggers":
                 throttle += 0.01 *(stick.getRawAxis(throttleIncreaseAxis) - stick.getRawAxis(throttleDecreaseAxis));
                 break;
         }
@@ -93,15 +91,19 @@ public class Controller {
     }
 
     public double getLeft(){
-        return -stick.getRawAxis(forwardAxis) + stick.getRawAxis(turnAxis);
+        return deadband(-stick.getRawAxis(forwardAxis) + stick.getRawAxis(turnAxis));
     }
 
     public double getRight(){
-        return stick.getRawAxis(forwardAxis) + stick.getRawAxis(turnAxis);
+        return deadband(stick.getRawAxis(forwardAxis) + stick.getRawAxis(turnAxis));
     }
 
-    public boolean scanPressed(){
-        return stick.getRawButton(scanBind);
+    public double deadband(double val){
+        if(val <= 0.05 && val >= -0.05){
+            return 0;
+        }
+
+        return val;
     }
 
 }

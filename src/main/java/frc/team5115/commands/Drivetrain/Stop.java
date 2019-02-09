@@ -15,7 +15,7 @@ public class Stop extends Command {
             if (Timer.getMatchTime() > 10){
                 Robot.dt.setState("Transition");
             } else {
-                Robot.dt.setState("Stop");
+                Robot.dt.setState("Stopped");
             }
         }
     }

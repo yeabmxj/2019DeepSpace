@@ -116,11 +116,13 @@ public class Drivetrain extends Subsystem{
                 drive(InputManager.primary.getLeft(),
                         InputManager.primary.getRight(),
                         InputManager.primary.processThrottle());
+                System.out.println("driving");
                 break;
             case "Transition":
                 System.out.println("fancy transition");
                 break;
             case "Stopped":
+                drive(0,0,0);
                 System.out.println("stopped");
                 break;
         }

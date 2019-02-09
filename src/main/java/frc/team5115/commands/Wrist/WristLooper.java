@@ -10,7 +10,7 @@ public class WristLooper extends Command {
     }
 
     protected void interrupted(){
-        Robot.wr.setState("Neutral");
+        Robot.wr.setState("Stopped");
     }
 
     protected boolean isFinished() {

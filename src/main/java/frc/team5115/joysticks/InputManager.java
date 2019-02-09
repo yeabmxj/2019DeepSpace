@@ -15,6 +15,11 @@ import java.nio.charset.Charset;
 public class InputManager {
 
     public static Controller primary;
+    public static Controller secondary;
+
+    int primaryPort = 0;
+    int checkpoint;
+    int secondaryPort = -1;
 
     JSONObject controllerData;
 
@@ -45,15 +50,45 @@ public class InputManager {
         }
     }
 
+    public void findControllers(){
+        for(int i = 0; i < 5; i++){
+            if((!new Joystick(i).getName().equals("")) && (new Joystick(i).getButtonCount() > 0)){
+                primaryPort = i;
+                break;
+            }
+        }
+        if(new Joystick(primaryPort).getName().equals("MAYFLASH GameCube Controller Adapter")){
+            checkpoint = primaryPort + 4;
+        } else {
+            checkpoint = primaryPort + 1;
+        }
+        for(int i = checkpoint; i < 5; i++){
+            if((!new Joystick(i).getName().equals("")) && (new Joystick(i).getButtonCount() > 0)){
+                secondaryPort = i;
+                break;
+            }
+        }
+        System.out.println(primaryPort);
+        System.out.println(secondaryPort);
+    }
+
     public void checkControllers(){
+        primary = null;
+        secondary = null;
+        findControllers();
         try {
-            primary = new Controller(0, controllerData.getJSONObject(new Joystick(0).getName()));
-        } catch (Exception e){
+            primary = new Controller(primaryPort, controllerData.getJSONObject(new Joystick(primaryPort).getName()));
+            if(secondaryPort == -1){
+                secondary = primary;
+            } else {
+                secondary = new Controller(secondaryPort, controllerData.getJSONObject(new Joystick(secondaryPort).getName()));
+            }
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
 
-        JoystickButton stop = new JoystickButton(primary.stick, primary.scanBind);
+        JoystickButton stop = new JoystickButton(secondary.stick, secondary.scanBind);
         stop.whenPressed(new Stop());
     }
 

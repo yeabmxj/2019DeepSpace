@@ -99,7 +99,7 @@ public class Controller {
     }
 
     public double deadband(double val){
-        if(val <= 0.05 && val >= -0.05){
+        if(val <= 0.075 && val >= -0.075){
             return 0;
         }
 

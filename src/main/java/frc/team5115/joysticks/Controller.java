@@ -19,7 +19,7 @@ public class Controller {
     public int forwardAxis;
     public int turnAxis;
 
-    double throttle;
+    double throttle = 0.5;
     String throttleMethod;
     int throttleAxis;
     int throttleIncreaseAxis;

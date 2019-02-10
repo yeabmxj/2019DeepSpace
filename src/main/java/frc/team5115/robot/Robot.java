@@ -17,8 +17,6 @@ import frc.team5115.subsystems.*;
 
 public class Robot extends TimedRobot {
 
-    public static Drivetrain dt;
-    public static Wrist wr;
     public static InputManager im;
     public static Limelight cam;
     public static ShuffleboardTab tab = Shuffleboard.getTab("debug");
@@ -26,15 +24,12 @@ public class Robot extends TimedRobot {
     Thread thread = new Thread(new Debug());
 
     public void robotInit() {
-        dt = new Drivetrain();
-        wr = new Wrist();
         im = new InputManager();
         cam = new Limelight();
         thread.start();
     }
 
     public void teleopInit() {
-        dt.setState("Driving");
         im.checkControllers();
         cam.cameraMode();
         //start subsystem thread

@@ -2,16 +2,23 @@ package frc.team5115.commands.Drivetrain;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team5115.robot.Robot;
+import frc.team5115.subsystems.Drivetrain;
 
 public class DrivetrainLooper extends Command {
 
+    public static Drivetrain dt;
+
+    public DrivetrainLooper(){
+        dt = new Drivetrain();
+        dt.setState("Driving");
+    }
 
     protected void execute() {
-        Robot.dt.update();
+        dt.update();
     }
 
     protected void interrupted(){
-        Robot.dt.setState("Stopped");
+        dt.setState("Stopped");
     }
 
     protected boolean isFinished() {

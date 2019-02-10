@@ -2,15 +2,22 @@ package frc.team5115.commands.Wrist;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team5115.robot.Robot;
+import frc.team5115.subsystems.Wrist;
 
 public class WristLooper extends Command {
 
+    public static Wrist wr;
+
+    public WristLooper(){
+        wr = new Wrist();
+    }
+
     protected void execute() {
-        Robot.wr.update();
+        wr.update();
     }
 
     protected void interrupted(){
-        Robot.wr.setState("Stopped");
+        wr.setState("Stopped");
     }
 
     protected boolean isFinished() {

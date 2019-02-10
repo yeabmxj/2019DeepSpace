@@ -6,7 +6,7 @@ import frc.team5115.robot.Robot;
 public class MoveDown extends Command {
 
     protected void initialize() {
-        Robot.wr.setState("Down");
+        WristLooper.wr.setState("Down");
     }
 
     protected boolean isFinished(){

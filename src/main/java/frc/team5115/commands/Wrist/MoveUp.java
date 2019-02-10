@@ -7,7 +7,7 @@ import frc.team5115.robot.Robot;
 public class MoveUp extends Command {
 
     protected void initialize() {
-        Robot.wr.setState("Up");
+        WristLooper.wr.setState("Up");
     }
 
     protected boolean isFinished(){

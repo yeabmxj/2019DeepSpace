@@ -1,7 +1,5 @@
 package frc.team5115.subsystems;
 
-import frc.team5115.joysticks.InputManager;
-
 import java.util.ArrayList;
 
 public class Subsystem {
@@ -9,9 +7,11 @@ public class Subsystem {
     ArrayList<String> dictionary;
 
     String state = "Stopped";
+    String lastState;
 
     public int setState(String state){
         if(dictionary.contains(state)){
+            lastState = currentState();
             this.state = state;
             return 0;
         } else {

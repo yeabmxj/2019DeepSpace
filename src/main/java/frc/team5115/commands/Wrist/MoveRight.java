@@ -6,7 +6,7 @@ import frc.team5115.robot.Robot;
 public class MoveRight extends Command {
 
     protected void initialize() {
-        Robot.wr.setState("Right");
+        WristLooper.wr.setState("Right");
     }
 
     protected boolean isFinished(){

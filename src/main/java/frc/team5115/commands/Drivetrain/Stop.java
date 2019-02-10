@@ -11,11 +11,11 @@ public class Stop extends Command {
     }
 
     protected void initialize() {
-        if(Robot.dt.currentState().equals("Driving")){
+        if(DrivetrainLooper.dt.currentState().equals("Driving")){
             if (Timer.getMatchTime() > 10){
-                Robot.dt.setState("Transition");
+                DrivetrainLooper.dt.setState("Transition");
             } else {
-                Robot.dt.setState("Stopped");
+                DrivetrainLooper.dt.setState("Stopped");
             }
         }
     }

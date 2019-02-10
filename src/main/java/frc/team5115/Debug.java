@@ -41,8 +41,8 @@ public class Debug implements Runnable{
         return sb.toString();
     }
 
-    public static JSONObject readJsonFromUrl() throws IOException, JSONException {
-        try (InputStream is = new URL("http://172.22.11.2:1250/?action=getdevices").openStream()) {
+    public static JSONObject readJSON(InputStream stream) throws IOException, JSONException {
+        try (InputStream is = stream) {
             BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
             String jsonText = readAll(rd);
             JSONObject json = new JSONObject(jsonText);
@@ -52,7 +52,7 @@ public class Debug implements Runnable{
 
     public static Map<Object, ArrayList<Object>> returnCANBus(){
         try {
-            JSONArray server = readJsonFromUrl().getJSONArray("DeviceArray");
+            JSONArray server = readJSON(new URL("http://172.22.11.2:1250/?action=getdevices").openStream()).getJSONArray("DeviceArray");
             Map<Object, ArrayList<Object>> CANBus = new HashMap<>();
             for(int i = 0; i < 5/*This should be the number of expected device*/; i++){
                 JSONObject current = server.getJSONObject(i);

@@ -8,9 +8,7 @@ public class WristLooper extends Command {
 
     public static Wrist wr;
 
-    public WristLooper(){
-        wr = new Wrist();
-    }
+    protected void initialize(){ wr = new Wrist();}
 
     protected void execute() {
         wr.update();

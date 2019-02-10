@@ -8,7 +8,7 @@ public class DrivetrainLooper extends Command {
 
     public static Drivetrain dt;
 
-    public DrivetrainLooper(){
+    protected void initialize(){
         dt = new Drivetrain();
         dt.setState("Driving");
     }

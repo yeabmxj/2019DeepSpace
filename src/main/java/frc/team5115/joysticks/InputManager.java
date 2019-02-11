@@ -4,13 +4,10 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.team5115.Debug;
 import frc.team5115.commands.Drivetrain.Stop;
-import org.json.JSONException;
+import frc.team5115.commands.Wrist.MoveLeft;
 import org.json.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import java.io.*;
-import java.nio.charset.Charset;
 
 
 public class InputManager {
@@ -67,6 +64,9 @@ public class InputManager {
 
         JoystickButton stop = new JoystickButton(secondary.stick, secondary.scanBind);
         stop.whenPressed(new Stop());
+
+        POVButton test = new POVButton(secondary.stick, 0);
+        test.whenPressed(new MoveLeft());
     }
 
 }

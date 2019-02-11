@@ -9,6 +9,8 @@ public class MoveDown extends Command {
         WristLooper.wr.setState("Down");
     }
 
+    protected void end(){ WristLooper.wr.setState("Stopped");}
+
     protected boolean isFinished(){
         return true;
     }

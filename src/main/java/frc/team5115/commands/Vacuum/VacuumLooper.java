@@ -5,11 +5,9 @@ import frc.team5115.subsystems.Vacuum;
 
 public class VacuumLooper extends Command {
 
-    Vacuum succ;
+    public static Vacuum succ;
 
-    protected void initialize(){
-        succ = new Vacuum();
-    }
+    protected void initialize(){ succ = new Vacuum(); }
 
     protected void execute(){
         succ.update();

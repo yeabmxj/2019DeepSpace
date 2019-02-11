@@ -9,6 +9,8 @@ public class MoveRight extends Command {
         WristLooper.wr.setState("Right");
     }
 
+    protected void end(){ WristLooper.wr.setState("Stopped");}
+
     protected boolean isFinished(){
         return true;
     }

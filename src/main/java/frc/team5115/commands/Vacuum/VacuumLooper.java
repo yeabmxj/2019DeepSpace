@@ -7,7 +7,10 @@ public class VacuumLooper extends Command {
 
     public static Vacuum succ;
 
-    protected void initialize(){ succ = new Vacuum(); }
+    protected void initialize(){
+        succ = new Vacuum();
+        succ.setState("Stopped");
+    }
 
     protected void execute(){
         succ.update();

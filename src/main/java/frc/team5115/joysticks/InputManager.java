@@ -4,8 +4,8 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team5115.Debug;
-import frc.team5115.commands.Arm.MoveDown;
-import frc.team5115.commands.Arm.MoveUp;
+import frc.team5115.commands.arm.MoveDown;
+import frc.team5115.commands.arm.MoveUp;
 import org.json.JSONObject;
 
 import java.io.*;
@@ -62,13 +62,13 @@ public class InputManager {
             e.printStackTrace();
         }
 
-        JoystickButton test = new JoystickButton(primary.stick, primary.scanBind);
+        JoystickButton test = new JoystickButton(primary.returnInstance(), primary.scanBind);
         test.whenPressed(new MoveUp());
 
-        JoystickButton test2 = new JoystickButton(secondary.stick, secondary.scanBind);
-        test2.whenPressed(new MoveDown());
+        JoystickButton test2 = new JoystickButton(secondary.returnInstance(), secondary.killBind);
+        test2.whileHeld(new MoveDown());
 
-        POVButton test3 = new POVButton(secondary.stick, 0);
+        POVButton test3 = new POVButton(secondary.returnInstance(), 0);
         Runnable myLambda = () -> System.out.println("hello");
         test3.whenPressed((Command) myLambda);
     }

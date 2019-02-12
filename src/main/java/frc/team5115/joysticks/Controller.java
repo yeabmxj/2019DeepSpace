@@ -7,26 +7,24 @@ import org.json.JSONObject;
 
 public class Controller {
 
-    Joystick stick;
-    int port;
+    private Joystick stick;
 
-    public int forwardAxis;
-    public int turnAxis;
+    private int forwardAxis;
+    private int turnAxis;
 
-    double throttle = 0.5;
-    String throttleMethod;
-    int throttleAxis;
-    int throttleIncreaseAxis;
-    int throttleDecreaseAxis;
-    int throttleIncrease;
-    int throttleDecrease;
+    private double throttle = 0.5;
+    private String throttleMethod;
+    private int throttleAxis;
+    private int throttleIncreaseAxis;
+    private int throttleDecreaseAxis;
+    private int throttleIncrease;
+    private int throttleDecrease;
 
     int scanBind;
     int killBind;
 
     public Controller(int port, JSONObject data) {
-        this.port = port;
-        stick = new Joystick(this.port);
+        stick = new Joystick(port);
 
         try {
             forwardAxis = data.getInt("Forward");

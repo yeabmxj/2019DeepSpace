@@ -1,11 +1,11 @@
-package frc.team5115.commands.Arm;
+package frc.team5115.commands.arm;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class MoveDown extends Command {
+public class MoveUp extends Command {
 
     protected void initialize() {
-        ArmLooper.addLevel(-1);
+        ArmLooper.addLevel(1);
         ArmLooper.arm.setState("Moving Up");
     }
 

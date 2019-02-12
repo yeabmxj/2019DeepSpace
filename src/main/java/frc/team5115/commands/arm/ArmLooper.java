@@ -1,4 +1,4 @@
-package frc.team5115.commands.Arm;
+package frc.team5115.commands.arm;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.command.Command;

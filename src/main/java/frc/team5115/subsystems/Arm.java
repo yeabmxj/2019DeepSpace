@@ -1,11 +1,9 @@
 package frc.team5115.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
-import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.SerialPort;
-import frc.team5115.commands.Arm.ArmLooper;
+import frc.team5115.commands.arm.ArmLooper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,27 +28,17 @@ public class Arm extends Subsystem{
     }
 
     public void update(){
+        System.out.println("current position" + getPosition());
+        System.out.println("target position" + ArmLooper.returnTarget());
         switch(state){
             case "Moving Up":
-                if(getPosition() < ArmLooper.returnTarget()){
-                    setState("Moving Down");
-                } else if(getPosition() == ArmLooper.returnTarget()){
-                    setState("Stopped");
-                } else {
-                    DART.set(ControlMode.PercentOutput, 0.5);
-                }
+                System.out.println("moving up");
                 break;
             case "Moving Down":
-                if(getPosition() > ArmLooper.returnTarget()){
-                    setState("Moving Up");
-                } else if(getPosition() == ArmLooper.returnTarget()){
-                    setState("Stopped");
-                } else {
-                    DART.set(ControlMode.PercentOutput, -0.5);
-                }
+                System.out.println("moving down");
                 break;
             case "Stopped":
-                DART.set(ControlMode.PercentOutput, 0);
+                System.out.println("neutral");
                 break;
         }
     }

@@ -5,7 +5,6 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import frc.team5115.robot.Robot;
-import frc.team5115.subsystems.Drivetrain;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

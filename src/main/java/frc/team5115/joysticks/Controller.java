@@ -2,13 +2,6 @@ package frc.team5115.joysticks;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.buttons.Button;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import edu.wpi.first.wpilibj.buttons.Trigger;
-import frc.team5115.Debug;
-import frc.team5115.commands.Drivetrain.Stop;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -63,7 +56,11 @@ public class Controller {
             throttleDecrease = 2;
             scanBind = 1;
         }
+        killBind = 2;
+    }
 
+    public Joystick returnInstance(){
+        return stick;
     }
 
     public double processThrottle(){

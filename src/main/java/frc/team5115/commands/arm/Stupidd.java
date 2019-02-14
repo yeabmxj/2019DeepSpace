@@ -5,10 +5,14 @@ import edu.wpi.first.wpilibj.command.Command;
 public class Stupidd extends Command {
 
     protected void initialize() {
-        System.out.println("hello");
+        ArmLooper.system.setState("Moving Up");
+        System.out.println("command received");
     }
 
-    protected void end(){ System.out.println("goodbye");}
+    protected void end(){
+        ArmLooper.system.setState("Neutral");
+        System.out.println("command ended");
+    }
 
     protected boolean isFinished(){ return true; }
 

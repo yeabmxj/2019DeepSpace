@@ -1,5 +1,8 @@
 package frc.team5115.robot;
 
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -17,13 +20,13 @@ public class Robot extends TimedRobot {
 
     public void robotInit() {
         im = new InputManager();
+        //start subsystem thread
+        Scheduler.getInstance().add(new startLoopers());
         thread.start();
     }
 
     public void teleopInit() {
         im.checkControllers();
-        //start subsystem thread
-        Scheduler.getInstance().add(new startLoopers());
     }
 
     public void teleopPeriodic() {

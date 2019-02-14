@@ -25,21 +25,20 @@ public class InputManager {
 
     public InputManager() {
         try {
-            controllerData = Debug.readJSON(new FileInputStream("Controllers.json"));
+            controllerData = Debug.readJSON(new FileInputStream("/home/lvuser/Controllers.json"));
         } catch (Exception e) {
             e.printStackTrace();
         }
         checkControllers();
-        joy = new Joystick(0);
 
-        JoystickButton test = new JoystickButton(joy, 1);
+        JoystickButton test = new JoystickButton(primary.returnInstance(), 4);
         test.whenPressed(new MoveUp());
 
-        JoystickButton test2 = new JoystickButton(joy, 2);
-        test2.whileHeld(new MoveDown());
+        JoystickButton test2 = new JoystickButton(primary.returnInstance(), 2);
+        test2.whenPressed(new MoveDown());
 
-        POVButton test3 = new POVButton(joy, 0);
-        test3.whenPressed(new Stupidd());
+        //POVButton test3 = new POVButton(primary.returnInstance(), 0);
+        //test3.whenPressed(new MoveDown());
     }
 
     public void findControllers(){

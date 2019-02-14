@@ -27,7 +27,9 @@ public class ArmLooper extends Looper {
     }
 
     public static void addLevel(int level){
-        levelDisplay.setNumber(levelDisplay.getNumber(0).intValue() + level);
+        if(!(returnTarget() + level > 3) && !(returnTarget() + level < 0)){
+            levelDisplay.setNumber(returnTarget() + level);
+        }
     }
 
     public static int returnTarget(){

@@ -15,10 +15,10 @@ public class Arm extends Subsystem{
 
     AHRS navX;
 
-    double max = 30;
+    double max = 35;
     double level2 = 10;
-    double level1 = -10;
-    double min = -30;
+    double level1 = -20;
+    double min = -54;
 
     public Arm(){
         dictionary = new ArrayList<>(Arrays.asList("Moving Up",
@@ -31,31 +31,46 @@ public class Arm extends Subsystem{
     
 
     public void update(){
-        System.out.println("current position" + getPosition());
+        //System.out.println("current position" + getPosition());
         //System.out.println("target position" + ArmLooper.returnTarget());
-        System.out.println(currentState());
+        //System.out.println(currentState());
         switch(state){
             case "Moving Up":
+                if(getPosition() < ArmLooper.returnTarget()){
+                    setState("Moving Down");
+                } else if(getPosition() == ArmLooper.returnTarget()){
+                    setState("Stopped");
+                } else {
+                    DART.set(ControlMode.PercentOutput, 0.5);
+                }
                 System.out.println("moving up");
                 break;
             case "Moving Down":
+                if(getPosition() > ArmLooper.returnTarget()){
+                    setState("Moving Up");
+                } else if(getPosition() == ArmLooper.returnTarget()){
+                    setState("Stopped");
+                } else {
+                    DART.set(ControlMode.PercentOutput, -0.5);
+                }
                 System.out.println("moving down");
                 break;
             case "Stopped":
+                DART.set(ControlMode.PercentOutput, 0);
                 System.out.println("neutral");
                 break;
         }
     }
 
     public int getPosition(){
-        if(navX.getPitch() <= min){
-            min = navX.getPitch();
+        if(navX.getRoll() <= min){
+            min = navX.getRoll();
             return 0;
-        } else if(navX.getPitch() > min && navX.getPitch() <= level1){
+        } else if(navX.getRoll() > min && navX.getRoll() <= level1){
             return 1;
-        } else if(navX.getPitch() > level1 && navX.getPitch() <= level2){
+        } else if(navX.getRoll() > level1 && navX.getRoll() <= level2){
             return 2;
-        } else if(navX.getPitch() > level2 && navX.getPitch() <= max){
+        } else if(navX.getRoll() > level2 && navX.getRoll() <= max){
             return 3;
         }
         return -1;

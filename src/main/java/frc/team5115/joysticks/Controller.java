@@ -57,7 +57,7 @@ public class Controller {
         killBind = 2;
     }
 
-    Joystick returnInstance(){
+    public Joystick returnInstance(){
         return stick;
     }
 

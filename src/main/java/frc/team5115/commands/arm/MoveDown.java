@@ -6,10 +6,10 @@ public class MoveDown extends Command {
 
     protected void initialize() {
         ArmLooper.addLevel(-1);
-        ArmLooper.arm.setState("Moving Up");
+        ArmLooper.returnSystem().setState("Moving Down");
     }
 
-    protected void end(){ ArmLooper.arm.setState("Stopped");}
+    protected void end(){ ArmLooper.system.setState("Stopped");}
 
     protected boolean isFinished(){ return true; }
 

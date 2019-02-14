@@ -23,7 +23,7 @@ public class Controller {
     int scanBind;
     int killBind;
 
-    public Controller(int port, JSONObject data) {
+    Controller(int port, JSONObject data) {
         stick = new Joystick(port);
 
         try {
@@ -57,7 +57,7 @@ public class Controller {
         killBind = 2;
     }
 
-    public Joystick returnInstance(){
+    Joystick returnInstance(){
         return stick;
     }
 
@@ -94,7 +94,7 @@ public class Controller {
         return deadband(stick.getRawAxis(forwardAxis) + stick.getRawAxis(turnAxis));
     }
 
-    public double deadband(double val){
+    private double deadband(double val){
         if(val <= 0.075 && val >= -0.075){
             return 0;
         }

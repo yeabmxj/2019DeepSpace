@@ -1,5 +1,6 @@
 package frc.team5115.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.SerialPort;
@@ -25,11 +26,14 @@ public class Arm extends Subsystem{
                 "Stopped"));
         DART = new TalonSRX(5);
         navX = new AHRS(SerialPort.Port.kUSB);
+        System.out.println("instantiated objects");
     }
+    
 
     public void update(){
         System.out.println("current position" + getPosition());
-        System.out.println("target position" + ArmLooper.returnTarget());
+        //System.out.println("target position" + ArmLooper.returnTarget());
+        System.out.println(currentState());
         switch(state){
             case "Moving Up":
                 System.out.println("moving up");

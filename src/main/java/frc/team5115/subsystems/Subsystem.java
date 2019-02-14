@@ -9,13 +9,10 @@ public class Subsystem {
     String state = "Stopped";
     String lastState;
 
-    public int setState(String state){
+    public void setState(String state){
         if(dictionary.contains(state)){
             lastState = currentState();
             this.state = state;
-            return 0;
-        } else {
-            return -1;
         }
     }
 
@@ -24,7 +21,7 @@ public class Subsystem {
     }
 
     public void update(){
-        switch(this.state){
+        switch(state){
             case "Stopped":
                 break;
         }

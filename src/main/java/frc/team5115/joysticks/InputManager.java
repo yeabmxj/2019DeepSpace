@@ -2,10 +2,10 @@ package frc.team5115.joysticks;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import edu.wpi.first.wpilibj.command.Command;
 import frc.team5115.Debug;
 import frc.team5115.commands.arm.MoveDown;
 import frc.team5115.commands.arm.MoveUp;
+import frc.team5115.commands.arm.Stupidd;
 import org.json.JSONObject;
 
 import java.io.*;
@@ -16,6 +16,8 @@ public class InputManager {
     public static Controller primary;
     public static Controller secondary;
 
+    Joystick joy;
+
     int primaryPort = 0;
     int secondaryPort = -1;
 
@@ -23,11 +25,21 @@ public class InputManager {
 
     public InputManager() {
         try {
-            controllerData = Debug.readJSON(new FileInputStream("/home/lvuser/Controllers.json"));
+            controllerData = Debug.readJSON(new FileInputStream("Controllers.json"));
         } catch (Exception e) {
             e.printStackTrace();
         }
         checkControllers();
+        joy = new Joystick(0);
+
+        JoystickButton test = new JoystickButton(joy, 1);
+        test.whenPressed(new MoveUp());
+
+        JoystickButton test2 = new JoystickButton(joy, 2);
+        test2.whileHeld(new MoveDown());
+
+        POVButton test3 = new POVButton(joy, 0);
+        test3.whenPressed(new Stupidd());
     }
 
     public void findControllers(){
@@ -62,15 +74,7 @@ public class InputManager {
             e.printStackTrace();
         }
 
-        JoystickButton test = new JoystickButton(primary.returnInstance(), primary.scanBind);
-        test.whenPressed(new MoveUp());
 
-        JoystickButton test2 = new JoystickButton(secondary.returnInstance(), secondary.killBind);
-        test2.whileHeld(new MoveDown());
-
-        POVButton test3 = new POVButton(secondary.returnInstance(), 0);
-        Runnable myLambda = () -> System.out.println("hello");
-        test3.whenPressed((Command) myLambda);
     }
 
 }

@@ -16,7 +16,7 @@ public class ArmLooper extends Looper {
 
 
     protected void initialize() {
-        system = new Arm();
+        system = Robot.arm;
         system.setState("Stopped");
         settings.put("min", 0);
         settings.put("max", 3);

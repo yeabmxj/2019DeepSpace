@@ -4,16 +4,17 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class Stupidd extends Command {
 
+    private boolean flipflop = true;
+
     protected void initialize() {
+        flipflop = !flipflop;
         ArmLooper.system.setState("Moving Up");
-        System.out.println("command received");
     }
 
     protected void end(){
-        ArmLooper.system.setState("Neutral");
-        System.out.println("command ended");
+        ArmLooper.system.setState("Stopped");
     }
 
-    protected boolean isFinished(){ return true; }
+    protected boolean isFinished(){ return false; }
 
 }

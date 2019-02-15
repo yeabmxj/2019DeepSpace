@@ -29,16 +29,6 @@ public class InputManager {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        checkControllers();
-
-        JoystickButton test = new JoystickButton(primary.returnInstance(), 4);
-        test.whenPressed(new MoveUp());
-
-        JoystickButton test2 = new JoystickButton(primary.returnInstance(), 2);
-        test2.whenPressed(new MoveDown());
-
-        //POVButton test3 = new POVButton(primary.returnInstance(), 0);
-        //test3.whenPressed(new MoveDown());
     }
 
     public void findControllers(){
@@ -69,10 +59,19 @@ public class InputManager {
             } else {
                 secondary = new Controller(secondaryPort, controllerData.getJSONObject(new Joystick(secondaryPort).getName()));
             }
+
+            JoystickButton test = new JoystickButton(primary.returnInstance(), 4);
+            test.whenPressed(new MoveUp());
+
+            JoystickButton test2 = new JoystickButton(primary.returnInstance(), 2);
+            test2.whileHeld(new MoveDown());
+
+            POVButton test3 = new POVButton(primary.returnInstance(), 0);
+            test3.toggleWhenPressed(new Stupidd());
+
         } catch (Exception e) {
             e.printStackTrace();
         }
-
 
     }
 

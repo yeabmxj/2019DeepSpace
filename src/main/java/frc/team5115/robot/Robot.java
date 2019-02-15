@@ -10,17 +10,23 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.team5115.Debug;
 import frc.team5115.commands.startLoopers;
 import frc.team5115.joysticks.InputManager;
+import frc.team5115.subsystems.Arm;
 
 public class Robot extends TimedRobot {
 
     public static InputManager im;
     public static ShuffleboardTab tab = Shuffleboard.getTab("debug");
 
+    public static Arm arm;
+
     Thread thread = new Thread(new Debug());
 
     public void robotInit() {
         im = new InputManager();
-        //start subsystem thread
+
+        arm = new Arm();
+
+        //start subsystem threads
         Scheduler.getInstance().add(new startLoopers());
         thread.start();
     }

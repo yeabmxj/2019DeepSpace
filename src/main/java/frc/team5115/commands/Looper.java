@@ -8,10 +8,6 @@ public class Looper extends Command {
     public static Subsystem system;
     boolean kill = false;
 
-    protected void initialize() {
-        system = new Subsystem();
-    }
-
     public static Subsystem returnSystem(){
         return system;
     }

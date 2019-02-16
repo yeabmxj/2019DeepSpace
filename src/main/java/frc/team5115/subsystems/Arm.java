@@ -26,14 +26,10 @@ public class Arm extends Subsystem{
                 "Stopped"));
         DART = new TalonSRX(0);
         navX = new AHRS(SerialPort.Port.kUSB);
-        System.out.println("instantiated objects");
     }
     
 
     public void update(){
-        //System.out.println("current position" + getPosition());
-        //System.out.println("target position" + ArmLooper.returnTarget());
-        //System.out.println(currentState());
         switch(state){
             case "Moving Up":
                 if(getPosition() > ArmLooper.returnTarget()){
@@ -41,9 +37,8 @@ public class Arm extends Subsystem{
                 } else if(getPosition() == ArmLooper.returnTarget()){
                     setState("Stopped");
                 } else {
-                    DART.set(ControlMode.PercentOutput, 0.5);
+                    move(0.5);
                 }
-                System.out.println("moving up");
                 break;
             case "Moving Down":
                 if(getPosition() < ArmLooper.returnTarget()){
@@ -51,13 +46,11 @@ public class Arm extends Subsystem{
                 } else if(getPosition() == ArmLooper.returnTarget()){
                     setState("Stopped");
                 } else {
-                    DART.set(ControlMode.PercentOutput, -0.5);
+                    move(-0.5);
                 }
-                System.out.println("moving down");
                 break;
             case "Stopped":
-                DART.set(ControlMode.PercentOutput, 0);
-                System.out.println("neutral");
+                move(0);
                 break;
         }
     }

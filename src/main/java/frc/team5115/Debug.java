@@ -5,7 +5,6 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import frc.team5115.robot.Robot;
-import frc.team5115.subsystems.Drivetrain;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,7 +29,13 @@ public class Debug implements Runnable{
     double motorThreshold = 4;
 
     //0 ok, 1 low, 2 critical
-    int batteryState = 0;
+    batteryState battery = batteryState.OK;
+
+    enum batteryState{
+        OK,
+        LOW,
+        CRITICAL
+    }
 
     private static String readAll(Reader rd) throws IOException {
         StringBuilder sb = new StringBuilder();
@@ -118,16 +123,20 @@ public class Debug implements Runnable{
     }
 
     private void batteryCheck(){
-        if(PDP.getVoltage() > 10 && batteryState != 0){
-            batteryState = 0;
-        } else if((PDP.getVoltage() < 10 && PDP.getVoltage() > 8) && batteryState != 1){
+        if(PDP.getVoltage() > 10 && battery != batteryState.OK){
+            battery = batteryState.OK;
+        } else if((PDP.getVoltage() < 10 && PDP.getVoltage() > 8) && battery != batteryState.LOW){
             DS.reportWarning("Battery Low!", false);
-            batteryState = 1;
-        } else if((PDP.getVoltage() < 7) && batteryState != 2){
+            battery = batteryState.LOW;
+        } else if((PDP.getVoltage() < 7) && battery != batteryState.CRITICAL){
             DS.reportError("Battery Critical!", false);
-            batteryState = 2;
+            battery = batteryState.CRITICAL;
         }
         voltage.setDouble(PDP.getVoltage());
+    }
+
+    public batteryState getBattery() {
+        return battery;
     }
 
     public void run(){

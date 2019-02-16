@@ -3,20 +3,20 @@ package frc.team5115.joysticks;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.team5115.Debug;
-import frc.team5115.commands.Drivetrain.Stop;
-import org.json.JSONException;
+import frc.team5115.commands.arm.MoveDown;
+import frc.team5115.commands.arm.MoveUp;
+import frc.team5115.commands.arm.Stupidd;
 import org.json.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import java.io.*;
-import java.nio.charset.Charset;
 
 
 public class InputManager {
 
     public static Controller primary;
     public static Controller secondary;
+
+    Joystick joy;
 
     int primaryPort = 0;
     int secondaryPort = -1;
@@ -29,7 +29,6 @@ public class InputManager {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        checkControllers();
     }
 
     public void findControllers(){
@@ -60,13 +59,20 @@ public class InputManager {
             } else {
                 secondary = new Controller(secondaryPort, controllerData.getJSONObject(new Joystick(secondaryPort).getName()));
             }
+
+            JoystickButton test = new JoystickButton(primary.returnInstance(), 4);
+            test.whenPressed(new MoveUp());
+
+            JoystickButton test2 = new JoystickButton(primary.returnInstance(), 2);
+            test2.whenPressed(new MoveDown());
+
+            POVButton test3 = new POVButton(primary.returnInstance(), 0);
+            test3.toggleWhenPressed(new Stupidd());
+
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-
-        JoystickButton stop = new JoystickButton(secondary.stick, secondary.scanBind);
-        stop.whenPressed(new Stop());
     }
 
 }

@@ -193,7 +193,7 @@
   </component>
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/2019DeepSpace.iml" filepath="$PROJECT_DIR$/2019DeepSpace.iml" group="2019DeepSpace" />
+      <module fileurl="file://$PROJECT_DIR$/2019DeepSpace.iml" filepath="$PROJECT_DIR$/2019DeepSpace.iml" />
       <module fileurl="file://$PROJECT_DIR$/2019DeepSpace_main.iml" filepath="$PROJECT_DIR$/2019DeepSpace_main.iml" group="2019DeepSpace" />
       <module fileurl="file://$PROJECT_DIR$/2019DeepSpace_test.iml" filepath="$PROJECT_DIR$/2019DeepSpace_test.iml" group="2019DeepSpace" />
     </modules>

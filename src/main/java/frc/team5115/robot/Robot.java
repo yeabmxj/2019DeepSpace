@@ -11,6 +11,9 @@ import frc.team5115.Debug;
 import frc.team5115.commands.startLoopers;
 import frc.team5115.joysticks.InputManager;
 import frc.team5115.subsystems.Arm;
+import frc.team5115.subsystems.Climber;
+import frc.team5115.subsystems.Vacuum;
+import frc.team5115.subsystems.Wrist;
 
 public class Robot extends TimedRobot {
 
@@ -18,6 +21,9 @@ public class Robot extends TimedRobot {
     public static ShuffleboardTab tab = Shuffleboard.getTab("debug");
 
     public static Arm arm;
+    public static Vacuum succ;
+    public static Climber climb;
+    public static Wrist wrist;
 
     Thread thread = new Thread(new Debug());
 
@@ -25,6 +31,9 @@ public class Robot extends TimedRobot {
         im = new InputManager();
 // big yoshi <(^_^)/
         arm = new Arm();
+        succ = new Vacuum();
+        climb = new Climber();
+        wrist = new Wrist();
 
         //start subsystem threads
         Scheduler.getInstance().add(new startLoopers());

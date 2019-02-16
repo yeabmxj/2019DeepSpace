@@ -5,7 +5,11 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.team5115.Debug;
 import frc.team5115.commands.arm.MoveDown;
 import frc.team5115.commands.arm.MoveUp;
-import frc.team5115.commands.arm.Stupidd;
+import frc.team5115.commands.climber.StartClimb;
+import frc.team5115.commands.succ.ToggleSucc;
+import frc.team5115.commands.wrist.MoveLeft;
+import frc.team5115.commands.wrist.MoveRight;
+import frc.team5115.commands.wrist.MoveY;
 import org.json.JSONObject;
 
 import java.io.*;
@@ -66,8 +70,20 @@ public class InputManager {
             JoystickButton test2 = new JoystickButton(primary.returnInstance(), 2);
             test2.whenPressed(new MoveDown());
 
-            POVButton test3 = new POVButton(primary.returnInstance(), 0);
-            test3.toggleWhenPressed(new Stupidd());
+            JoystickButton succ = new JoystickButton(primary.returnInstance(), 3);
+            succ.toggleWhenPressed(new ToggleSucc());
+
+            JoystickButton climb = new JoystickButton(primary.returnInstance(), 5);
+            climb.whenPressed(new StartClimb());
+
+            POVButton moveLeft = new POVButton(primary.returnInstance(), 90);
+            moveLeft.whileHeld(new MoveLeft());
+
+            POVButton moveRight = new POVButton(primary.returnInstance(), 270);
+            moveRight.whileHeld(new MoveRight());
+
+            POVButton moveY = new POVButton(primary.returnInstance(), 0);
+            moveY.whenPressed(new MoveY());
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -64,7 +64,7 @@ public class InputManager {
             test.whenPressed(new MoveUp());
 
             JoystickButton test2 = new JoystickButton(primary.returnInstance(), 2);
-            test2.whileHeld(new MoveDown());
+            test2.whenPressed(new MoveDown());
 
             POVButton test3 = new POVButton(primary.returnInstance(), 0);
             test3.toggleWhenPressed(new Stupidd());

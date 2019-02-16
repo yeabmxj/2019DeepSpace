@@ -7,12 +7,12 @@ public class Stupidd extends Command {
     private boolean flipflop = true;
 
     protected void initialize() {
-        flipflop = !flipflop;
-        ArmLooper.system.setState("Moving Up");
+        //flipflop = !flipflop;
+        System.out.println("wow");
     }
 
     protected void end(){
-        ArmLooper.system.setState("Stopped");
+        System.out.println("incredible");
     }
 
     protected boolean isFinished(){ return false; }

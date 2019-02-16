@@ -23,7 +23,7 @@ public class Robot extends TimedRobot {
 
     public void robotInit() {
         im = new InputManager();
-
+// big yoshi <(^_^)/
         arm = new Arm();
 
         //start subsystem threads
@@ -31,12 +31,22 @@ public class Robot extends TimedRobot {
         thread.start();
     }
 
-    public void teleopInit() {
+    public void teleopInit() { // big yoshi
         im.checkControllers();
     }
 
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
+//        if(im.primary.returnInstance().getRawButton(4)){
+//            System.out.println("woo");
+//            arm.move(0.5);
+//        } else if(im.primary.returnInstance().getRawButton(2)){
+//            arm.move(-0.5);
+//        } else {
+//            System.out.println("test");
+//            arm.move(0);
+//        }
+        System.out.println(arm.getPosition());
     }
 
 }

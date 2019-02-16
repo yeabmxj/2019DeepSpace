@@ -18,13 +18,13 @@ public class Arm extends Subsystem{
     double max = 35;
     double level2 = 10;
     double level1 = -20;
-    double min = -54;
+    double min = -50;
 
     public Arm(){
         dictionary = new ArrayList<>(Arrays.asList("Moving Up",
                 "Moving Down",
                 "Stopped"));
-        DART = new TalonSRX(5);
+        DART = new TalonSRX(0);
         navX = new AHRS(SerialPort.Port.kUSB);
         System.out.println("instantiated objects");
     }
@@ -36,7 +36,7 @@ public class Arm extends Subsystem{
         //System.out.println(currentState());
         switch(state){
             case "Moving Up":
-                if(getPosition() < ArmLooper.returnTarget()){
+                if(getPosition() > ArmLooper.returnTarget()){
                     setState("Moving Down");
                 } else if(getPosition() == ArmLooper.returnTarget()){
                     setState("Stopped");
@@ -46,7 +46,7 @@ public class Arm extends Subsystem{
                 System.out.println("moving up");
                 break;
             case "Moving Down":
-                if(getPosition() > ArmLooper.returnTarget()){
+                if(getPosition() < ArmLooper.returnTarget()){
                     setState("Moving Up");
                 } else if(getPosition() == ArmLooper.returnTarget()){
                     setState("Stopped");
@@ -62,9 +62,13 @@ public class Arm extends Subsystem{
         }
     }
 
+    public void move(double percent){
+        DART.set(ControlMode.PercentOutput, percent);
+    }
+
     public int getPosition(){
-        if(navX.getRoll() <= min){
-            min = navX.getRoll();
+        System.out.println(navX.getRoll());
+        if(navX.getRoll() < min && navX.getRoll() <= level1){
             return 0;
         } else if(navX.getRoll() > min && navX.getRoll() <= level1){
             return 1;

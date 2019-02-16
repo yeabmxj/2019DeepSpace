@@ -9,10 +9,6 @@ public class MoveDown extends Command {
         ArmLooper.returnSystem().setState("Moving Down");
     }
 
-    protected void end(){
-        ArmLooper.returnSystem().setState("Stopped");
-    }
-
     protected boolean isFinished(){ return true; }
 
 }

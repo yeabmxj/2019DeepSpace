@@ -18,7 +18,7 @@ import java.util.Map;
 
 public class Debug implements Runnable{
 
-    DriverStation DS;
+    static DriverStation DS;
     PowerDistributionPanel PDP;
     Map<Object, ArrayList<Object>> CANBus;
 
@@ -35,6 +35,31 @@ public class Debug implements Runnable{
         OK,
         LOW,
         CRITICAL
+    }
+
+
+    public Debug(){
+        DS = DriverStation.getInstance();
+        PDP = new PowerDistributionPanel();
+        current = new double[PortsJNI.getNumPDPChannels()];
+        voltage = Robot.tab.add("Voltage", 0).getEntry();
+        try {
+            CANBus = returnCANBus();
+            for(int i = 0; i < CANBus.size(); i++){
+                ArrayList<Object> device = CANBus.get(i);
+                for(Object value: device){
+                    System.out.println(value);
+                }
+
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+            DS.reportWarning("Something went wrong while trying to get phoenix diagnostics!", e.getStackTrace());
+        }
+    }
+
+    public static DriverStation getInstance(){
+        return DS;
     }
 
     private static String readAll(Reader rd) throws IOException {
@@ -71,26 +96,6 @@ public class Debug implements Runnable{
         } catch (Exception e) {
             e.printStackTrace();
             return null;
-        }
-    }
-
-    public Debug(){
-        DS = DriverStation.getInstance();
-        PDP = new PowerDistributionPanel();
-        current = new double[PortsJNI.getNumPDPChannels()];
-        voltage = Robot.tab.add("Voltage", 0).getEntry();
-        try {
-            CANBus = returnCANBus();
-            for(int i = 0; i < CANBus.size(); i++){
-                ArrayList<Object> device = CANBus.get(i);
-                for(Object value: device){
-                    System.out.println(value);
-                }
-
-            }
-        } catch (Exception e){
-            e.printStackTrace();
-            DS.reportWarning("Something went wrong while trying to get phoenix diagnosics!", e.getStackTrace());
         }
     }
 

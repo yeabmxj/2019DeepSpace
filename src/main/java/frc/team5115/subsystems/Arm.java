@@ -3,6 +3,7 @@ package frc.team5115.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.SerialPort;
 import frc.team5115.commands.arm.ArmLooper;
 
@@ -15,6 +16,9 @@ public class Arm extends Subsystem{
 
     AHRS navX;
 
+    DigitalInput top;
+    DigitalInput bottom;
+
     double max = 35;
     double level2 = 10;
     double level1 = -20;
@@ -26,6 +30,10 @@ public class Arm extends Subsystem{
                 "Stopped"));
         DART = new TalonSRX(0);
         navX = new AHRS(SerialPort.Port.kUSB);
+    }
+
+    public boolean gyroStatus(){
+        return navX.isConnected();
     }
     
 

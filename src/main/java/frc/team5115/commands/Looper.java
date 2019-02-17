@@ -14,7 +14,7 @@ public class Looper extends Command {
 
     protected void execute(){system.update();}
 
-    protected void interrupted(){kill = true;}
+    protected void end(){kill = true;}
 
     protected boolean isFinished() { return kill; }
 }

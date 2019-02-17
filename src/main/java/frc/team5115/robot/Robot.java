@@ -1,8 +1,6 @@
 package frc.team5115.robot;
 
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.kauailabs.navx.frc.AHRS;
-import edu.wpi.first.wpilibj.SerialPort;
+import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -29,7 +27,7 @@ public class Robot extends TimedRobot {
 
     public void robotInit() {
         im = new InputManager();
-// big yoshi <(^_^)/
+
         arm = new Arm();
         succ = new Vacuum();
         climb = new Climber();
@@ -40,23 +38,10 @@ public class Robot extends TimedRobot {
         thread.start();
     }
 
-    public void teleopInit() { // big yoshi
-        im.checkControllers();
+    public void robotPeriodic(){
+        if(RobotState.isEnabled()){
+            Scheduler.getInstance().run();
+        }
     }
-
-    public void teleopPeriodic() {
-        Scheduler.getInstance().run();
-//        if(im.primary.returnInstance().getRawButton(4)){
-//            System.out.println("woo");
-//            arm.move(0.5);
-//        } else if(im.primary.returnInstance().getRawButton(2)){
-//            arm.move(-0.5);
-//        } else {
-//            System.out.println("test");
-//            arm.move(0);
-//        }
-        System.out.println(arm.getPosition());
-    }
-
 }
 

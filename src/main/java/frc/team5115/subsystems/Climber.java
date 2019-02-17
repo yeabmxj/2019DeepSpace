@@ -4,7 +4,6 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Timer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,9 +15,6 @@ public class Climber extends Subsystem {
 
     DigitalInput max;
     DigitalInput min;
-
-    double time;
-
 
     public Climber(){
         dictionary = new ArrayList<>(Arrays.asList("Moving Up",
@@ -32,15 +28,15 @@ public class Climber extends Subsystem {
     }
 
     public void moveFront(double speed){
-        front.set(ControlMode.PercentOutput, speed);
+        if(!max.get() || !min.get()){
+            front.set(ControlMode.PercentOutput, speed);
+        }
     }
 
     public void moveBack(double speed){
-        back.set(ControlMode.PercentOutput, speed);
-    }
-
-    public void getTimestamp(){
-        time = Timer.getFPGATimestamp();
+        if(!max.get() || !min.get()){
+            back.set(ControlMode.PercentOutput, speed);
+        }
     }
 
     public void update(){
@@ -48,7 +44,7 @@ public class Climber extends Subsystem {
             case "Moving Up":
                 moveFront(0.5);
                 moveBack(0.5);
-                if(Timer.getFPGATimestamp() > time + 5){
+                if(compareTime(5)){
                     setState("Retract Back");
                 }
                 break;

@@ -2,9 +2,9 @@ package frc.team5115.commands.arm;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import frc.team5115.Debug;
 import frc.team5115.commands.Looper;
 import frc.team5115.robot.Robot;
-import frc.team5115.subsystems.Arm;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,6 +17,10 @@ public class ArmLooper extends Looper {
 
     protected void initialize() {
         system = Robot.arm;
+        if(!Robot.arm.gyroStatus()){
+            Debug.getInstance().reportError("Gyro unplugged, disabling arm!", false);
+            this.cancel();
+        }
         system.setState("Stopped");
         settings.put("min", 0);
         settings.put("max", 3);

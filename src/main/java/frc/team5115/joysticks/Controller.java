@@ -1,7 +1,7 @@
 package frc.team5115.joysticks;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
+import frc.team5115.Debug;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -45,7 +45,7 @@ public class Controller {
             }
             scanBind = data.getInt("Scan Bind");
         } catch (JSONException e) {
-            DriverStation.getInstance().reportError("Critical controller binds not detected, using defaults...", false);
+            Debug.getInstance().reportWarning("Critical controller binds not detected, using defaults...", false);
             e.printStackTrace();
             forwardAxis = 0;
             turnAxis = 1;

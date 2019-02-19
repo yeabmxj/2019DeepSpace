@@ -28,7 +28,7 @@ public class ArmLooper extends Looper {
                 .withWidget(BuiltInWidgets.kNumberBar)
                 .withProperties(settings) // specify widget properties here
                 .getEntry();
-        levelDisplay.setNumber(Robot.arm.getPosition());
+        levelDisplay.setNumber(Robot.arm.getCurrentPosition());
     }
 
     public static void addLevel(int level){

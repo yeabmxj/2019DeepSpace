@@ -24,6 +24,8 @@ public class Arm extends Subsystem{
     double level1 = -20;
     double min = -50;
 
+    int level;
+
     public Arm(){
         dictionary = new ArrayList<>(Arrays.asList("Moving Up",
                 "Moving Down",
@@ -38,20 +40,21 @@ public class Arm extends Subsystem{
     
 
     public void update(){
+        checkPosition();
         switch(state){
             case "Moving Up":
-                if(getPosition() > ArmLooper.returnTarget()){
+                if(level > ArmLooper.returnTarget()){
                     setState("Moving Down");
-                } else if(getPosition() == ArmLooper.returnTarget()){
+                } else if(level == ArmLooper.returnTarget()){
                     setState("Stopped");
                 } else {
                     move(0.5);
                 }
                 break;
             case "Moving Down":
-                if(getPosition() < ArmLooper.returnTarget()){
+                if(level < ArmLooper.returnTarget()){
                     setState("Moving Up");
-                } else if(getPosition() == ArmLooper.returnTarget()){
+                } else if(level == ArmLooper.returnTarget()){
                     setState("Stopped");
                 } else {
                     move(-0.5);
@@ -63,21 +66,28 @@ public class Arm extends Subsystem{
         }
     }
 
-    public void move(double percent){
+    private void move(double percent){
         DART.set(ControlMode.PercentOutput, percent);
     }
 
-    public int getPosition(){
+    private void checkPosition(){
         System.out.println(navX.getRoll());
-        if(navX.getRoll() < min && navX.getRoll() <= level1){
-            return 0;
-        } else if(navX.getRoll() > min && navX.getRoll() <= level1){
-            return 1;
-        } else if(navX.getRoll() > level1 && navX.getRoll() <= level2){
-            return 2;
-        } else if(navX.getRoll() > level2 && navX.getRoll() <= max){
-            return 3;
+        if(threshold(min)){
+            level = 0;
+        } else if(threshold(level1)){
+            level = 1;
+        } else if(threshold(level2)){
+            level = 2;
+        } else if(threshold(max)){
+            level = 3;
         }
-        return -1;
+    }
+
+    private boolean threshold(double val){
+        return navX.getRoll() <= val + 2 && navX.getRoll() >= val - 2;
+    }
+
+    public int getCurrentPosition(){
+        return level;
     }
 }

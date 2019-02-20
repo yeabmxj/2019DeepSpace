@@ -24,7 +24,7 @@ public class Arm extends Subsystem{
     double level1 = -20;
     double min = -50;
 
-    int level;
+    int level = 0;
 
     public Arm(){
         dictionary = new ArrayList<>(Arrays.asList("Moving Up",

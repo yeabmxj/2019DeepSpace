@@ -1,6 +1,7 @@
 package frc.team5115.joysticks;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.team5115.Debug;
 import frc.team5115.commands.arm.MoveDown;
@@ -17,13 +18,13 @@ import java.io.*;
 
 public class InputManager {
 
-    public static Controller primary;
-    public static Controller secondary;
+    private static Controller primary;
+    private static Controller secondary;
 
-    Joystick joy;
+    private int primaryPort = 0;
+    private int secondaryPort = -1;
 
-    int primaryPort = 0;
-    int secondaryPort = -1;
+    private int tries = 0;
 
     JSONObject controllerData;
 
@@ -33,9 +34,21 @@ public class InputManager {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        while(tries != 10){
+            Timer.delay(1);
+            try {
+                checkControllers();
+                Debug.getInstance().reportWarning(("Controllers found at ports" + primaryPort + " and " + secondaryPort), false);
+                tries = 0;
+                break;
+            } catch (Exception e){
+                Debug.getInstance().reportWarning("Controller not found, attempt no. " + tries, false);
+                tries++;
+            }
+        }
     }
 
-    public void findControllers(){
+    private void findControllers(){
         for(int i = 0; i < 5; i++){
             if((!new Joystick(i).getName().equals("")) && (new Joystick(i).getButtonCount() > 0)){
                 primaryPort = i;
@@ -52,10 +65,13 @@ public class InputManager {
         System.out.println(secondaryPort);
     }
 
-    public void checkControllers(){
+    private void checkControllers(){
         primary = null;
         secondary = null;
         findControllers();
+        if (new Joystick(primaryPort).getName().equals("") || new Joystick(secondaryPort).getName().equals("")){
+            throw new NullPointerException("Controllers not found");
+        }
         try {
             primary = new Controller(primaryPort, controllerData.getJSONObject(new Joystick(primaryPort).getName()));
             if(secondaryPort == -1){

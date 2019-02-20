@@ -1,5 +1,6 @@
 package frc.team5115.robot;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -23,11 +24,13 @@ public class Robot extends TimedRobot {
     public static Climber climb;
     public static Wrist wrist;
 
+    Joystick joy;
+
     Thread thread = new Thread(new Debug());
 
     public void robotInit() {
-        im = new InputManager();
-
+        //im = new InputManager();
+        joy = new Joystick(0);
         arm = new Arm();
         succ = new Vacuum();
         climb = new Climber();
@@ -38,10 +41,26 @@ public class Robot extends TimedRobot {
         thread.start();
     }
 
-    public void robotPeriodic(){
-        if(RobotState.isEnabled()){
-            Scheduler.getInstance().run();
+    public void teleopPeriodic(){
+        if(joy.getRawButton(1)){
+            arm.move(0.5);
+        } else if(joy.getRawButton(2)){
+            arm.move(-0.5);
+        } else {
+            arm.move(0);
+        }
+
+        if(joy.getRawButton(3)){
+            succ.succSpeed(0.5);
+        } else {
+            succ.succSpeed(0);
         }
     }
+
+//    public void testPeriodic(){
+//        arm.checkPosition();
+//        System.out.println(arm.getCurrentPosition());
+
+//    }
 }
 

@@ -12,7 +12,7 @@ public class Vacuum extends Subsystem{
     public Vacuum(){
         dictionary = new ArrayList<>(Arrays.asList("Succ",
                 "Stopped"));
-        succer = new Spark(1);
+        succer = new Spark(0);
     }
 
     public void succSpeed(double speed){

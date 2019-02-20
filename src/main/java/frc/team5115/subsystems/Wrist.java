@@ -16,8 +16,8 @@ public class Wrist extends Subsystem {
                 "Move Right",
                 "Toggle Y",
                 "Stopped"));
-        xAxis = new VictorSPX(1);
-        yAxis = new VictorSPX(2);
+        xAxis = new VictorSPX(0);
+        yAxis = new VictorSPX(1);
     }
 
 

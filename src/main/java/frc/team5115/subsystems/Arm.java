@@ -2,6 +2,7 @@ package frc.team5115.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.SerialPort;
@@ -12,7 +13,7 @@ import java.util.Arrays;
 
 public class Arm extends Subsystem{
 
-    TalonSRX DART;
+    VictorSPX DART;
 
     AHRS navX;
 
@@ -30,7 +31,7 @@ public class Arm extends Subsystem{
         dictionary = new ArrayList<>(Arrays.asList("Moving Up",
                 "Moving Down",
                 "Stopped"));
-        DART = new TalonSRX(0);
+        DART = new VictorSPX(2);
         navX = new AHRS(SerialPort.Port.kUSB);
     }
 
@@ -41,6 +42,7 @@ public class Arm extends Subsystem{
 
     public void update(){
         checkPosition();
+        System.out.println("something");
         switch(state){
             case "Moving Up":
                 if(level > ArmLooper.returnTarget()){
@@ -66,11 +68,11 @@ public class Arm extends Subsystem{
         }
     }
 
-    private void move(double percent){
+    public void move(double percent){
         DART.set(ControlMode.PercentOutput, percent);
     }
 
-    private void checkPosition(){
+    public void checkPosition(){
         System.out.println(navX.getRoll());
         if(threshold(min)){
             level = 0;

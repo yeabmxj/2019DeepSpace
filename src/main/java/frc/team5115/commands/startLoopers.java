@@ -11,7 +11,7 @@ public class startLoopers extends CommandGroup {
     public startLoopers(){
         addParallel(new ArmLooper());
         addParallel(new SuccLooper());
-        addParallel(new ClimberLooper());
+        //addParallel(new ClimberLooper());
         addParallel(new WristLooper());
     }
 

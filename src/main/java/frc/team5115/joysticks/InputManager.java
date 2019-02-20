@@ -18,8 +18,8 @@ import java.io.*;
 
 public class InputManager {
 
-    private static Controller primary;
-    private static Controller secondary;
+    public static Controller primary;
+    public static Controller secondary;
 
     private int primaryPort = 0;
     private int secondaryPort = -1;

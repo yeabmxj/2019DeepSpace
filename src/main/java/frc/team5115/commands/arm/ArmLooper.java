@@ -1,6 +1,7 @@
 package frc.team5115.commands.arm;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import frc.team5115.robot.Robot;
@@ -21,7 +22,9 @@ public class ArmLooper extends Command {
         return system;
     }
 
-    protected void execute(){system.update();}
+    protected void execute(){
+        system.update();
+    }
 
     protected void end(){kill = true;}
 

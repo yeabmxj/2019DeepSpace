@@ -30,22 +30,11 @@ public class InputManager {
 
     public InputManager() {
         try {
-            controllerData = Debug.readJSON(new FileInputStream("/home/lvuser/Controllers.json"));
+            controllerData = Debug.readJSON(new FileInputStream("Controllers.json"));
         } catch (Exception e) {
             e.printStackTrace();
         }
-        while(tries != 10){
-            Timer.delay(1);
-            try {
-                checkControllers();
-                Debug.getInstance().reportWarning(("Controllers found at ports" + primaryPort + " and " + secondaryPort), false);
-                tries = 0;
-                break;
-            } catch (Exception e){
-                Debug.getInstance().reportWarning("Controller not found, attempt no. " + tries, false);
-                tries++;
-            }
-        }
+        checkControllers();
     }
 
     private void findControllers(){
@@ -69,9 +58,6 @@ public class InputManager {
         primary = null;
         secondary = null;
         findControllers();
-        if (new Joystick(primaryPort).getName().equals("") || new Joystick(secondaryPort).getName().equals("")){
-            throw new NullPointerException("Controllers not found");
-        }
         try {
             primary = new Controller(primaryPort, controllerData.getJSONObject(new Joystick(primaryPort).getName()));
             if(secondaryPort == -1){
@@ -105,6 +91,14 @@ public class InputManager {
             e.printStackTrace();
         }
 
+    }
+
+    public Controller getPrimary(){
+        return primary;
+    }
+
+    public Controller getSecondary(){
+        return secondary;
     }
 
 }

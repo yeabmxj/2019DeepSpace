@@ -94,13 +94,15 @@ public class Controller {
         return deadband(stick.getRawAxis(forwardAxis) + stick.getRawAxis(turnAxis));
     }
 
-    private double deadband(double val){
+    public double deadband(double val){
         if(val <= 0.075 && val >= -0.075){
             return 0;
         }
 
         return val;
     }
+
+    public boolean debugRawButton(int button) { return stick.getRawButton(button); }
 
 
 }

@@ -1,9 +1,23 @@
 package frc.team5115.commands.wrist;
 
-import frc.team5115.commands.Looper;
+import edu.wpi.first.wpilibj.command.Command;
 import frc.team5115.robot.Robot;
+import frc.team5115.subsystems.Subsystem;
 
-public class WristLooper extends Looper {
+public class WristLooper extends Command {
+
+    public static Subsystem system;
+    boolean kill = false;
+
+    public static Subsystem returnSystem(){
+        return system;
+    }
+
+    protected void execute(){system.update();}
+
+    protected void end(){kill = true;}
+
+    protected boolean isFinished() { return kill; }
 
     protected void initialize() {
         system = Robot.wrist;

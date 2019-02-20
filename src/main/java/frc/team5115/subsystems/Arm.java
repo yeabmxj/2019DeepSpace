@@ -5,6 +5,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.SerialPort;
 import frc.team5115.commands.arm.ArmLooper;
 
@@ -32,17 +33,11 @@ public class Arm extends Subsystem{
                 "Moving Down",
                 "Stopped"));
         DART = new VictorSPX(2);
-        navX = new AHRS(SerialPort.Port.kUSB);
+        navX = new AHRS(SPI.Port.kMXP);
     }
-
-    public boolean gyroStatus(){
-        return navX.isConnected();
-    }
-    
 
     public void update(){
         checkPosition();
-        System.out.println("something");
         switch(state){
             case "Moving Up":
                 if(level > ArmLooper.returnTarget()){
@@ -64,6 +59,7 @@ public class Arm extends Subsystem{
                 break;
             case "Stopped":
                 move(0);
+                System.out.println("test");
                 break;
         }
     }

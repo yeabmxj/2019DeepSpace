@@ -45,6 +45,7 @@ public class Wrist extends Subsystem {
                 }
                 break;
             case "Stopped":
+                System.out.println("test4");
                 moveX(0);
                 moveY(0);
                 break;

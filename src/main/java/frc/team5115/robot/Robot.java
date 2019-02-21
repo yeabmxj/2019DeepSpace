@@ -10,6 +10,7 @@ import frc.team5115.Debug;
 import frc.team5115.commands.startLoopers;
 import frc.team5115.joysticks.InputManager;
 import frc.team5115.subsystems.*;
+import org.json.JSONException;
 
 public class Robot extends TimedRobot {
 
@@ -30,10 +31,10 @@ public class Robot extends TimedRobot {
     public void robotInit() {
         im = new InputManager();
         //joy = new Joystick(0);
-        arm = new Arm();
-        succ = new Vacuum();
-        climb = new Climber();
-        wrist = new Wrist();
+//        arm = new Arm();
+//        succ = new Vacuum();
+//        climb = new Climber();
+//        wrist = new Wrist();
         drive = new Drivetrain();
         limelight = new Limelight();
 
@@ -42,8 +43,16 @@ public class Robot extends TimedRobot {
         thread.start();
     }
 
-    public void robotPeriodic(){
-        if(RobotState.isEnabled()){
+    public void teleopInit(){
+        try {
+            im.checkControllers();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void robotPeriodic() {
+        if (RobotState.isEnabled()) {
             Scheduler.getInstance().run();
         }
     }

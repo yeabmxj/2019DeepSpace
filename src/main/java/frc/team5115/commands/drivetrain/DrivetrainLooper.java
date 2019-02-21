@@ -21,5 +21,6 @@ public class DrivetrainLooper extends Command {
 
     protected void initialize() {
         system = Robot.drive;
+        system.setState("Driving");
     }
 }

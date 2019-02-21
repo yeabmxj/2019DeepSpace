@@ -31,7 +31,7 @@ public class InputManager {
 
     public InputManager() {
         try {
-            controllerData = Debug.readJSON(new FileInputStream("Controllers.json"));
+            controllerData = Debug.readJSON(new FileInputStream("home/lvuser/Controllers.json"));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -48,8 +48,7 @@ public class InputManager {
             } finally {
                 if (tries == 10){
                     Debug.getInstance().reportWarning("Nothing found, assuming controller exists at port 0 with preset binds", false);
-                    primary = new Controller(1);
-                    secondary = primary;
+
                 }
             }
         }
@@ -72,7 +71,7 @@ public class InputManager {
         System.out.println(secondaryPort);
     }
 
-    private void checkControllers() throws JSONException {
+    public void checkControllers() throws JSONException {
         primary = null;
         secondary = null;
         findControllers();
@@ -104,6 +103,11 @@ public class InputManager {
             POVButton moveY = new POVButton(primary.returnInstance(), 0);
             moveY.whenPressed(new MoveY());
 
+    }
+
+    public void failsafe(){
+        primary = new Controller(1);
+        secondary = primary;
     }
 
     public Controller getPrimary(){

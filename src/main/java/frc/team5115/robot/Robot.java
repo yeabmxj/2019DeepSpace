@@ -31,12 +31,12 @@ public class Robot extends TimedRobot {
     public void robotInit() {
         im = new InputManager();
         //joy = new Joystick(0);
-//        arm = new Arm();
-//        succ = new Vacuum();
-//        climb = new Climber();
-//        wrist = new Wrist();
-//
-//        Scheduler.getInstance().add(new startLoopers());
+        arm = new Arm();
+        succ = new Vacuum();
+        climb = new Climber();
+        wrist = new Wrist();
+
+        Scheduler.getInstance().add(new startLoopers());
 
         thread.start();
     }

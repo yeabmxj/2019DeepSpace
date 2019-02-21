@@ -11,6 +11,7 @@ import frc.team5115.commands.succ.ToggleSucc;
 import frc.team5115.commands.wrist.MoveLeft;
 import frc.team5115.commands.wrist.MoveRight;
 import frc.team5115.commands.wrist.MoveY;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.*;
@@ -34,7 +35,24 @@ public class InputManager {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        checkControllers();
+        while(tries != 10){
+            Timer.delay(1);
+            try {
+                checkControllers();
+                Debug.getInstance().reportWarning("Controllers found at ports " + primaryPort + " and " + secondaryPort, false);
+                tries = 0;
+                break;
+            } catch (JSONException e){
+                Debug.getInstance().reportWarning("Controllers not found, try no. " + tries, false);
+                tries++;
+            } finally {
+                if (tries == 10){
+                    Debug.getInstance().reportWarning("Nothing found, assuming controller exists at port 0 with preset binds", false);
+                    primary = new Controller(1);
+                    secondary = primary;
+                }
+            }
+        }
     }
 
     private void findControllers(){
@@ -54,11 +72,10 @@ public class InputManager {
         System.out.println(secondaryPort);
     }
 
-    private void checkControllers(){
+    private void checkControllers() throws JSONException {
         primary = null;
         secondary = null;
         findControllers();
-        try {
             primary = new Controller(primaryPort, controllerData.getJSONObject(new Joystick(primaryPort).getName()));
             if(secondaryPort == -1){
                 secondary = primary;
@@ -86,10 +103,6 @@ public class InputManager {
 
             POVButton moveY = new POVButton(primary.returnInstance(), 0);
             moveY.whenPressed(new MoveY());
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
     }
 

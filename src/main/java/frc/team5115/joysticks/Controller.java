@@ -57,6 +57,17 @@ public class Controller {
         killBind = 2;
     }
 
+    Controller(int port){
+        stick = new Joystick(port);
+        forwardAxis = 0;
+        turnAxis = 1;
+        throttleMethod = "Triggers";
+        throttleIncrease = 1;
+        throttleDecrease = 2;
+        scanBind = 1;
+        killBind = 2;
+    }
+
     public Joystick returnInstance(){
         return stick;
     }

@@ -60,7 +60,6 @@ public class Arm extends Subsystem{
                 break;
             case "Stopped":
                 move(0);
-                System.out.println("test");
                 break;
         }
     }

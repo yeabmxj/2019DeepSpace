@@ -25,7 +25,6 @@ public class Vacuum extends Subsystem{
                 succSpeed(0.75);
                 break;
             case "Stopped":
-                System.out.println("test3");
                 succSpeed(0);
                 break;
         }

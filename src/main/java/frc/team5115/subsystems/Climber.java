@@ -56,7 +56,6 @@ public class Climber extends Subsystem {
                 }
                 break;
             case "Stopped":
-                System.out.println("test2");
                 moveFront(0);
                 moveBack(0);
                 break;

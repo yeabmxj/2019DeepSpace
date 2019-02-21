@@ -9,20 +9,19 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.team5115.Debug;
 import frc.team5115.commands.startLoopers;
 import frc.team5115.joysticks.InputManager;
-import frc.team5115.subsystems.Arm;
-import frc.team5115.subsystems.Climber;
-import frc.team5115.subsystems.Vacuum;
-import frc.team5115.subsystems.Wrist;
+import frc.team5115.subsystems.*;
 
 public class Robot extends TimedRobot {
 
     public static InputManager im;
-    public static ShuffleboardTab tab = Shuffleboard.getTab("debug");
+    public static ShuffleboardTab tab = Shuffleboard.getTab("main");
 
     public static Arm arm;
     public static Vacuum succ;
     public static Climber climb;
     public static Wrist wrist;
+    public static Drivetrain drive;
+    public static Limelight limelight;
 
     //Joystick joy;
 
@@ -35,6 +34,8 @@ public class Robot extends TimedRobot {
         succ = new Vacuum();
         climb = new Climber();
         wrist = new Wrist();
+        drive = new Drivetrain();
+        limelight = new Limelight();
 
         Scheduler.getInstance().add(new startLoopers());
 

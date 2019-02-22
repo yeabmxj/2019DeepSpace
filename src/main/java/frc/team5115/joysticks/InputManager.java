@@ -35,26 +35,23 @@ public class InputManager {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        while(tries != 10){
-            Timer.delay(1);
-            try {
-                checkControllers();
-                Debug.getInstance().reportWarning("Controllers found at ports " + primaryPort + " and " + secondaryPort, false);
-                tries = 0;
-                break;
-            } catch (JSONException e){
-                Debug.getInstance().reportWarning("Controllers not found, try no. " + tries, false);
-                tries++;
-            } finally {
-                if (tries == 10){
-                    Debug.getInstance().reportWarning("Nothing found, assuming controller exists at port 0 with preset binds", false);
+        findControllers();
+    }
 
-                }
+    public void findControllers(){
+        while(tries != 10 && !checkControllers()){
+            Timer.delay(1);
+            tries++;
+            if (tries == 10){
+                Debug.reportWarning("Nothing found, assuming controller exists at port 0 with preset binds");
+                failsafe();
             }
         }
     }
 
-    private void findControllers(){
+    public boolean checkControllers() {
+        primary = null;
+        secondary = null;
         for(int i = 0; i < 5; i++){
             if((!new Joystick(i).getName().equals("")) && (new Joystick(i).getButtonCount() > 0)){
                 primaryPort = i;
@@ -67,14 +64,7 @@ public class InputManager {
                 break;
             }
         }
-        System.out.println(primaryPort);
-        System.out.println(secondaryPort);
-    }
-
-    public void checkControllers() throws JSONException {
-        primary = null;
-        secondary = null;
-        findControllers();
+        try {
             primary = new Controller(primaryPort, controllerData.getJSONObject(new Joystick(primaryPort).getName()));
             if(secondaryPort == -1){
                 secondary = primary;
@@ -103,19 +93,15 @@ public class InputManager {
             POVButton moveY = new POVButton(primary.returnInstance(), 0);
             moveY.whenPressed(new MoveY());
 
+        } catch (JSONException e) {
+            return false;
+        }
+        return true;
     }
 
     public void failsafe(){
         primary = new Controller(1);
         secondary = primary;
-    }
-
-    public Controller getPrimary(){
-        return primary;
-    }
-
-    public Controller getSecondary(){
-        return secondary;
     }
 
 }

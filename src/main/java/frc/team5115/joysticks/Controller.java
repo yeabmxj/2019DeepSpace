@@ -45,7 +45,7 @@ public class Controller {
             }
             scanBind = data.getInt("Scan Bind");
         } catch (JSONException e) {
-            Debug.getInstance().reportWarning("Critical controller binds not detected, using defaults...", false);
+            Debug.reportWarning("Critical controller binds not detected, using defaults...");
             e.printStackTrace();
             forwardAxis = 0;
             turnAxis = 1;

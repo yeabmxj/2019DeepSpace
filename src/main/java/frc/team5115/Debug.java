@@ -17,8 +17,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Debug implements Runnable{
-
-    static DriverStation DS;
     PowerDistributionPanel PDP;
     Map<Object, ArrayList<Object>> CANBus;
 
@@ -39,7 +37,6 @@ public class Debug implements Runnable{
 
 
     public Debug(){
-        DS = DriverStation.getInstance();
         PDP = new PowerDistributionPanel();
         current = new double[PortsJNI.getNumPDPChannels()];
         voltage = Robot.tab.add("Voltage", 0).getEntry();
@@ -54,12 +51,24 @@ public class Debug implements Runnable{
             }
         } catch (Exception e){
             e.printStackTrace();
-            DS.reportWarning("Something went wrong while trying to get phoenix diagnostics!", e.getStackTrace());
+            reportWarning("Something went wrong while trying to get phoenix diagnostics!", e);
         }
     }
 
-    public static DriverStation getInstance(){
-        return DS;
+    public static void reportWarning(String display, Exception e){
+        DriverStation.getInstance().reportWarning(display, e.getStackTrace());
+    }
+
+    public static void reportWarning(String display){
+        DriverStation.getInstance().reportWarning(display, false);
+    }
+
+    public static void reportError(String display, Exception e){
+        DriverStation.getInstance().reportError(display, e.getStackTrace());
+    }
+
+    public static void reportError(String display){
+        DriverStation.getInstance().reportError(display, false);
     }
 
     private static String readAll(Reader rd) throws IOException {
@@ -108,7 +117,7 @@ public class Debug implements Runnable{
                 case 14:
                 case 15:
                     if(current[i] >  PDP.getCurrent(i) + motorThreshold || current[i] < PDP.getCurrent(i) - motorThreshold){
-                        DS.reportWarning("Current at PDP port: " + i + "spiked, and not within our thresholds!", false);
+                        reportWarning("Current at PDP port: " + i + "spiked, and not within our thresholds!");
                     }
                     break;
                     //ports returning bad voltages
@@ -119,7 +128,7 @@ public class Debug implements Runnable{
                     break;
                 default:
                     if(current[i] >  PDP.getCurrent(i) + currentThreshold || current[i] < PDP.getCurrent(i) - currentThreshold){
-                        DS.reportWarning("Current at PDP port: " + i + "spiked, and not within our thresholds!", false);
+                        reportWarning("Current at PDP port: " + i + "spiked, and not within our thresholds!");
                     }
                     break;
             }
@@ -131,10 +140,10 @@ public class Debug implements Runnable{
         if(PDP.getVoltage() > 10 && battery != batteryState.OK){
             battery = batteryState.OK;
         } else if((PDP.getVoltage() < 10 && PDP.getVoltage() > 8) && battery != batteryState.LOW){
-            DS.reportWarning("Battery Low!", false);
+            reportWarning("Battery Low!");
             battery = batteryState.LOW;
         } else if((PDP.getVoltage() < 7) && battery != batteryState.CRITICAL){
-            DS.reportError("Battery Critical!", false);
+            reportError("Battery Critical!");
             battery = batteryState.CRITICAL;
         }
         voltage.setDouble(PDP.getVoltage());
@@ -151,7 +160,7 @@ public class Debug implements Runnable{
                 batteryCheck();
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
-                DS.reportWarning("Monitor interrupted! stopping thread", e.getStackTrace());
+                reportWarning("Monitor interrupted! stopping thread", e);
                 break;
             }
         }

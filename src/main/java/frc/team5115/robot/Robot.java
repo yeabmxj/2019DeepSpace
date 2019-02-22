@@ -44,11 +44,7 @@ public class Robot extends TimedRobot {
     }
 
     public void teleopInit(){
-        try {
-            im.checkControllers();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        im.findControllers();
     }
 
     public void robotPeriodic() {

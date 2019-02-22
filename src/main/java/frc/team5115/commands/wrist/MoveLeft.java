@@ -5,11 +5,11 @@ import edu.wpi.first.wpilibj.command.Command;
 public class MoveLeft extends Command {
 
     protected void initialize() {
-        WristLooper.returnSystem().setState("Move Left");
+        WristLooper.system.setState("Move Left");
     }
 
     protected void end(){
-        WristLooper.returnSystem().setState("Stopped");
+        WristLooper.system.setState("Stopped");
     }
 
     protected boolean isFinished(){ return false; }

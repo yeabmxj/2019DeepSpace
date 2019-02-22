@@ -9,19 +9,12 @@ public class ClimberLooper extends Command {
     public static Subsystem system;
     boolean kill = false;
 
-    public static Subsystem returnSystem(){
-        return system;
-    }
-
-    protected void execute(){system.update();}
-
-    protected void end(){kill = true;}
-
-    protected boolean isFinished() { return kill; }
-
     protected void initialize() {
         system = Robot.climb;
     }
 
+    protected void execute(){system.update();}
+
+    protected boolean isFinished() { return kill; }
 
 }

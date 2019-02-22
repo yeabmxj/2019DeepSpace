@@ -6,7 +6,7 @@ public class MoveUp extends Command {
 
     protected void initialize() {
         ArmLooper.addLevel(1);
-        ArmLooper.returnSystem().setState("Moving Up");
+        ArmLooper.system.setState("Moving Up");
     }
 
     protected boolean isFinished(){ return true; }

@@ -64,11 +64,15 @@ public class Arm extends Subsystem{
         }
     }
 
-    public void move(double percent){
+    public boolean verifyGyro(){
+        return navX.isConnected();
+    }
+
+    private void move(double percent){
         DART.set(ControlMode.PercentOutput, percent);
     }
 
-    public void checkPosition(){
+    private void checkPosition(){
         System.out.println(navX.getRoll());
         if(threshold(min)){
             level = 0;

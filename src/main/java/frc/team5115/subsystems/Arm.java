@@ -27,7 +27,7 @@ public class Arm extends Subsystem{
     double level1 = -20;
     double min = -50;
 
-    int level = 0;
+    int level = getCurrentPosition();
 
     public Arm(){
         dictionary = new ArrayList<>(Arrays.asList("Moving Up",
@@ -50,7 +50,7 @@ public class Arm extends Subsystem{
                 }
                 break;
             case "Moving Down":
-                if(level < ArmLooper.returnTarget()){
+                if(level < ArmLooper.returnTarget() && level != -1){
                     setState("Moving Up");
                 } else if(level == ArmLooper.returnTarget()){
                     setState("Stopped");
@@ -82,6 +82,8 @@ public class Arm extends Subsystem{
             level = 2;
         } else if(threshold(max)){
             level = 3;
+        } else {
+            level = -1;
         }
     }
 
@@ -90,6 +92,15 @@ public class Arm extends Subsystem{
     }
 
     public int getCurrentPosition(){
+        if(navX.getRoll() < min && navX.getRoll() <= level1){
+            return 0;
+        } else if(navX.getRoll() > min && navX.getRoll() <= level1){
+            return 1;
+        } else if(navX.getRoll() > level1 && navX.getRoll() <= level2){
+            return 2;
+        } else if(navX.getRoll() > level2 && navX.getRoll() <= max){
+            return 3;
+        }
         return level;
     }
 }

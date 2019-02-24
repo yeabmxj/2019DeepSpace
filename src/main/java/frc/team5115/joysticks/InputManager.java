@@ -27,7 +27,7 @@ public class InputManager {
 
     private int tries = 0;
 
-    JSONObject controllerData;
+    private JSONObject controllerData;
 
     public InputManager() {
         try {
@@ -47,9 +47,10 @@ public class InputManager {
                 failsafe();
             }
         }
+        createBinds();
     }
 
-    public boolean checkControllers() {
+    private boolean checkControllers() {
         primary = null;
         secondary = null;
         for(int i = 0; i < 5; i++){
@@ -71,37 +72,39 @@ public class InputManager {
             } else {
                 secondary = new Controller(secondaryPort, controllerData.getJSONObject(new Joystick(secondaryPort).getName()));
             }
-
-            JoystickButton test = new JoystickButton(primary.returnInstance(), 4);
-            test.whenPressed(new MoveUp());
-
-            JoystickButton test2 = new JoystickButton(primary.returnInstance(), 2);
-            test2.whenPressed(new MoveDown());
-
-            JoystickButton succ = new JoystickButton(primary.returnInstance(), 3);
-            succ.toggleWhenPressed(new ToggleSucc());
-
-            JoystickButton climb = new JoystickButton(primary.returnInstance(), 5);
-            climb.whenPressed(new StartClimb());
-
-            POVButton moveLeft = new POVButton(primary.returnInstance(), 90);
-            moveLeft.whileHeld(new MoveLeft());
-
-            POVButton moveRight = new POVButton(primary.returnInstance(), 270);
-            moveRight.whileHeld(new MoveRight());
-
-            POVButton moveY = new POVButton(primary.returnInstance(), 0);
-            moveY.whenPressed(new MoveY());
-
         } catch (JSONException e) {
             return false;
         }
         return true;
     }
 
-    public void failsafe(){
+    private void failsafe(){
         primary = new Controller(1);
         secondary = primary;
+    }
+    
+    public void createBinds(){
+        JoystickButton test = new JoystickButton(secondary.returnInstance(), 4);
+        test.whenPressed(new MoveUp());
+
+        JoystickButton test2 = new JoystickButton(secondary.returnInstance(), 2);
+        test2.whenPressed(new MoveDown());
+
+        JoystickButton succ = new JoystickButton(secondary.returnInstance(), 3);
+        succ.toggleWhenPressed(new ToggleSucc());
+
+        JoystickButton climb = new JoystickButton(secondary.returnInstance(), 5);
+        climb.whenPressed(new StartClimb());
+
+        POVButton moveLeft = new POVButton(secondary.returnInstance(), 90);
+        moveLeft.whileHeld(new MoveLeft());
+
+        POVButton moveRight = new POVButton(secondary.returnInstance(), 270);
+        moveRight.whileHeld(new MoveRight());
+
+        POVButton moveY = new POVButton(secondary.returnInstance(), 0);
+        moveY.whenPressed(new MoveY());
+
     }
 
 }

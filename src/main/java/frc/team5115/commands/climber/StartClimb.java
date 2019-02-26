@@ -20,7 +20,7 @@ public class StartClimb extends Command {
         }
     }
 
-    protected void end(){
+    protected void interrupted(){
         ClimberLooper.system.setState("Stopped");
     }
 

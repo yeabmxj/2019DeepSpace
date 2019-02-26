@@ -40,6 +40,7 @@ public class Climber extends Subsystem {
     }
 
     public void update(){
+        System.out.println("Climber enabled!");
         switch(state){
             case "Moving Up":
                 moveFront(0.5);

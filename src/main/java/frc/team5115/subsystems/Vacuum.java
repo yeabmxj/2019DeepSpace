@@ -24,6 +24,7 @@ public class Vacuum extends Subsystem{
     }
 
     public void update(){
+        System.out.println("Vacuum enabled!");
         switch(state){
             case "Succ":
                 blower.set(Relay.Value.kForward);

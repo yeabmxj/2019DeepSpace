@@ -27,7 +27,7 @@ public class Arm extends Subsystem{
     double level1 = -20;
     double min = -50;
 
-    int level = getCurrentPosition();
+    int level;
 
     public Arm(){
         dictionary = new ArrayList<>(Arrays.asList("Moving Up",
@@ -37,9 +37,15 @@ public class Arm extends Subsystem{
                 "Stopped"));
         DART = new VictorSPX(2);
         navX = new AHRS(SPI.Port.kMXP);
+
+        top = new DigitalInput(3);
+        bottom = new DigitalInput(4);
+
+        level = getCurrentPosition();
     }
 
     public void update(){
+        System.out.println("Arm enabled!");
         checkPosition();
         switch(state){
             case "Moving Up":
@@ -86,7 +92,6 @@ public class Arm extends Subsystem{
     }
 
     private void checkPosition(){
-        System.out.println(navX.getRoll());
         if(threshold(min)){
             level = 0;
         } else if(threshold(level1)){

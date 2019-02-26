@@ -111,12 +111,12 @@ public class Drivetrain extends Subsystem{
     }
 
     public void update(){
-        switch(this.state){
+        System.out.println("Drivetrain enabled!");
+        switch(state){
             case "Driving":
                 drive(InputManager.primary.getLeft(),
                         InputManager.primary.getRight(),
                         InputManager.primary.processThrottle());
-                System.out.println("driving");
                 break;
             case "Transition":
                 System.out.println("fancy transition");

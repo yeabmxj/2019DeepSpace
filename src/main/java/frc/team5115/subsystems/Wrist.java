@@ -31,6 +31,7 @@ public class Wrist extends Subsystem {
     }
 
     public void update(){
+        System.out.println("Wrist enabled!");
         switch(state){
             case "Move Left":
                 moveX(0.5);

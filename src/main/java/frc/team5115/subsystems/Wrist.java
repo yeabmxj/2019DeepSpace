@@ -2,6 +2,7 @@ package frc.team5115.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import edu.wpi.first.wpilibj.DigitalInput;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,6 +11,9 @@ public class Wrist extends Subsystem {
 
     VictorSPX xAxis;
     VictorSPX yAxis;
+
+    DigitalInput left;
+
 
     public Wrist(){
         dictionary = new ArrayList<>(Arrays.asList("Move Left",

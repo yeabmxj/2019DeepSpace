@@ -3,6 +3,7 @@ package frc.team5115.joysticks;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.command.Command;
 import frc.team5115.Debug;
 import frc.team5115.commands.arm.*;
 import frc.team5115.commands.climber.StartClimb;
@@ -29,7 +30,7 @@ public class InputManager {
 
     public InputManager() {
         try {
-            controllerData = Debug.readJSON(new FileInputStream("Controllers.json"));
+            controllerData = Debug.readJSON(new FileInputStream("/home/lvuser/Controllers.json"));
         } catch (Exception e) {
             Debug.reportError("Controllers data file is not on the roborio!!!", e);
         }

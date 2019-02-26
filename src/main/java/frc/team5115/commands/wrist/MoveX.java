@@ -6,7 +6,9 @@ public class MoveX extends Command {
 
     String direction;
 
-    public MoveX(String direction){ direction = this.direction;}
+    public MoveX(String direction){
+        direction = this.direction;
+    }
 
     protected void initialize() {
         WristLooper.system.currentState();

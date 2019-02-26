@@ -4,8 +4,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.team5115.Debug;
-import frc.team5115.commands.arm.MoveDown;
-import frc.team5115.commands.arm.MoveUp;
+import frc.team5115.commands.arm.*;
 import frc.team5115.commands.climber.StartClimb;
 import frc.team5115.commands.succ.ToggleSucc;
 import frc.team5115.commands.wrist.MoveLeft;
@@ -33,7 +32,7 @@ public class InputManager {
         try {
             controllerData = Debug.readJSON(new FileInputStream("home/lvuser/Controllers.json"));
         } catch (Exception e) {
-            e.printStackTrace();
+            Debug.reportError("Controllers data file is not on the roborio!!!", e);
         }
         findControllers();
     }
@@ -44,7 +43,8 @@ public class InputManager {
             tries++;
             if (tries == 10){
                 Debug.reportWarning("Nothing found, assuming controller exists at port 0 with preset binds");
-                failsafe();
+                primary = new Controller(0);
+                secondary = primary;
             }
         }
         createBinds();
@@ -75,20 +75,21 @@ public class InputManager {
         } catch (JSONException e) {
             return false;
         }
+        Debug.reportWarning("Controllers found at ports: " + primaryPort + " and " + secondaryPort);
         return true;
-    }
-
-    private void failsafe(){
-        primary = new Controller(1);
-        secondary = primary;
     }
     
     public void createBinds(){
-        JoystickButton test = new JoystickButton(secondary.returnInstance(), 4);
-        test.whenPressed(new MoveUp());
+        JoystickButton moveUp = new JoystickButton(secondary.returnInstance(), 4);
+        JoystickButton moveDown = new JoystickButton(secondary.returnInstance(), 2);
 
-        JoystickButton test2 = new JoystickButton(secondary.returnInstance(), 2);
-        test2.whenPressed(new MoveDown());
+        if(ArmLooper.isManual()){
+            moveUp.whileHeld(new ManualUp());
+            moveDown.whileHeld(new ManualDown());
+        } else {
+            moveUp.whenPressed(new MoveUp());
+            moveDown.whenPressed(new MoveDown());
+        }
 
         JoystickButton succ = new JoystickButton(secondary.returnInstance(), 3);
         succ.toggleWhenPressed(new ToggleSucc());

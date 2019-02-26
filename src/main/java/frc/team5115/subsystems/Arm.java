@@ -32,6 +32,8 @@ public class Arm extends Subsystem{
     public Arm(){
         dictionary = new ArrayList<>(Arrays.asList("Moving Up",
                 "Moving Down",
+                "Manual Up",
+                "Manual Down",
                 "Stopped"));
         DART = new VictorSPX(2);
         navX = new AHRS(SPI.Port.kMXP);
@@ -58,6 +60,12 @@ public class Arm extends Subsystem{
                     move(-0.5);
                 }
                 break;
+            case "Manual Up":
+                move(0.5);
+                break;
+            case "Manual Down":
+                move(-0.5);
+                break;
             case "Stopped":
                 move(0);
                 break;
@@ -69,7 +77,12 @@ public class Arm extends Subsystem{
     }
 
     private void move(double percent){
-        DART.set(ControlMode.PercentOutput, percent);
+        double temp = percent;
+        DigitalInput controller = Math.signum(percent) == 1 ? top : bottom;
+        if(controller.get()){
+            temp = 0;
+        }
+        DART.set(ControlMode.PercentOutput, temp);
     }
 
     private void checkPosition(){

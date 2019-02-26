@@ -17,14 +17,15 @@ public class ArmLooper extends Command {
     Map<String, Object> settings = new HashMap<String, Object>();
 
     public static Subsystem system;
-    boolean kill = false;
+    private boolean kill = false;
+    private static boolean manual;
 
 
     protected void initialize() {
         system = Robot.arm;
         if(Robot.arm.verifyGyro()){
-            Debug.reportWarning("Gyro not plugged, arm disabled!");
-            kill = true;
+            Debug.reportWarning("Gyro not plugged in, switching to manual control!");
+            manual = true;
         }
         settings.put("min", 0);
         settings.put("max", 3);
@@ -48,6 +49,8 @@ public class ArmLooper extends Command {
     public static int returnTarget(){
         return levelDisplay.getNumber(0).intValue();
     }
+
+    public static boolean isManual(){ return manual;}
 
     protected boolean isFinished() { return kill; }
 }

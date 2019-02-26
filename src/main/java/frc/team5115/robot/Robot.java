@@ -29,14 +29,14 @@ public class Robot extends TimedRobot {
     Thread thread = new Thread(new Debug());
 
     public void robotInit() {
-        im = new InputManager();
-        //joy = new Joystick(0);
 //        arm = new Arm();
 //        succ = new Vacuum();
 //        climb = new Climber();
 //        wrist = new Wrist();
         drive = new Drivetrain();
         limelight = new Limelight();
+
+        im = new InputManager();
 
         Scheduler.getInstance().add(new startLoopers());
 

@@ -98,11 +98,11 @@ public class Controller {
     }
 
     public double getLeft(){
-        return deadband(-stick.getRawAxis(forwardAxis) + stick.getRawAxis(turnAxis));
+        return deadband(stick.getRawAxis(forwardAxis) + stick.getRawAxis(turnAxis));
     }
 
     public double getRight(){
-        return deadband(stick.getRawAxis(forwardAxis) + stick.getRawAxis(turnAxis));
+        return deadband(stick.getRawAxis(forwardAxis) - stick.getRawAxis(turnAxis));
     }
 
     public double deadband(double val){

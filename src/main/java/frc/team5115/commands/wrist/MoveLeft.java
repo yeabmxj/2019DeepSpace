@@ -2,16 +2,10 @@ package frc.team5115.commands.wrist;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class MoveX extends Command {
-
-    String pos;
-
-    public MoveX(String state){
-        pos = state;
-    }
+public class MoveLeft extends Command {
 
     protected void initialize() {
-        WristLooper.system.setState(pos);
+        WristLooper.system.setState("Move Left");
     }
 
     protected void end(){

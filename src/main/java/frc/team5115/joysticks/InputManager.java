@@ -3,11 +3,12 @@ package frc.team5115.joysticks;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import edu.wpi.first.wpilibj.command.Command;
 import frc.team5115.Debug;
 import frc.team5115.commands.arm.*;
 import frc.team5115.commands.climber.StartClimb;
 import frc.team5115.commands.succ.ToggleSucc;
+import frc.team5115.commands.wrist.MoveLeft;
+import frc.team5115.commands.wrist.MoveRight;
 import frc.team5115.commands.wrist.MoveX;
 import frc.team5115.commands.wrist.MoveY;
 import org.json.JSONException;
@@ -101,10 +102,10 @@ public class InputManager {
         climb.whenPressed(new StartClimb());
 
         POVButton moveLeft = new POVButton(secondary.returnInstance(), 90);
-        moveLeft.whileHeld(new MoveX("Left"));
+        moveLeft.whileHeld(new MoveX("Move Left"));
 
         POVButton moveRight = new POVButton(secondary.returnInstance(), 270);
-        moveRight.whileHeld(new MoveX("Right"));
+        moveRight.whileHeld(new MoveX("Move Right"));
 
         POVButton moveY = new POVButton(secondary.returnInstance(), 0);
         moveY.whenPressed(new MoveY());

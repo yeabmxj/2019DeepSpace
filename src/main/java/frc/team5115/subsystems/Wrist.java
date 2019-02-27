@@ -13,21 +13,29 @@ public class Wrist extends Subsystem {
     VictorSPX yAxis;
 
     DigitalInput left;
-
+    DigitalInput right;
 
     public Wrist(){
         dictionary = new ArrayList<>(Arrays.asList("Move Left",
                 "Move Right",
                 "Toggle Y",
                 "Stopped"));
-        xAxis = new VictorSPX(0);
-        yAxis = new VictorSPX(1);
+        xAxis = new VictorSPX(1);
+        yAxis = new VictorSPX(0);
+
+        left = new DigitalInput(8);
+        right = new DigitalInput(7);
     }
 
 
 
     public void moveX(double speed){
-        xAxis.set(ControlMode.PercentOutput, speed);
+        double temp = speed;
+        DigitalInput controller = Math.signum(speed) == 1 ? right : left;
+        if(!controller.get()){
+            temp = 0;
+        }
+        xAxis.set(ControlMode.PercentOutput, temp);
     }
 
     public void moveY(double speed){
@@ -35,16 +43,17 @@ public class Wrist extends Subsystem {
     }
 
     public void update(){
-        System.out.println("Wrist enabled!");
         switch(state){
             case "Move Left":
-                moveX(0.5);
+                System.out.println("moving left");
+                moveX(0.75);
                 break;
             case "Move Right":
-                moveX(-0.5);
+                System.out.println("moving right");
+                moveX(-0.75);
                 break;
             case "Toggle Y":
-                moveY(0.5);
+                moveY(0.75);
                 if(compareTime(0.5)){
                     setState("Stopped");
                 }

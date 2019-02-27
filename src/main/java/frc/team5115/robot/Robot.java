@@ -26,13 +26,13 @@ public class Robot extends TimedRobot {
 
     //Joystick joy;
 
-    Thread thread = new Thread(new Debug());
+    //Thread thread = new Thread(new Debug());
 
     public void robotInit() {
-//        arm = new Arm();
-//        succ = new Vacuum();
-//        climb = new Climber();
-//        wrist = new Wrist();
+        arm = new Arm();
+        succ = new Vacuum();
+        //climb = new Climber();
+        wrist = new Wrist();
         drive = new Drivetrain();
         limelight = new Limelight();
 
@@ -40,7 +40,7 @@ public class Robot extends TimedRobot {
 
         Scheduler.getInstance().add(new startLoopers());
 
-        thread.start();
+        //thread.start();
     }
 
     public void teleopInit(){

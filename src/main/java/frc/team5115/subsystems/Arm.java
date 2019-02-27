@@ -36,16 +36,15 @@ public class Arm extends Subsystem{
                 "Manual Down",
                 "Stopped"));
         DART = new VictorSPX(2);
-        navX = new AHRS(SPI.Port.kMXP);
+        navX = new AHRS(SerialPort.Port.kUSB);
 
         top = new DigitalInput(3);
-        bottom = new DigitalInput(4);
+        bottom = new DigitalInput(9);
 
         level = getCurrentPosition();
     }
 
     public void update(){
-        System.out.println("Arm enabled!");
         checkPosition();
         switch(state){
             case "Moving Up":
@@ -85,7 +84,7 @@ public class Arm extends Subsystem{
     private void move(double percent){
         double temp = percent;
         DigitalInput controller = Math.signum(percent) == 1 ? top : bottom;
-        if(controller.get()){
+        if(!controller.get()){
             temp = 0;
         }
         DART.set(ControlMode.PercentOutput, temp);

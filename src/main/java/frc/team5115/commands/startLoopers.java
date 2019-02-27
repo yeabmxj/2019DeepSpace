@@ -10,10 +10,10 @@ import frc.team5115.commands.wrist.WristLooper;
 public class startLoopers extends CommandGroup {
 
     public startLoopers(){
-//        addParallel(new ArmLooper());
+        addParallel(new ArmLooper());
 //        addParallel(new ClimberLooper());
-//        addParallel(new SuccLooper());
-//        addParallel(new WristLooper());
+        addParallel(new SuccLooper());
+        addParallel(new WristLooper());
         addParallel(new DrivetrainLooper());
     }
 

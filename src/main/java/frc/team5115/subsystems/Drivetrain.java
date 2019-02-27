@@ -88,7 +88,7 @@ public class Drivetrain extends Subsystem{
             right = Math.signum(right);
         }
         //set our "speed" or voltage output to left and right speeds
-        backleft.set(ControlMode.PercentOutput, left*throttle);
+        //backleft.set(ControlMode.PercentOutput, left*throttle);
         backright.set(ControlMode.PercentOutput, right*throttle);
     }
 
@@ -111,7 +111,6 @@ public class Drivetrain extends Subsystem{
     }
 
     public void update(){
-        System.out.println("Drivetrain enabled!");
         switch(state){
             case "Driving":
                 drive(InputManager.primary.getLeft(),

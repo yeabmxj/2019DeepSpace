@@ -7,8 +7,6 @@ import frc.team5115.Debug;
 import frc.team5115.commands.arm.*;
 import frc.team5115.commands.climber.StartClimb;
 import frc.team5115.commands.succ.ToggleSucc;
-import frc.team5115.commands.wrist.MoveLeft;
-import frc.team5115.commands.wrist.MoveRight;
 import frc.team5115.commands.wrist.MoveX;
 import frc.team5115.commands.wrist.MoveY;
 import org.json.JSONException;

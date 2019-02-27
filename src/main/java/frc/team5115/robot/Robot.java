@@ -9,7 +9,9 @@ import frc.team5115.Debug;
 import frc.team5115.joysticks.Controller;
 import frc.team5115.joysticks.InputManager;
 import frc.team5115.statemachines.ArmStateMachine;
+import frc.team5115.statemachines.VacuumStateMachine;
 import frc.team5115.subsystems.Arm;
+import frc.team5115.subsystems.Vacuum;
 
 public class Robot extends TimedRobot {
 
@@ -20,6 +22,8 @@ public class Robot extends TimedRobot {
 
     public static ArmStateMachine armdomination;
     public static Arm arm;
+    public static VacuumStateMachine vacMachine;
+    public static Vacuum vacSubsystem;
 
     Thread thread = new Thread(new Debug());
 
@@ -30,8 +34,6 @@ public class Robot extends TimedRobot {
 
         arm = new Arm();
         armdomination = new ArmStateMachine();
-
-
     }
 
     public void teleopInit() {

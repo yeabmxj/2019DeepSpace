@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.team5115.Debug;
 import frc.team5115.commands.ArmCommandDown;
 import frc.team5115.commands.ArmCommandUp;
+import frc.team5115.commands.VacuumSucc;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -88,6 +89,9 @@ public class InputManager {
         armCommandUp.whenPressed(new ArmCommandUp());
         armCommandDown = new JoystickButton(primary.returnInstance(), 2);
         armCommandDown.whenPressed(new ArmCommandDown());
+
+        JoystickButton nine = new JoystickButton(primary.returnInstance(), 9);
+        nine.toggleWhenPressed(new VacuumSucc());
     }
 
 }

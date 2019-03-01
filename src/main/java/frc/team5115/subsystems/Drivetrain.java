@@ -6,7 +6,7 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import frc.team5115.joysticks.InputManager;
 import frc.team5115.robot.Robot;
@@ -29,10 +29,7 @@ public class Drivetrain extends Subsystem{
     //define gyroscope object
     AHRS navx;
 
-    Limelight limelight;
-
     NetworkTableEntry throttleDisplay;
-    NetworkTableEntry gyroDisplay;
 
     Map<String, Object> settings = new HashMap<String, Object>();
 
@@ -46,14 +43,12 @@ public class Drivetrain extends Subsystem{
                 "Stopped"));
 
         //instantiate the things
-        frontleft = new TalonSRX(3);
-        frontright = new TalonSRX(4);
-        backleft = new TalonSRX(1);
-        backright = new TalonSRX(2);
+        frontleft = new TalonSRX(1);
+        frontright = new TalonSRX(2);
+        backleft = new TalonSRX(3);
+        backright = new TalonSRX(4);
 
-        navx = new AHRS(SPI.Port.kMXP);
-
-        limelight = new Limelight();
+        navx = new AHRS(SerialPort.Port.kUSB);
 
         //front left and front right motors will do the same thing that the back left and back right motor does
         frontright.set(ControlMode.Follower, 2);
@@ -70,9 +65,6 @@ public class Drivetrain extends Subsystem{
                 .withWidget(BuiltInWidgets.kNumberSlider)
                 .withProperties(settings) // specify widget properties here
                 .getEntry();
-        gyroDisplay = Robot.tab.add("Gyro", 0)
-                .withWidget(BuiltInWidgets.kGyro)
-                .getEntry();
     }
 
 
@@ -88,7 +80,7 @@ public class Drivetrain extends Subsystem{
             right = Math.signum(right);
         }
         //set our "speed" or voltage output to left and right speeds
-        //backleft.set(ControlMode.PercentOutput, left*throttle);
+        backleft.set(ControlMode.PercentOutput, left*throttle);
         backright.set(ControlMode.PercentOutput, right*throttle);
     }
 

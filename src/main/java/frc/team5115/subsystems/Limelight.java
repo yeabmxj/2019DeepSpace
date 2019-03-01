@@ -14,8 +14,6 @@ public class Limelight {
     NetworkTableEntry LED;
     NetworkTableEntry CAM;
     NetworkTableEntry pipeline;
-    double XOffset;
-    double YOffset;
 
     public Limelight(){
         limelight = NetworkTableInstance.getDefault().getTable("limelight");

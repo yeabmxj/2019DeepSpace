@@ -23,7 +23,7 @@ public class ArmLooper extends Command {
 
     protected void initialize() {
         system = Robot.arm;
-        if(Robot.arm.verifyGyro()){
+        if(!Robot.arm.verifyGyro()){
             Debug.reportWarning("Gyro not plugged in, switching to manual control!");
             manual = true;
         }

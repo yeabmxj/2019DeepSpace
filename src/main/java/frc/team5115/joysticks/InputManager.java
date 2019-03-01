@@ -33,8 +33,6 @@ public class InputManager {
         } catch (Exception e) {
             Debug.reportError("Controllers data file is not on the roborio!!!", e);
         }
-        findControllers();
-        createBinds();
     }
 
     public void findControllers(){
@@ -48,6 +46,7 @@ public class InputManager {
                 secondary = primary;
             }
         }
+        createBinds();
     }
 
     private boolean checkControllers() {

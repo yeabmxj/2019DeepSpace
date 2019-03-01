@@ -1,16 +1,13 @@
 package frc.team5115.robot;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import frc.team5115.Debug;
 import frc.team5115.commands.startLoopers;
 import frc.team5115.joysticks.InputManager;
 import frc.team5115.subsystems.*;
-import org.json.JSONException;
 
 public class Robot extends TimedRobot {
 

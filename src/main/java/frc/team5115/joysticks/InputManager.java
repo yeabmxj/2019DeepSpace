@@ -12,18 +12,31 @@ import frc.team5115.commands.wrist.MoveY;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.*;
+import java.io.FileInputStream;
 
 
 public class InputManager {
 
-    public static Controller primary;
-    public static Controller secondary;
+    public Joystick joystick;
 
-    private int primaryPort = 0;
-    private int secondaryPort = -1;
+    private int forwardAxis;
+    private int turnAxis;
 
-    private int tries = 0;
+    private double throttle = 0.5;
+    private String throttleMethod;
+    private int throttleAxis;
+    private int throttleIncreaseAxis;
+    private int throttleDecreaseAxis;
+    private int throttleIncrease;
+    private int throttleDecrease;
+
+    private int scanBind;
+    private int moveUpBind;
+    private int moveDownBind;
+    private int succBind;
+    private int moveLeftBind;
+    private int moveRightBind;
+    private int moveYBind;
 
     private JSONObject controllerData;
 
@@ -34,56 +47,39 @@ public class InputManager {
             Debug.reportError("Controllers data file is not on the roborio!!!", e);
         }
     }
-
-    public void findControllers(){
-        if(primary == null || secondary == null){
-            while(tries != 10 && !checkControllers()){
-                Timer.delay(1);
-                Debug.reportWarning("Controllers not found! try no. " + tries);
-                tries++;
-                if (tries == 10){
-                    Debug.reportWarning("Nothing found, assuming controller exists at port 0 with preset binds");
-                    primary = new Controller(0);
-                    secondary = primary;
-                }
-            }
-            tries = 0;
-            createBinds();
-        }
-    }
-
-    private boolean checkControllers() {
-        primary = null;
-        secondary = null;
-        for(int i = 0; i < 5; i++){
-            if((!new Joystick(i).getName().equals("")) && (new Joystick(i).getButtonCount() > 0)){
-                primaryPort = i;
+    
+    public void findController() throws JSONException {
+        joystick = new Joystick(0);
+        JSONObject controller = controllerData.getJSONObject(joystick.getName());
+        
+        forwardAxis = controller.getInt("Forward");
+        turnAxis = controller.getInt("Turn");
+        throttleMethod = controller.getString("Throttle Method");
+        switch(throttleMethod){
+            case "Dedicated Axis":
+                throttleAxis = controller.getInt("Throttle Axis");
                 break;
-            }
-        }
-        for(int i = primaryPort + 1; i < 5; i++){
-            if((!new Joystick(i).getName().equals("") || !(new Joystick(primaryPort).getName().equals("MAYFLASH GameCube Controller Adapter"))) && (new Joystick(i).getButtonCount() > 0)){
-                secondaryPort = -1;
+            case "Triggers":
+                throttleIncrease = controller.getInt("Throttle Increase");
+                throttleDecrease = controller.getInt("Throttle Decrease");
                 break;
-            }
+            case "Analog Triggers":
+                throttleIncreaseAxis = controller.getInt("Throttle Increase Axis");
+                throttleDecreaseAxis = controller.getInt("Throttle Decrease Axis");
+                break;
         }
-        try {
-            primary = new Controller(primaryPort, controllerData.getJSONObject(new Joystick(primaryPort).getName()));
-            if(secondaryPort == -1){
-                secondary = primary;
-            } else {
-                secondary = new Controller(secondaryPort, controllerData.getJSONObject(new Joystick(secondaryPort).getName()));
-            }
-        } catch (JSONException e) {
-            return false;
-        }
-        Debug.reportWarning("Controllers found at ports: " + primaryPort + " and " + secondaryPort);
-        return true;
+        scanBind = controller.getInt("Scan Bind");
+        moveUpBind = controller.getInt("Move Up Bind");
+        moveDownBind = controller.getInt("Move Down Bind");
+        succBind = controller.getInt("Toggle Vacuum");
+        moveLeftBind = controller.getInt("Move Left Bind");
+        moveRightBind = controller.getInt("Move Right Bind");
+        moveYBind = controller.getInt("Move Y Bind");
     }
     
     public void createBinds(){
-        JoystickButton moveUp = new JoystickButton(secondary.returnInstance(), secondary.moveUpBind);
-        JoystickButton moveDown = new JoystickButton(secondary.returnInstance(), secondary.moveDownBind);
+        JoystickButton moveUp = new JoystickButton(joystick, moveUpBind);
+        JoystickButton moveDown = new JoystickButton(joystick, moveDownBind);
 
         if(!ArmLooper.isManual()){
             System.out.println("using manual");
@@ -95,21 +91,64 @@ public class InputManager {
             moveDown.whenPressed(new MoveDown());
         }
 
-        JoystickButton succ = new JoystickButton(secondary.returnInstance(), secondary.succ);
+        JoystickButton succ = new JoystickButton(joystick, succBind);
         succ.toggleWhenPressed(new ToggleSucc());
 
-//        JoystickButton climb = new JoystickButton(secondary.returnInstance(), secondary.scanBind);
+//        JoystickButton climb = new JoystickButton(joystick, scanBind);
 //        climb.whileHeld(new StartClimb());
 
-        POVButton moveLeft = new POVButton(secondary.returnInstance(), secondary.moveLeft);
+        POVButton moveLeft = new POVButton(joystick, moveLeftBind);
         moveLeft.whileHeld(new MoveX("Move Left"));
 
-        POVButton moveRight = new POVButton(secondary.returnInstance(), secondary.moveRight);
+        POVButton moveRight = new POVButton(joystick, moveRightBind);
         moveRight.whileHeld(new MoveX("Move Right"));
 
-        POVButton moveY = new POVButton(secondary.returnInstance(), secondary.moveY);
+        POVButton moveY = new POVButton(joystick, moveYBind);
         moveY.whileHeld(new MoveY());
 
     }
+
+    public double processThrottle(){
+        switch(throttleMethod){
+            case "Dedicated Axis":
+                throttle = (-joystick.getRawAxis(throttleAxis) + 1) / 2;
+                break;
+            case "Triggers":
+                if(joystick.getRawButton(throttleIncrease)){
+                    throttle += 0.005;
+                } else if (joystick.getRawButton(throttleDecrease)){
+                    throttle -= 0.005;
+                }
+                break;
+            case "Analog Triggers":
+                throttle += 0.01 *(joystick.getRawAxis(throttleIncreaseAxis) - joystick.getRawAxis(throttleDecreaseAxis));
+                break;
+        }
+
+        if (throttle > 1){
+            throttle = 1;
+        } else if(throttle < 0){
+            throttle = 0;
+        }
+        return throttle;
+    }
+
+    public double getLeft(){
+        return deadband(-joystick.getRawAxis(forwardAxis) + joystick.getRawAxis(turnAxis));
+    }
+
+    public double getRight(){
+        return deadband(-joystick.getRawAxis(forwardAxis) - joystick.getRawAxis(turnAxis));
+    }
+
+    public double deadband(double val){
+        if(val <= 0.075 && val >= -0.075){
+            return 0;
+        }
+
+        return val;
+    }
+
+    public boolean debugRawButton(int button) { return joystick.getRawButton(button); }
 
 }

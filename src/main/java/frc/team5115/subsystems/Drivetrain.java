@@ -99,9 +99,9 @@ public class Drivetrain extends Subsystem{
         switch(state){
             case "Driving":
                 System.out.println("driving");
-                drive(InputManager.primary.getLeft(),
-                        InputManager.primary.getRight(),
-                        InputManager.primary.processThrottle());
+                drive(Robot.im.getLeft(),
+                        Robot.im.getRight(),
+                        Robot.im.processThrottle());
                 break;
             case "Transition":
                 System.out.println("fancy transition");

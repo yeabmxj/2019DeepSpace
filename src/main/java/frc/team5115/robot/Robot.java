@@ -5,9 +5,11 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import frc.team5115.Debug;
 import frc.team5115.commands.startLoopers;
 import frc.team5115.joysticks.InputManager;
 import frc.team5115.subsystems.*;
+import org.json.JSONException;
 
 public class Robot extends TimedRobot {
 
@@ -41,7 +43,12 @@ public class Robot extends TimedRobot {
     }
 
     public void teleopInit(){
-        im.findControllers();
+        try {
+            im.findController();
+            im.createBinds();
+        } catch (JSONException e) {
+            Debug.reportError("Controller bind missing!", e);
+        }
         limelight.cameraMode();
     }
 

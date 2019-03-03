@@ -35,7 +35,7 @@ public class Arm extends Subsystem{
         DART = new VictorSPX(2);
         navX = new AHRS(SerialPort.Port.kUSB);
 
-        top = new DigitalInput(3);
+        top = new DigitalInput(8);
         bottom = new DigitalInput(9);
 
         level = getCurrentPosition();
@@ -43,6 +43,7 @@ public class Arm extends Subsystem{
 
     public void update(){
         checkPosition();
+        //System.out.println(navX.getRoll());
         switch(state){
             case "Moving Up":
                 if(level > ArmLooper.returnTarget()){
@@ -63,7 +64,7 @@ public class Arm extends Subsystem{
                 }
                 break;
             case "Manual Up":
-                move(0.5);
+                move(0.6);
                 break;
             case "Manual Down":
                 move(-0.5);

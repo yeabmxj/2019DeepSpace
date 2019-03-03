@@ -8,6 +8,7 @@ import org.json.JSONObject;
 public class Controller {
 
     private Joystick stick;
+    public String name;
 
     private int forwardAxis;
     private int turnAxis;
@@ -21,11 +22,18 @@ public class Controller {
     private int throttleDecrease;
 
     int scanBind;
-    int killBind;
+    int moveUpBind;
+    int moveDownBind;
+    int succ;
+    int moveLeft;
+    int moveRight;
+    int moveY;
+
 
     Controller(int port, JSONObject data) {
         stick = new Joystick(port);
-
+        //this.name = name;
+        //JSONObject data =
         try {
             forwardAxis = data.getInt("Forward");
             turnAxis = data.getInt("Turn");
@@ -44,6 +52,12 @@ public class Controller {
                     break;
             }
             scanBind = data.getInt("Scan Bind");
+            moveUpBind = data.getInt("Move Up Bind");
+            moveDownBind = data.getInt("Move Down Bind");
+            succ = data.getInt("Toggle Vacuum");
+            moveLeft = data.getInt("Move Left Bind");
+            moveRight = data.getInt("Move Right Bind");
+            moveY = data.getInt("Move Y Bind");
         } catch (JSONException e) {
             Debug.reportWarning("Critical controller binds not detected, using defaults...");
             e.printStackTrace();
@@ -54,7 +68,6 @@ public class Controller {
             throttleDecrease = 2;
             scanBind = 1;
         }
-        killBind = 2;
     }
 
     Controller(int port){
@@ -65,7 +78,6 @@ public class Controller {
         throttleIncrease = 1;
         throttleDecrease = 2;
         scanBind = 1;
-        killBind = 2;
     }
 
     public Joystick returnInstance(){
@@ -98,11 +110,11 @@ public class Controller {
     }
 
     public double getLeft(){
-        return deadband(stick.getRawAxis(forwardAxis) + stick.getRawAxis(turnAxis));
+        return deadband(-stick.getRawAxis(forwardAxis) + stick.getRawAxis(turnAxis));
     }
 
     public double getRight(){
-        return deadband(stick.getRawAxis(forwardAxis) - stick.getRawAxis(turnAxis));
+        return deadband(-stick.getRawAxis(forwardAxis) - stick.getRawAxis(turnAxis));
     }
 
     public double deadband(double val){

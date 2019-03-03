@@ -36,17 +36,20 @@ public class InputManager {
     }
 
     public void findControllers(){
-        while(tries != 10 && !checkControllers()){
-            Timer.delay(1);
-            Debug.reportWarning("Controllers not found! try no. " + tries);
-            tries++;
-            if (tries == 10){
-                Debug.reportWarning("Nothing found, assuming controller exists at port 0 with preset binds");
-                primary = new Controller(0);
-                secondary = primary;
+        if(primary == null || secondary == null){
+            while(tries != 10 && !checkControllers()){
+                Timer.delay(1);
+                Debug.reportWarning("Controllers not found! try no. " + tries);
+                tries++;
+                if (tries == 10){
+                    Debug.reportWarning("Nothing found, assuming controller exists at port 0 with preset binds");
+                    primary = new Controller(0);
+                    secondary = primary;
+                }
             }
+            tries = 0;
+            createBinds();
         }
-        createBinds();
     }
 
     private boolean checkControllers() {
@@ -60,7 +63,7 @@ public class InputManager {
         }
         for(int i = primaryPort + 1; i < 5; i++){
             if((!new Joystick(i).getName().equals("") || !(new Joystick(primaryPort).getName().equals("MAYFLASH GameCube Controller Adapter"))) && (new Joystick(i).getButtonCount() > 0)){
-                secondaryPort = i;
+                secondaryPort = -1;
                 break;
             }
         }
@@ -79,10 +82,10 @@ public class InputManager {
     }
     
     public void createBinds(){
-        JoystickButton moveUp = new JoystickButton(secondary.returnInstance(), 4);
-        JoystickButton moveDown = new JoystickButton(secondary.returnInstance(), 2);
+        JoystickButton moveUp = new JoystickButton(secondary.returnInstance(), secondary.moveUpBind);
+        JoystickButton moveDown = new JoystickButton(secondary.returnInstance(), secondary.moveDownBind);
 
-        if(ArmLooper.isManual()){
+        if(!ArmLooper.isManual()){
             System.out.println("using manual");
             moveUp.whileHeld(new ManualUp());
             moveDown.whileHeld(new ManualDown());
@@ -92,20 +95,20 @@ public class InputManager {
             moveDown.whenPressed(new MoveDown());
         }
 
-        JoystickButton succ = new JoystickButton(secondary.returnInstance(), 3);
+        JoystickButton succ = new JoystickButton(secondary.returnInstance(), secondary.succ);
         succ.toggleWhenPressed(new ToggleSucc());
 
-        JoystickButton climb = new JoystickButton(secondary.returnInstance(), 5);
-        climb.whenPressed(new StartClimb());
+//        JoystickButton climb = new JoystickButton(secondary.returnInstance(), secondary.scanBind);
+//        climb.whileHeld(new StartClimb());
 
-        POVButton moveLeft = new POVButton(secondary.returnInstance(), 90);
+        POVButton moveLeft = new POVButton(secondary.returnInstance(), secondary.moveLeft);
         moveLeft.whileHeld(new MoveX("Move Left"));
 
-        POVButton moveRight = new POVButton(secondary.returnInstance(), 270);
+        POVButton moveRight = new POVButton(secondary.returnInstance(), secondary.moveRight);
         moveRight.whileHeld(new MoveX("Move Right"));
 
-        POVButton moveY = new POVButton(secondary.returnInstance(), 0);
-        moveY.whenPressed(new MoveY());
+        POVButton moveY = new POVButton(secondary.returnInstance(), secondary.moveY);
+        moveY.whileHeld(new MoveY());
 
     }
 

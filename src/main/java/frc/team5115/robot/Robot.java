@@ -28,7 +28,7 @@ public class Robot extends TimedRobot {
     public void robotInit() {
         arm = new Arm();
         succ = new Vacuum();
-        //climb = new Climber();
+//        climb = new Climber();
         wrist = new Wrist();
         drive = new Drivetrain();
         limelight = new Limelight();
@@ -42,6 +42,7 @@ public class Robot extends TimedRobot {
 
     public void teleopInit(){
         im.findControllers();
+        limelight.cameraMode();
     }
 
     public void robotPeriodic() {

@@ -26,9 +26,6 @@ public class Drivetrain extends Subsystem{
     TalonSRX backleft;
     TalonSRX backright;
 
-    //define gyroscope object
-    AHRS navx;
-
     NetworkTableEntry throttleDisplay;
 
     Map<String, Object> settings = new HashMap<String, Object>();
@@ -43,21 +40,20 @@ public class Drivetrain extends Subsystem{
                 "Stopped"));
 
         //instantiate the things
-        frontleft = new TalonSRX(1);
-        frontright = new TalonSRX(2);
-        backleft = new TalonSRX(3);
-        backright = new TalonSRX(4);
-
-        navx = new AHRS(SerialPort.Port.kUSB);
+        frontleft = new TalonSRX(2);
+        frontright = new TalonSRX(1);
+        backleft = new TalonSRX(4);
+        backright = new TalonSRX(3);
 
         //front left and front right motors will do the same thing that the back left and back right motor does
         frontright.set(ControlMode.Follower, 2);
         frontleft.set(ControlMode.Follower, 1);
 
+        backright.setInverted(true);
+
         //assign encoder data to back left and back right motors respectively
         backright.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 5);
         backleft.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 5);
-        navx.reset();
 
         settings.put("min", 0);
         settings.put("max", 1);
@@ -98,13 +94,11 @@ public class Drivetrain extends Subsystem{
     public double averageSpeed() {
         return rightSpeed();
     }
-    public double getTurnVelocity(){
-        return navx.getRate();
-    }
 
     public void update(){
         switch(state){
             case "Driving":
+                System.out.println("driving");
                 drive(InputManager.primary.getLeft(),
                         InputManager.primary.getRight(),
                         InputManager.primary.processThrottle());

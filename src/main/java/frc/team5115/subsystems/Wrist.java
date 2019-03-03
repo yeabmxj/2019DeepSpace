@@ -23,8 +23,8 @@ public class Wrist extends Subsystem {
         xAxis = new VictorSPX(1);
         yAxis = new VictorSPX(0);
 
-        left = new DigitalInput(8);
-        right = new DigitalInput(7);
+        left = new DigitalInput(7);
+        right = new DigitalInput(6);
     }
 
 
@@ -54,9 +54,6 @@ public class Wrist extends Subsystem {
                 break;
             case "Toggle Y":
                 moveY(0.75);
-                if(compareTime(0.5)){
-                    setState("Stopped");
-                }
                 break;
             case "Stopped":
                 moveX(0);

@@ -16,22 +16,30 @@ public class Vacuum extends Subsystem{
         dictionary = new ArrayList<>(Arrays.asList("Succ",
                 "Stopped"));
         succer = new Spark(9);
-        blower = new Relay(0);
+        blower = new Relay(0, Relay.Direction.kBoth);
+        solenoidClose();
     }
 
     public void succSpeed(double speed){
         succer.set(speed);
     }
 
+    public void solenoidClose(){blower.set(Relay.Value.kOff);}
+    public void solenoidOpen(){blower.set(Relay.Value.kForward);}
+
+
     public void update(){
+        System.out.println(blower.get());
         switch(state){
             case "Succ":
-                blower.set(Relay.Value.kForward);
                 succSpeed(0.75);
                 break;
             case "Stopped":
-                blower.set(Relay.Value.kReverse);
                 succSpeed(0);
+                solenoidOpen();
+                if(compareTime(1)){
+                    solenoidClose();
+                }
                 break;
         }
     }

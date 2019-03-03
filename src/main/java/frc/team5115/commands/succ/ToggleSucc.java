@@ -9,6 +9,7 @@ public class ToggleSucc extends Command {
     }
 
     protected void end(){
+        SuccLooper.system.getTimestamp();
         SuccLooper.system.setState("Stopped");
     }
 

@@ -18,7 +18,11 @@ public class VacuumStateMachine extends StateMachineBase {
                 Robot.vacSubsystem.succ();
                 break;
             case OFF:
+                Robot.vacSubsystem.solonoidOPen();
                 Robot.vacSubsystem.stop();
+                if(compareTime(1)) {
+                    Robot.vacSubsystem.solonoidClosed();
+                }
                 break;
         }
     }

@@ -25,9 +25,6 @@ public class InputManager {
 
     private JSONObject controllerData;
 
-    public int armUp;
-    public int armDown;
-
     public InputManager() {
         try {
             controllerData = Debug.readJSON(new FileInputStream("home/lvuser/Controllers.json"));

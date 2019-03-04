@@ -9,12 +9,11 @@ public class VacuumSucc extends Command {
     }
 
     protected void initialize() {
-        System.out.println("things have started");
         Robot.vacMachine.setState(Robot.vacMachine.SUCKING);
     }
 
     protected void end() {
-        System.out.println("terminated");
+        Robot.vacMachine.getTimeStamp();
         Robot.vacMachine.setState(Robot.vacMachine.STOP);
     }
 }

@@ -1,7 +1,6 @@
 package frc.team5115.commands.arm;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import frc.team5115.Debug;
@@ -14,7 +13,7 @@ import java.util.Map;
 public class ArmLooper extends Command {
 
     static NetworkTableEntry levelDisplay;
-    Map<String, Object> settings = new HashMap<String, Object>();
+    Map<String, Object> settings = new HashMap<>();
 
     public static Subsystem system;
     private boolean kill = false;

@@ -6,17 +6,16 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 
 public class Limelight {
 
-    NetworkTable limelight;
-    NetworkTableEntry tx;
-    NetworkTableEntry ty;
-    NetworkTableEntry ta;
-    NetworkTableEntry tv;
-    NetworkTableEntry LED;
-    NetworkTableEntry CAM;
-    NetworkTableEntry pipeline;
+    private NetworkTableEntry tx;
+    private NetworkTableEntry ty;
+    private NetworkTableEntry ta;
+    private NetworkTableEntry tv;
+    private NetworkTableEntry LED;
+    private NetworkTableEntry CAM;
+    private NetworkTableEntry pipeline;
 
     public Limelight(){
-        limelight = NetworkTableInstance.getDefault().getTable("limelight");
+        NetworkTable limelight = NetworkTableInstance.getDefault().getTable("limelight");
         tx = limelight.getEntry("tx");
         ty = limelight.getEntry("ty");
         ta = limelight.getEntry("ta");

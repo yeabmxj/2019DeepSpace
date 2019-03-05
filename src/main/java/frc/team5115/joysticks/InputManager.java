@@ -1,7 +1,6 @@
 package frc.team5115.joysticks;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.team5115.Debug;
 import frc.team5115.commands.arm.*;
@@ -30,7 +29,6 @@ public class InputManager {
     private int throttleIncrease;
     private int throttleDecrease;
 
-    private int scanBind;
     private int moveUpBind;
     private int moveDownBind;
     private int succBind;
@@ -68,7 +66,6 @@ public class InputManager {
                 throttleDecreaseAxis = controller.getInt("Throttle Decrease Axis");
                 break;
         }
-        scanBind = controller.getInt("Scan Bind");
         moveUpBind = controller.getInt("Move Up Bind");
         moveDownBind = controller.getInt("Move Down Bind");
         succBind = controller.getInt("Toggle Vacuum");
@@ -97,6 +94,7 @@ public class InputManager {
 //        JoystickButton climb = new JoystickButton(joystick, scanBind);
 //        climb.whileHeld(new StartClimb());
 
+        //TEMPORARY, TO BE SWITCHED
         POVButton moveLeft = new POVButton(joystick, moveRightBind);
         moveLeft.whileHeld(new MoveX("Move Left"));
 

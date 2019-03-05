@@ -7,7 +7,7 @@ import frc.team5115.subsystems.Subsystem;
 public class SuccLooper extends Command {
 
     public static Subsystem system;
-    boolean kill = false;
+    private boolean kill = false;
 
     protected void execute(){system.update();}
 

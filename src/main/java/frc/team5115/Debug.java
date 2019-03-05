@@ -17,17 +17,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Debug implements Runnable{
-    PowerDistributionPanel PDP;
-    Map<Object, ArrayList<Object>> CANBus;
+    private PowerDistributionPanel PDP;
+    private Map<Object, ArrayList<Object>> CANBus;
 
-    NetworkTableEntry voltage;
+    private NetworkTableEntry voltage;
 
-    double[] current;
-    double currentThreshold = 2.5;
-    double motorThreshold = 4;
+    private double[] current;
 
     //0 ok, 1 low, 2 critical
-    batteryState battery = batteryState.OK;
+    private batteryState battery = batteryState.OK;
 
     enum batteryState{
         OK,
@@ -93,7 +91,7 @@ public class Debug implements Runnable{
         try {
             JSONArray server = readJSON(new URL("http://172.22.11.2:1250/?action=getdevices").openStream()).getJSONArray("DeviceArray");
             Map<Object, ArrayList<Object>> CANBus = new HashMap<>();
-            for(int i = 0; i < 5/*This should be the number of expected device*/; i++){
+            for(int i = 0; i < 5/*This should be the number of expected devices*/; i++){
                 JSONObject current = server.getJSONObject(i);
                 ArrayList<Object> metadata = new ArrayList<>();
                 metadata.add(current.get("Name"));
@@ -109,6 +107,8 @@ public class Debug implements Runnable{
     }
 
     private void PDPCheck(){
+        double currentThreshold = 2.5;
+        double motorThreshold = 4;
         for(int i = 0; i < PortsJNI.getNumPDPChannels(); i++){
             switch(i){
                 //ports with motor plugged in

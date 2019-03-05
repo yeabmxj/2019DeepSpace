@@ -10,9 +10,9 @@ public class Subsystem {
     ArrayList<String> dictionary;
 
     String state = "Stopped";
-    String lastState;
+    private String lastState;
 
-    double time;
+    private double time;
 
     public Subsystem(){
         //in case a dictionary isn't defined for whatever reason
@@ -42,6 +42,8 @@ public class Subsystem {
     public String currentState(){
         return state;
     }
+
+    public String getLastState(){return lastState; }
 
     public void update(){
         switch(state){

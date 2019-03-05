@@ -3,12 +3,10 @@ package frc.team5115.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
-import frc.team5115.joysticks.InputManager;
+
 import frc.team5115.robot.Robot;
 
 import java.util.ArrayList;

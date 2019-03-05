@@ -5,6 +5,7 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.SerialPort;
+import frc.team5115.Konstanten;
 import frc.team5115.commands.arm.ArmLooper;
 
 import java.util.ArrayList;
@@ -19,12 +20,6 @@ public class Arm extends Subsystem{
     DigitalInput top;
     DigitalInput bottom;
 
-    double max = 35;
-    double level2 = 10;
-    double level1 = -20;
-    double min = -50;
-
-    double level;
 
     public Arm(){
         dictionary = new ArrayList<>(Arrays.asList("Moving Up",
@@ -32,22 +27,20 @@ public class Arm extends Subsystem{
                 "Manual Up",
                 "Manual Down",
                 "Stopped"));
-        DART = new VictorSPX(2);
+        DART = new VictorSPX(Konstanten.DART_ID);
         navX = new AHRS(SerialPort.Port.kUSB);
 
-        top = new DigitalInput(8);
-        bottom = new DigitalInput(9);
-
-        level = getCurrentPosition();
+        top = new DigitalInput(Konstanten.TOP_SWITCH);
+        bottom = new DigitalInput(Konstanten.BOTTOM_SWITCH);
     }
 
     public void update(){
-        //System.out.println(navX.getRoll());
+        System.out.println(navX.getRoll());
         switch(state){
             case "Moving Up":
                 if(threshold(ArmLooper.returnTarget())){
                   setState("Stopped");
-                } else if(level > ArmLooper.returnTarget()){
+                } else if(getCurrentPosition() > ArmLooper.returnTarget()){
                     setState("Moving Down");
                 } else {
                     move(0.6);
@@ -56,7 +49,7 @@ public class Arm extends Subsystem{
             case "Moving Down":
                 if(threshold(ArmLooper.returnTarget())){
                     setState("Stopped");
-                } else if(level > ArmLooper.returnTarget()){
+                } else if(getCurrentPosition() < ArmLooper.returnTarget()){
                     setState("Moving Up");
                 } else {
                     move(-0.5);
@@ -88,10 +81,10 @@ public class Arm extends Subsystem{
     }
 
     private boolean threshold(double val){
-        return getCurrentPosition() <= val + 2 && getCurrentPosition() >= val - 2;
+        return getCurrentPosition() <= val + 0.1 && getCurrentPosition() >= val - 0.1;
     }
 
     public double getCurrentPosition(){
-        return (0.03 * navX.getRoll()) + 1.5;
+        return (Konstanten.SLOPE * navX.getRoll()) + Konstanten.Y_INTERCEPT;
     }
 }

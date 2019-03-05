@@ -7,6 +7,7 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 
+import frc.team5115.Konstanten;
 import frc.team5115.robot.Robot;
 
 import java.util.ArrayList;
@@ -39,16 +40,14 @@ public class Drivetrain extends Subsystem{
                 "Stopped"));
 
         //instantiate the things
-        frontleft = new TalonSRX(2);
-        frontright = new TalonSRX(1);
-        backleft = new TalonSRX(4);
-        backright = new TalonSRX(3);
+        frontleft = new TalonSRX(Konstanten.FRONT_LEFT_DRIVE);
+        frontright = new TalonSRX(Konstanten.FRONT_RIGHT_DRIVE);
+        backleft = new TalonSRX(Konstanten.BACK_LEFT_DRIVE);
+        backright = new TalonSRX(Konstanten.BACK_RIGHT_DRIVE);
 
         //front left and front right motors will do the same thing that the back left and back right motor does
-        frontright.set(ControlMode.Follower, 2);
-        frontleft.set(ControlMode.Follower, 1);
-
-        backright.setInverted(true);
+        frontleft.set(ControlMode.Follower, Konstanten.BACK_LEFT_DRIVE);
+        frontright.set(ControlMode.Follower, Konstanten.BACK_RIGHT_DRIVE);
 
         //assign encoder data to back left and back right motors respectively
         backright.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 5);

@@ -2,6 +2,7 @@ package frc.team5115.subsystems;
 
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.Spark;
+import frc.team5115.Konstanten;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,8 +16,8 @@ public class Vacuum extends Subsystem{
     public Vacuum(){
         dictionary = new ArrayList<>(Arrays.asList("Succ",
                 "Stopped"));
-        succer = new Spark(9);
-        blower = new Relay(0, Relay.Direction.kBoth);
+        succer = new Spark(Konstanten.VACUUM_SPARK);
+        blower = new Relay(Konstanten.SOLENOID_RELAY, Relay.Direction.kBoth);
         solenoidClose();
     }
 

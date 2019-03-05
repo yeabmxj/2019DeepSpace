@@ -32,12 +32,12 @@ public class ArmLooper extends Command {
                 .withWidget(BuiltInWidgets.kNumberBar)
                 .withProperties(settings) // specify widget properties here
                 .getEntry();
-        levelDisplay.setNumber(0);
-        system.setState("Moving Down");
+        levelDisplay.setNumber(Math.round(Robot.arm.getCurrentPosition()));
+        system.setState("Moving Up");
     }
 
     protected void execute(){
-        system.update();
+        Robot.arm.update();
     }
 
     public static void addLevel(double level){

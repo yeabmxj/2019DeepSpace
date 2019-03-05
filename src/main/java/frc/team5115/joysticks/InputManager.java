@@ -3,6 +3,7 @@ package frc.team5115.joysticks;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.team5115.Debug;
+import frc.team5115.Konstanten;
 import frc.team5115.commands.arm.*;
 import frc.team5115.commands.climber.StartClimb;
 import frc.team5115.commands.succ.ToggleSucc;
@@ -113,13 +114,13 @@ public class InputManager {
                 break;
             case "Triggers":
                 if(joystick.getRawButton(throttleIncrease)){
-                    throttle += 0.005;
+                    throttle += Konstanten.TRIGGER_RATE;
                 } else if (joystick.getRawButton(throttleDecrease)){
-                    throttle -= 0.005;
+                    throttle -= Konstanten.TRIGGER_RATE;
                 }
                 break;
             case "Analog Triggers":
-                throttle += 0.01 *(joystick.getRawAxis(throttleIncreaseAxis) - joystick.getRawAxis(throttleDecreaseAxis));
+                throttle += Konstanten.ANALOG_RATE *(joystick.getRawAxis(throttleIncreaseAxis) - joystick.getRawAxis(throttleDecreaseAxis));
                 break;
         }
 
@@ -139,8 +140,8 @@ public class InputManager {
         return deadband(-joystick.getRawAxis(forwardAxis) - joystick.getRawAxis(turnAxis));
     }
 
-    public double deadband(double val){
-        if(val <= 0.075 && val >= -0.075){
+    private double deadband(double val){
+        if(val <= Konstanten.DEADBAND && val >= Konstanten.DEADBAND){
             return 0;
         }
 

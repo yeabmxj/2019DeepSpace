@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.DigitalInput;
+import frc.team5115.commands.drivetrain.DrivetrainLooper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,6 +20,7 @@ public class Climber extends Subsystem {
     public Climber(){
         dictionary = new ArrayList<>(Arrays.asList("Moving Up",
                 "Retract Back",
+                "Retract Front",
                 "Stopped"));
         front = new TalonSRX(5);
         back = new VictorSPX(0);
@@ -28,15 +30,11 @@ public class Climber extends Subsystem {
     }
 
     public void moveFront(double speed){
-        if(!max.get() || !min.get()){
-            front.set(ControlMode.PercentOutput, speed);
-        }
+        front.set(ControlMode.PercentOutput, speed);
     }
 
     public void moveBack(double speed){
-        if(!max.get() || !min.get()){
-            back.set(ControlMode.PercentOutput, speed);
-        }
+        back.set(ControlMode.PercentOutput, speed);
     }
 
     public void update(){
@@ -44,14 +42,22 @@ public class Climber extends Subsystem {
             case "Moving Up":
                 moveFront(0.5);
                 moveBack(0.5);
-                if(compareTime(5)){
+                if(compareTime(10)){
                     setState("Retract Back");
                 }
                 break;
             case "Retract Back":
-                moveFront(0.5);
+                moveFront(0);
                 moveBack(-0.5);
-                if(max.get()){
+                if(DrivetrainLooper.system.currentState().equals("Climber Buffer")){
+                    getTimestamp();
+                    setState("Retract Front");
+                }
+                break;
+            case "Retract Front":
+                moveFront(-0.5);
+                moveBack(0);
+                if(compareTime(5)){
                     setState("Stopped");
                 }
                 break;

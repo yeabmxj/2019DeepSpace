@@ -36,7 +36,8 @@ public class Drivetrain extends Subsystem{
 
     public Drivetrain(){
         dictionary = new ArrayList<>(Arrays.asList("Driving",
-                "Transition",
+                "HAB3 Drive",
+                "Climber Buffer",
                 "Stopped"));
 
         //instantiate the things
@@ -103,8 +104,14 @@ public class Drivetrain extends Subsystem{
                         Robot.im.getRight(),
                         Robot.im.processThrottle());
                 break;
-            case "Transition":
-                System.out.println("fancy transition");
+            case "HAB3 drive":
+                if(compareTime(2)){
+                    setState("Climber Buffer");
+                }
+                drive(0.5, 0.5, 0.5);
+                break;
+            case "Climber Buffer":
+                setState("Driving");
                 break;
             case "Stopped":
                 drive(0,0,0);

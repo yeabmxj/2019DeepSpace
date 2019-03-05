@@ -33,21 +33,22 @@ public class ArmLooper extends Command {
                 .withWidget(BuiltInWidgets.kNumberBar)
                 .withProperties(settings) // specify widget properties here
                 .getEntry();
-        levelDisplay.setNumber(Robot.arm.getCurrentPosition());
+        levelDisplay.setNumber(0);
+        system.setState("Moving Down");
     }
 
     protected void execute(){
         system.update();
     }
 
-    public static void addLevel(int level){
+    public static void addLevel(double level){
         if(!(returnTarget() + level > 3) && !(returnTarget() + level < 0)){
             levelDisplay.setNumber(returnTarget() + level);
         }
     }
 
-    public static int returnTarget(){
-        return levelDisplay.getNumber(0).intValue();
+    public static double returnTarget(){
+        return levelDisplay.getDouble(0);
     }
 
     public static boolean isManual(){ return manual;}

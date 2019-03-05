@@ -81,7 +81,7 @@ public class InputManager {
         JoystickButton moveUp = new JoystickButton(joystick, moveUpBind);
         JoystickButton moveDown = new JoystickButton(joystick, moveDownBind);
 
-        if(!ArmLooper.isManual()){
+        if(true){
             System.out.println("using manual");
             moveUp.whileHeld(new ManualUp());
             moveDown.whileHeld(new ManualDown());
@@ -97,10 +97,10 @@ public class InputManager {
 //        JoystickButton climb = new JoystickButton(joystick, scanBind);
 //        climb.whileHeld(new StartClimb());
 
-        POVButton moveLeft = new POVButton(joystick, moveLeftBind);
+        POVButton moveLeft = new POVButton(joystick, moveRightBind);
         moveLeft.whileHeld(new MoveX("Move Left"));
 
-        POVButton moveRight = new POVButton(joystick, moveRightBind);
+        POVButton moveRight = new POVButton(joystick, moveLeftBind);
         moveRight.whileHeld(new MoveX("Move Right"));
 
         POVButton moveY = new POVButton(joystick, moveYBind);

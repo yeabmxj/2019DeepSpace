@@ -43,14 +43,16 @@ public class Wrist extends Subsystem {
     }
 
     public void update(){
+        System.out.println(left.get());
+        System.out.println(right.get());
         switch(state){
             case "Move Left":
                 System.out.println("moving left");
-                moveX(0.75);
+                moveX(0.6);
                 break;
             case "Move Right":
                 System.out.println("moving right");
-                moveX(-0.75);
+                moveX(-0.6);
                 break;
             case "Toggle Y":
                 moveY(0.75);

@@ -16,7 +16,6 @@ public class startLoopers extends CommandGroup {
         addParallel(new SuccLooper());
         addParallel(new WristLooper());
         addParallel(new DrivetrainLooper());
-        Robot.limelight.cameraMode();
     }
 
 }

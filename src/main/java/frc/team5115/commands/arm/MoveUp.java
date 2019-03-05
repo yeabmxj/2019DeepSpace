@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class MoveUp extends Command {
 
     protected void initialize() {
-        ArmLooper.addLevel(1);
+        ArmLooper.addLevel(0.5);
         ArmLooper.system.setState("Moving Up");
     }
 

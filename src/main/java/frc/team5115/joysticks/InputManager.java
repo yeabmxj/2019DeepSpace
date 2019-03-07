@@ -15,79 +15,78 @@ import java.io.*;
 
 public class InputManager {
 
-    public static Controller primary;
-    public static Controller secondary;
+    public Joystick joystick;
 
-    private int primaryPort = 0;
-    private int secondaryPort = -1;
+    private int forwardAxis;
+    private int turnAxis;
 
-    private int tries = 0;
+    private double throttle = 0.5;
+    private String throttleMethod;
+    private int throttleAxis;
+    private int throttleIncreaseAxis;
+    private int throttleDecreaseAxis;
+    private int throttleIncrease;
+    private int throttleDecrease;
+
+    private int moveUpBind;
+    private int moveDownBind;
+    private int succBind;
+    private int moveLeftBind;
+    private int moveRightBind;
+    private int moveYBind;
 
     private JSONObject controllerData;
 
     public InputManager() {
         try {
-            controllerData = Debug.readJSON(new FileInputStream("home/lvuser/Controllers.json"));
-        } catch (Exception e) {
-            e.printStackTrace();
+            controllerData = Debug.readJSON(new FileInputStream("/home/lvuser/Controllers.json"));
+        } catch (FileNotFoundException file){
+            Debug.reportWarning("Controller file not found on roborio!");
+        } catch (IOException io){
+            Debug.reportWarning("Controller file corrupted!");
+        } catch (JSONException json){
+            Debug.reportWarning("Controller file not formatted properly!");
         }
-        findControllers();
     }
 
-    public void findControllers(){
-        while(tries != 10 && !checkControllers()){
-            Timer.delay(1);
-            tries++;
-            if (tries == 10){
-                Debug.reportWarning("Nothing found, assuming controller exists at port 0 with preset binds");
-                failsafe();
-            }
-        }
-        createBinds();
-    }
+    public void findController() throws JSONException {
+        joystick = new Joystick(0);
+        JSONObject controller = controllerData.getJSONObject(joystick.getName());
 
-    private boolean checkControllers() {
-        primary = null;
-        secondary = null;
-        for(int i = 0; i < 5; i++){
-            if((!new Joystick(i).getName().equals("")) && (new Joystick(i).getButtonCount() > 0)){
-                primaryPort = i;
+        forwardAxis = controller.getInt("Forward");
+        turnAxis = controller.getInt("Turn");
+        throttleMethod = controller.getString("Throttle Method");
+        switch(throttleMethod){
+            case "Dedicated Axis":
+                throttleAxis = controller.getInt("Throttle Axis");
                 break;
-            }
-        }
-        for(int i = primaryPort + 1; i < 5; i++){
-            if((!new Joystick(i).getName().equals("") || !(new Joystick(primaryPort).getName().equals("MAYFLASH GameCube Controller Adapter"))) && (new Joystick(i).getButtonCount() > 0)){
-                secondaryPort = i;
+            case "Triggers":
+                throttleIncrease = controller.getInt("Throttle Increase");
+                throttleDecrease = controller.getInt("Throttle Decrease");
                 break;
-            }
+            case "Analog Triggers":
+                throttleIncreaseAxis = controller.getInt("Throttle Increase Axis");
+                throttleDecreaseAxis = controller.getInt("Throttle Decrease Axis");
+                break;
         }
-        try {
-            primary = new Controller(primaryPort, controllerData.getJSONObject(new Joystick(primaryPort).getName()));
-            if(secondaryPort == -1){
-                secondary = primary;
-            } else {
-                secondary = new Controller(secondaryPort, controllerData.getJSONObject(new Joystick(secondaryPort).getName()));
-            }
-        } catch (JSONException e) {
-            return false;
-        }
-        return true;
+        moveUpBind = controller.getInt("Move Up Bind");
+        moveDownBind = controller.getInt("Move Down Bind");
+        succBind = controller.getInt("Toggle Vacuum");
+        moveLeftBind = controller.getInt("Move Left Bind");
+        moveRightBind = controller.getInt("Move Right Bind");
+        moveYBind = controller.getInt("Move Y Bind");
     }
 
-    private void failsafe(){
-        primary = new Controller(1);
-        secondary = primary;
-    }
 
     public void createBinds(){
         JoystickButton armCommandUp;
         JoystickButton armCommandDown;
-        armCommandUp = new JoystickButton(primary.returnInstance(), 1);
+        armCommandUp = new JoystickButton(joystick, 1);
         armCommandUp.whenPressed(new ArmCommandUp());
-        armCommandDown = new JoystickButton(primary.returnInstance(), 2);
+        armCommandDown = new JoystickButton(joystick, 2);
         armCommandDown.whenPressed(new ArmCommandDown());
 
-        JoystickButton nine = new JoystickButton(primary.returnInstance(), 9);
+        JoystickButton nine = new JoystickButton(joystick, 9);
         nine.toggleWhenPressed(new VacuumSucc());
     }
 

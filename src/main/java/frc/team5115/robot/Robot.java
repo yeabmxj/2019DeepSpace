@@ -6,24 +6,23 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.team5115.Debug;
-import frc.team5115.joysticks.Controller;
 import frc.team5115.joysticks.InputManager;
 import frc.team5115.statemachines.ArmStateMachine;
 import frc.team5115.statemachines.VacuumStateMachine;
 import frc.team5115.subsystems.Arm;
 import frc.team5115.subsystems.Vacuum;
+import org.json.JSONException;
 
 public class Robot extends TimedRobot {
 
     public static InputManager im;
     public static ShuffleboardTab tab = Shuffleboard.getTab("main");
 
-    public static Controller joy;
-
+    public static Arm armSubsystem;
     public static ArmStateMachine armdomination;
-    public static Arm arm;
-    public static VacuumStateMachine vacMachine;
+
     public static Vacuum vacSubsystem;
+    public static VacuumStateMachine vacMachine;
 
     Thread thread = new Thread(new Debug());
 
@@ -32,12 +31,20 @@ public class Robot extends TimedRobot {
 
         thread.start();
 
-        arm = new Arm();
+        armSubsystem = new Arm();
         armdomination = new ArmStateMachine();
+
+        vacSubsystem = new Vacuum();
+        vacMachine = new VacuumStateMachine();
     }
 
     public void teleopInit() {
-        im.findControllers();
+        try {
+            im.findController();
+            im.createBinds();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     public void robotPeriodic() {

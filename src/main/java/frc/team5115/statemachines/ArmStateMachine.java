@@ -7,36 +7,36 @@ public class ArmStateMachine extends StateMachineBase {
     public static final int MOVING_UP = 1;
     public static final int MOVING_DOWN = 2;
     public static final int NEUTRAL = 0;
-    public double target = Robot.arm.level;
+    public double target = Robot.armSubsystem.level;
 
     public void update(){
         System.out.println("target " + target);
-        System.out.println("angle " + Robot.arm.navX.getRoll());
-        System.out.println("position " + Robot.arm.level);
-        Robot.arm.getPosition();
+        System.out.println("angle " + Robot.armSubsystem.navX.getRoll());
+        System.out.println("position " + Robot.armSubsystem.level);
+        Robot.armSubsystem.getPosition();
         switch(state) {
             case NEUTRAL:
-                Robot.arm.moveArm(0);
+                Robot.armSubsystem.moveArm(0);
                 break;
 
             case MOVING_UP:
-                if(target < Robot.arm.level){
+                if(target < Robot.armSubsystem.level){
                     state = MOVING_DOWN;
                 }
-                if(Robot.arm.level == target){
+                if(Robot.armSubsystem.level == target){
                     state = NEUTRAL;
                 }
-                Robot.arm.moveArm(.5);
+                Robot.armSubsystem.moveArm(.5);
                 break;
 
             case MOVING_DOWN:
-                if(target > Robot.arm.level){
+                if(target > Robot.armSubsystem.level){
                     state = MOVING_UP;
                 }
-                if(Robot.arm.level == target){
+                if(Robot.armSubsystem.level == target){
                     state = NEUTRAL;
                 }
-                Robot.arm.moveArm(-.5);
+                Robot.armSubsystem.moveArm(-.5);
                 break;
         }
     }

@@ -13,11 +13,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 
 public class InputManager {
 
     public Joystick joystick;
+    public String lastName;
 
     private int forwardAxis;
     private int turnAxis;
@@ -42,13 +45,20 @@ public class InputManager {
     public InputManager() {
         try {
             controllerData = Debug.readJSON(new FileInputStream("/home/lvuser/Controllers.json"));
-        } catch (Exception e) {
-            Debug.reportError("Controllers data file is not on the roborio!!!", e);
+        } catch (FileNotFoundException file){
+            Debug.reportWarning("Controller file not found on roborio!");
+        } catch (IOException io){
+            Debug.reportWarning("Controller file corrupted!");
+        } catch (JSONException json){
+            Debug.reportWarning("Controller file not formatted properly!");
         }
     }
     
     public void findController() throws JSONException {
         joystick = new Joystick(0);
+        if(!sameStick()){
+            lastName = joystick.getName();
+        }
         JSONObject controller = controllerData.getJSONObject(joystick.getName());
         
         forwardAxis = controller.getInt("Forward");
@@ -74,12 +84,16 @@ public class InputManager {
         moveRightBind = controller.getInt("Move Right Bind");
         moveYBind = controller.getInt("Move Y Bind");
     }
+
+    public boolean sameStick(){
+        return joystick.getName().equals(lastName);
+    }
     
     public void createBinds(){
         JoystickButton moveUp = new JoystickButton(joystick, moveUpBind);
         JoystickButton moveDown = new JoystickButton(joystick, moveDownBind);
 
-        if(true){
+        if(ArmLooper.isManual()){
             System.out.println("using manual");
             moveUp.whileHeld(new ManualUp());
             moveDown.whileHeld(new ManualDown());

@@ -21,6 +21,7 @@ public class Arm extends Subsystem{
     DigitalInput bottom;
 
 
+
     public Arm(){
         dictionary = new ArrayList<>(Arrays.asList("Moving Up",
                 "Moving Down",
@@ -35,23 +36,26 @@ public class Arm extends Subsystem{
     }
 
     public void update(){
-        System.out.println(navX.getRoll());
+        System.out.println(getCurrentPosition());
+        System.out.println(ArmLooper.returnTarget() + " " + returnTarget());
         switch(state){
             case "Moving Up":
-                if(threshold(ArmLooper.returnTarget())){
+                if(threshold(returnTarget())){
                   setState("Stopped");
-                } else if(getCurrentPosition() > ArmLooper.returnTarget()){
+                } else if(getCurrentPosition() > returnTarget()){
                     setState("Moving Down");
                 } else {
+                    //System.out.println("moving up");
                     move(0.6);
                 }
                 break;
             case "Moving Down":
-                if(threshold(ArmLooper.returnTarget())){
+                if(threshold(returnTarget())){
                     setState("Stopped");
-                } else if(getCurrentPosition() < ArmLooper.returnTarget()){
+                } else if(getCurrentPosition() < returnTarget()){
                     setState("Moving Up");
                 } else {
+                    //System.out.println("moving down");
                     move(-0.5);
                 }
                 break;
@@ -81,10 +85,41 @@ public class Arm extends Subsystem{
     }
 
     private boolean threshold(double val){
-        return getCurrentPosition() <= val + 0.1 && getCurrentPosition() >= val - 0.1;
+        return getCurrentPosition() <= val + Konstanten.ARM_THRESHOLD && getCurrentPosition() >= val - Konstanten.ARM_THRESHOLD;
     }
 
     public double getCurrentPosition(){
         return (Konstanten.SLOPE * navX.getRoll()) + Konstanten.Y_INTERCEPT;
+    }
+
+    public double returnTarget(){
+        double target = 0;
+        switch(ArmLooper.returnTarget()){
+            case 0:
+                target = Konstanten.MIN_SCALED;
+                break;
+            case 1:
+                target = Konstanten.LEVEL1;
+                break;
+            case 2:
+                target = Konstanten.LEVEL2;
+                break;
+            case 3:
+                target = Konstanten.BALLPICKUP;
+                break;
+            case 4:
+                target = Konstanten.LEVEL3;
+                break;
+            case 5:
+                target = Konstanten.LEVEL4;
+                break;
+            case 6:
+                target = Konstanten.LEVEL5;
+                break;
+            case 7:
+                target = Konstanten.LEVEL6;
+                break;
+        }
+        return target;
     }
 }

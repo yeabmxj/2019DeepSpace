@@ -53,6 +53,9 @@ public class Drivetrain extends Subsystem{
         backright.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 5);
         backleft.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 5);
 
+        frontright.setInverted(true);
+        backright.setInverted(true);
+
         settings.put("min", 0);
         settings.put("max", 1);
         throttleDisplay = Robot.tab.add("Max Speed", 0.5)

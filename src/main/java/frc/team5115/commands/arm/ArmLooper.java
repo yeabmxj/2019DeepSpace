@@ -27,7 +27,7 @@ public class ArmLooper extends Command {
             manual = true;
         }
         settings.put("min", 0);
-        settings.put("max", 3);
+        settings.put("max", 7);
         levelDisplay = Robot.tab.add("Level", 0)
                 .withWidget(BuiltInWidgets.kNumberBar)
                 .withProperties(settings) // specify widget properties here
@@ -41,13 +41,13 @@ public class ArmLooper extends Command {
     }
 
     public static void addLevel(double level){
-        if(!(returnTarget() + level > 3) && !(returnTarget() + level < 0)){
+        if(!(returnTarget() + level > 7) && !(returnTarget() + level < 0)){
             levelDisplay.setNumber(returnTarget() + level);
         }
     }
 
-    public static double returnTarget(){
-        return levelDisplay.getDouble(0);
+    public static int returnTarget(){
+        return levelDisplay.getNumber(0).intValue();
     }
 
     public static boolean isManual(){ return manual;}

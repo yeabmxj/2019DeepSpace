@@ -26,7 +26,7 @@ public class Limelight {
     }
 
     public boolean isValid(){
-        return tv.getNumber(1).intValue() == 1;
+        return tv.getNumber(1).equals(1);
     }
     public double getXOffset(){
         return tx.getDouble(0);

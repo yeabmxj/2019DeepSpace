@@ -45,10 +45,12 @@ public class Robot extends TimedRobot {
     public void teleopInit(){
         try {
             im.findController();
-            im.createBinds();
         } catch (JSONException e) {
             Debug.reportError("Controller bind missing!", e);
         }
+        im.createBinds();
+//        if(!im.sameStick()){
+//        }
         limelight.cameraMode();
     }
 

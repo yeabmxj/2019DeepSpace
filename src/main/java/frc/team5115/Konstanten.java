@@ -12,10 +12,18 @@ public class Konstanten {
     public static final int DART_ID = 2;
     public static final int TOP_SWITCH = 8;
     public static final int BOTTOM_SWITCH = 9;
-    private static final double MAX_HEIGHT = 60;
-    private static final double MAX_SCALED = 3;
+    public static final double ARM_THRESHOLD = 0.05;
+    private static final double MAX_HEIGHT = 54;
+    public static final double MAX_SCALED = 3;
     private static final double MIN_HEIGHT = -60;
-    private static final double MIN_SCALED = 0;
+    public static final double MIN_SCALED = 0;
+    public static final double LEVEL1 = 0.3;
+    public static final double LEVEL2 = 0.8;
+    public static final double BALLPICKUP = 1.35;
+    public static final double LEVEL3 = 1.6;
+    public static final double LEVEL4 = 1.8;
+    public static final double LEVEL5 = 2.7;
+    public static final double LEVEL6 = 2.9;
     public static final double SLOPE = (MAX_SCALED - MIN_SCALED) / (MAX_HEIGHT - MIN_HEIGHT);
     public static final double Y_INTERCEPT = MAX_SCALED - (SLOPE * MAX_HEIGHT);
 

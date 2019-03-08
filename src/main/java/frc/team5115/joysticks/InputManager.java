@@ -1,11 +1,9 @@
 package frc.team5115.joysticks;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.team5115.Debug;
 import frc.team5115.Konstanten;
 import frc.team5115.commands.arm.*;
-import frc.team5115.commands.climber.StartClimb;
 import frc.team5115.commands.succ.ToggleSucc;
 import frc.team5115.commands.wrist.MoveX;
 import frc.team5115.commands.wrist.MoveY;
@@ -90,8 +88,8 @@ public class InputManager {
     }
     
     public void createBinds(){
-        JoystickButton moveUp = new JoystickButton(joystick, moveUpBind);
-        JoystickButton moveDown = new JoystickButton(joystick, moveDownBind);
+        ButtonWrapper moveUp = new ButtonWrapper(joystick, moveUpBind);
+        ButtonWrapper moveDown = new ButtonWrapper(joystick, moveDownBind);
 
         if(ArmLooper.isManual()){
             System.out.println("using manual");
@@ -103,20 +101,20 @@ public class InputManager {
             moveDown.whenPressed(new MoveDown());
         }
 
-        JoystickButton succ = new JoystickButton(joystick, succBind);
+        ButtonWrapper succ = new ButtonWrapper(joystick, succBind);
         succ.toggleWhenPressed(new ToggleSucc());
 
-//        JoystickButton climb = new JoystickButton(joystick, scanBind);
+//        ButtonWrapper climb = new ButtonWrapper(joystick, scanBind);
 //        climb.whileHeld(new StartClimb());
 
         //TEMPORARY, TO BE SWITCHED
-        POVButton moveLeft = new POVButton(joystick, moveRightBind);
+        ButtonWrapper moveLeft = new ButtonWrapper(joystick, moveRightBind);
         moveLeft.whileHeld(new MoveX("Move Left"));
 
-        POVButton moveRight = new POVButton(joystick, moveLeftBind);
+        ButtonWrapper moveRight = new ButtonWrapper(joystick, moveLeftBind);
         moveRight.whileHeld(new MoveX("Move Right"));
 
-        POVButton moveY = new POVButton(joystick, moveYBind);
+        ButtonWrapper moveY = new ButtonWrapper(joystick, moveYBind);
         moveY.whileHeld(new MoveY());
 
     }

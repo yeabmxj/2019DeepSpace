@@ -22,8 +22,8 @@
   "Throttle Decrease Axis" : "2",
   "Scan Bind" : "1",
   "Move Y Bind" : "0",
-  "Move Left Bind" : "90",
-  "Move Right Bind" : "270",
+  "Move Left Bind" : "270",
+  "Move Right Bind" : "90",
   "Toggle Vacuum" : "1",
   "Move Up Bind" : "5",
   "Move Down Bind" : "6"
@@ -51,8 +51,8 @@
   "Scan Bind" : "16",
   "Move Up Bind" : "4",
   "Move Down Bind" : "1",
-  "Move Left Bind" : "90",
-  "Move Right Bind" : "270",
+  "Move Left Bind" : "270",
+  "Move Right Bind" : "90",
   "Move Y Bind" : "0",
   "Toggle Vacuum" : "2"
 }

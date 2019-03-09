@@ -57,32 +57,32 @@ public class InputManager {
         if(!sameStick()){
             System.out.println("last joystick name doesn't match, resetting...");
             lastName = joystick.getName();
+            JSONObject controller = controllerData.getJSONObject(joystick.getName());
+
+            forwardAxis = controller.getInt("Forward");
+            turnAxis = controller.getInt("Turn");
+            throttleMethod = controller.getString("Throttle Method");
+            switch(throttleMethod){
+                case "Dedicated Axis":
+                    throttleAxis = controller.getInt("Throttle Axis");
+                    break;
+                case "Triggers":
+                    throttleIncrease = controller.getInt("Throttle Increase");
+                    throttleDecrease = controller.getInt("Throttle Decrease");
+                    break;
+                case "Analog Triggers":
+                    throttleIncreaseAxis = controller.getInt("Throttle Increase Axis");
+                    throttleDecreaseAxis = controller.getInt("Throttle Decrease Axis");
+                    break;
+            }
+            moveUpBind = controller.getInt("Move Up Bind");
+            moveDownBind = controller.getInt("Move Down Bind");
+            succBind = controller.getInt("Toggle Vacuum");
+            moveLeftBind = controller.getInt("Move Left Bind");
+            moveRightBind = controller.getInt("Move Right Bind");
+            moveYBind = controller.getInt("Move Y Bind");
             createBinds();
         }
-        JSONObject controller = controllerData.getJSONObject(joystick.getName());
-        
-        forwardAxis = controller.getInt("Forward");
-        turnAxis = controller.getInt("Turn");
-        throttleMethod = controller.getString("Throttle Method");
-        switch(throttleMethod){
-            case "Dedicated Axis":
-                throttleAxis = controller.getInt("Throttle Axis");
-                break;
-            case "Triggers":
-                throttleIncrease = controller.getInt("Throttle Increase");
-                throttleDecrease = controller.getInt("Throttle Decrease");
-                break;
-            case "Analog Triggers":
-                throttleIncreaseAxis = controller.getInt("Throttle Increase Axis");
-                throttleDecreaseAxis = controller.getInt("Throttle Decrease Axis");
-                break;
-        }
-        moveUpBind = controller.getInt("Move Up Bind");
-        moveDownBind = controller.getInt("Move Down Bind");
-        succBind = controller.getInt("Toggle Vacuum");
-        moveLeftBind = controller.getInt("Move Left Bind");
-        moveRightBind = controller.getInt("Move Right Bind");
-        moveYBind = controller.getInt("Move Y Bind");
     }
 
     public boolean sameStick(){

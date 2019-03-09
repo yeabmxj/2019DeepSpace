@@ -30,7 +30,7 @@ public class Robot extends TimedRobot {
     public void robotInit() {
         arm = new Arm();
         succ = new Vacuum();
-//        climb = new Climber();
+        //climb = new Climber();
         wrist = new Wrist();
         drive = new Drivetrain();
         limelight = new Limelight();
@@ -51,9 +51,6 @@ public class Robot extends TimedRobot {
             im.findController();
         } catch (JSONException e) {
             Debug.reportError("Controller bind missing!", e);
-        }
-        if(!im.sameStick()){
-            im.createBinds();
         }
         limelight.cameraMode();
     }

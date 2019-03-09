@@ -1,0 +1,59 @@
+{
+"T.16000M" : {
+  "Forward" : "1",
+  "Turn" : "0",
+  "Throttle Method" : "Dedicated Axis",
+  "Throttle Axis" : "3",
+  "Scan Bind" : "4"
+},
+"Logitech RumblePad 2 USB" : {
+  "Forward" : "1",
+  "Turn" : "2",
+  "Throttle Method" : "Triggers",
+  "Throttle Increase" : "8",
+  "Throttle Decrease" : "7",
+  "Scan Bind" : "1"
+},
+"Controller (Gamepad F310)" : {
+  "Forward" : "1",
+  "Turn" : "4",
+  "Throttle Method" : "Analog Triggers",
+  "Throttle Increase Axis" : "3",
+  "Throttle Decrease Axis" : "2",
+  "Scan Bind" : "1",
+  "Move Y Bind" : "0",
+  "Move Left Bind" : "90",
+  "Move Right Bind" : "270",
+  "Toggle Vacuum" : "1",
+  "Move Up Bind" : "5",
+  "Move Down Bind" : "6"
+},
+"Controller (Xbox One For Windows)" : {
+  "Forward" : "1",
+  "Turn" : "4",
+  "Throttle Method" : "Analog Triggers",
+  "Throttle Increase Axis" : "3",
+  "Throttle Decrease Axis" : "2",
+  "Scan Bind" : "1",
+  "Move Up Bind" : "0",
+  "Move Down Bind" : "180",
+  "Move Left Bind" : "5",
+  "Move Right Bind" : "6",
+  "Move Y Bind" : "3",
+  "Toggle Vacuum" : "1"
+},
+"MAYFLASH GameCube Controller Adapter" : {
+  "Forward" : "1",
+  "Turn" : "0",
+  "Throttle Method" : "Triggers",
+  "Throttle Increase" : "6",
+  "Throttle Decrease" : "5",
+  "Scan Bind" : "16",
+  "Move Up Bind" : "4",
+  "Move Down Bind" : "1",
+  "Move Left Bind" : "90",
+  "Move Right Bind" : "270",
+  "Move Y Bind" : "0",
+  "Toggle Vacuum" : "2"
+}
+}

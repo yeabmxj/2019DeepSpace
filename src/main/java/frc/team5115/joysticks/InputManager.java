@@ -1,7 +1,6 @@
 package frc.team5115.joysticks;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.team5115.Debug;
 import frc.team5115.Konstanten;
 import frc.team5115.commands.arm.*;
@@ -43,7 +42,7 @@ public class InputManager {
 
     public InputManager() {
         try {
-            controllerData = Debug.readJSON(new FileInputStream("/home/lvuser/Controllers.json"));
+            controllerData = Debug.readJSON(new FileInputStream("/home/lvuser/deploy/Controllers.json"));
         } catch (FileNotFoundException file){
             Debug.reportWarning("Controller file not found on roborio!");
         } catch (IOException io){
@@ -58,6 +57,7 @@ public class InputManager {
         if(!sameStick()){
             System.out.println("last joystick name doesn't match, resetting...");
             lastName = joystick.getName();
+            createBinds();
         }
         JSONObject controller = controllerData.getJSONObject(joystick.getName());
         
@@ -90,6 +90,7 @@ public class InputManager {
     }
     
     public void createBinds(){
+        System.out.println("buttons rebound!");
         ButtonWrapper moveUp = new ButtonWrapper(joystick, moveUpBind);
         ButtonWrapper moveDown = new ButtonWrapper(joystick, moveDownBind);
 
@@ -110,10 +111,10 @@ public class InputManager {
 //        climb.whileHeld(new StartClimb());
 
         //TEMPORARY, TO BE SWITCHED
-        ButtonWrapper moveLeft = new ButtonWrapper(joystick, moveRightBind);
+        ButtonWrapper moveLeft = new ButtonWrapper(joystick, moveLeftBind);
         moveLeft.whileHeld(new MoveX("Move Left"));
 
-        ButtonWrapper moveRight = new ButtonWrapper(joystick, moveLeftBind);
+        ButtonWrapper moveRight = new ButtonWrapper(joystick, moveRightBind);
         moveRight.whileHeld(new MoveX("Move Right"));
 
         ButtonWrapper moveY = new ButtonWrapper(joystick, moveYBind);

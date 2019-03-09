@@ -90,4 +90,15 @@ public class InputManager {
         nine.toggleWhenPressed(new VacuumSucc());
     }
 
+    public boolean debugRawButton(int button)
+    {
+        return joystick.getRawButton(button);
+    }
+
+      public boolean debugPOV(int comparator)
+      {
+          return joystick.getPOV()== comparator;
+      }
+
+
 }

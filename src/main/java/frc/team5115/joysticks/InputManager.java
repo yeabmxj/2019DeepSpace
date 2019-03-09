@@ -19,7 +19,7 @@ import java.io.IOException;
 public class InputManager {
 
     public Joystick joystick;
-    public String lastName;
+    public String lastName = "";
 
     private int forwardAxis;
     private int turnAxis;
@@ -56,6 +56,7 @@ public class InputManager {
     public void findController() throws JSONException {
         joystick = new Joystick(0);
         if(!sameStick()){
+            System.out.println("last joystick name doesn't match, resetting...");
             lastName = joystick.getName();
         }
         JSONObject controller = controllerData.getJSONObject(joystick.getName());
@@ -85,12 +86,12 @@ public class InputManager {
     }
 
     public boolean sameStick(){
-        return joystick.getName().equals(lastName);
+        return lastName.equals(joystick.getName());
     }
     
     public void createBinds(){
-        JoystickButton moveUp = new JoystickButton(joystick, moveUpBind);
-        JoystickButton moveDown = new JoystickButton(joystick, moveDownBind);
+        ButtonWrapper moveUp = new ButtonWrapper(joystick, moveUpBind);
+        ButtonWrapper moveDown = new ButtonWrapper(joystick, moveDownBind);
 
         if(ArmLooper.isManual()){
             System.out.println("using manual");
@@ -102,7 +103,7 @@ public class InputManager {
             moveDown.whenPressed(new MoveDown());
         }
 
-        JoystickButton succ = new JoystickButton(joystick, succBind);
+        ButtonWrapper succ = new ButtonWrapper(joystick, succBind);
         succ.toggleWhenPressed(new ToggleSucc());
 
 //        JoystickButton climb = new JoystickButton(joystick, scanBind);

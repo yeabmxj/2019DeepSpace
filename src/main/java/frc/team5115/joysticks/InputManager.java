@@ -9,6 +9,7 @@ import frc.team5115.commands.ArmCommandUp;
 import frc.team5115.commands.VacuumSucc;
 import org.json.JSONException;
 import org.json.JSONObject;
+import frc.team5115.commands.MoveWrist;
 
 import java.io.*;
 
@@ -88,6 +89,7 @@ public class InputManager {
 
         JoystickButton nine = new JoystickButton(joystick, 9);
         nine.toggleWhenPressed(new VacuumSucc());
+
     }
 
     public boolean debugRawButton(int button)

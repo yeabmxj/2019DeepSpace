@@ -11,6 +11,7 @@ import frc.team5115.statemachines.ArmStateMachine;
 import frc.team5115.statemachines.VacuumStateMachine;
 import frc.team5115.subsystems.Arm;
 import frc.team5115.subsystems.Vacuum;
+import frc.team5115.subsystems.Wrist;
 import org.json.JSONException;
 
 public class Robot extends TimedRobot {
@@ -24,12 +25,16 @@ public class Robot extends TimedRobot {
     public static Vacuum vacSubsystem;
     public static VacuumStateMachine vacMachine;
 
+    public static Wrist wrist;
+
     Thread thread = new Thread(new Debug());
 
     public void robotInit() {
         im = new InputManager();
 
         thread.start();
+
+        wrist = new Wrist();
 
         armSubsystem = new Arm();
         armdomination = new ArmStateMachine();

@@ -1,16 +1,16 @@
 package frc.team5115.commands;
+import edu.wpi.first.wpilibj.command.Command;
 import frc.team5115.joysticks.InputManager;
 import frc.team5115.robot.Robot;
 import frc.team5115.subsystems.Wrist;
 
 
-public class MoveWrist extends Wrist {
 
-    public MoveWrist()
-    {
+public class MoveWrist extends Command {
+
+protected boolean isFinished(){
+        return false;
     }
-
-
 
     public void move() {
 
@@ -18,21 +18,29 @@ public class MoveWrist extends Wrist {
         if (Robot.im.debugPOV(-1))
         {
             System.out.println("not Moving");
-            dontMove();
+            Robot.wrist.dontMove();
         } else if (Robot.im.debugPOV(90))
         {
             System.out.println("Moving left");
-            moveLeft();
+            Robot.wrist.moveLeft();
         } else if (Robot.im.debugPOV(180))
         {
-            moveDown();
+            Robot.wrist.moveDown();
         } else if (Robot.im.debugPOV(270))
         {
             System.out.println("Moving right");
-            moveRight();
+            Robot.wrist.moveRight();
         } else if (Robot.im.debugPOV(0))
         {
             System.out.println("moving up");
-            moveUp();
+            Robot.wrist.moveUp();
         }
-}}
+
+}
+    protected void execute()
+    {
+        move();
+    }
+
+
+}

@@ -1,6 +1,7 @@
 package frc.team5115.joysticks;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.team5115.Debug;
 import frc.team5115.Konstanten;
 import frc.team5115.commands.arm.*;
@@ -88,8 +89,8 @@ public class InputManager {
     }
     
     public void createBinds(){
-        ButtonWrapper moveUp = new ButtonWrapper(joystick, moveUpBind);
-        ButtonWrapper moveDown = new ButtonWrapper(joystick, moveDownBind);
+        JoystickButton moveUp = new JoystickButton(joystick, moveUpBind);
+        JoystickButton moveDown = new JoystickButton(joystick, moveDownBind);
 
         if(ArmLooper.isManual()){
             System.out.println("using manual");
@@ -101,10 +102,10 @@ public class InputManager {
             moveDown.whenPressed(new MoveDown());
         }
 
-        ButtonWrapper succ = new ButtonWrapper(joystick, succBind);
+        JoystickButton succ = new JoystickButton(joystick, succBind);
         succ.toggleWhenPressed(new ToggleSucc());
 
-//        ButtonWrapper climb = new ButtonWrapper(joystick, scanBind);
+//        JoystickButton climb = new JoystickButton(joystick, scanBind);
 //        climb.whileHeld(new StartClimb());
 
         //TEMPORARY, TO BE SWITCHED

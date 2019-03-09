@@ -4,7 +4,10 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 
+import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 
 import frc.team5115.Konstanten;
@@ -29,14 +32,14 @@ public class Drivetrain extends Subsystem{
 
     Map<String, Object> settings = new HashMap<String, Object>();
 
+    AHRS navX;
+
 
 
     public int direction = 1;
 
     public Drivetrain(){
         dictionary = new ArrayList<>(Arrays.asList("Driving",
-                "HAB3 Drive",
-                "Climber Buffer",
                 "Stopped"));
 
         //instantiate the things
@@ -44,6 +47,8 @@ public class Drivetrain extends Subsystem{
         frontright = new TalonSRX(Konstanten.FRONT_RIGHT_DRIVE);
         backleft = new TalonSRX(Konstanten.BACK_LEFT_DRIVE);
         backright = new TalonSRX(Konstanten.BACK_RIGHT_DRIVE);
+
+        //navX = new AHRS(SPI.Port.kMXP);
 
         //front left and front right motors will do the same thing that the back left and back right motor does
         frontleft.set(ControlMode.Follower, Konstanten.BACK_LEFT_DRIVE);
@@ -99,19 +104,12 @@ public class Drivetrain extends Subsystem{
     public void update(){
         switch(state){
             case "Driving":
-                System.out.println("driving");
+//                System.out.println(navX.getYaw());
+//                System.out.println(navX.getPitch());
+//                System.out.println(navX.getRoll());
                 drive(Robot.im.getLeft(),
                         Robot.im.getRight(),
                         Robot.im.processThrottle());
-                break;
-            case "HAB3 drive":
-                if(compareTime(2)){
-                    setState("Climber Buffer");
-                }
-                drive(0.5, 0.5, 0.5);
-                break;
-            case "Climber Buffer":
-                setState("Driving");
                 break;
             case "Stopped":
                 drive(0,0,0);

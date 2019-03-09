@@ -22,7 +22,7 @@ public class ButtonWrapper extends Button {
             case 225:
             case 270:
             case 315:
-                m_comparator = (m_joystick.getPOV() == m_bind);
+                m_comparator = false;
                 break;
             default:
                 m_comparator = m_joystick.getRawButton(m_bind);
@@ -32,7 +32,7 @@ public class ButtonWrapper extends Button {
 
     @Override
     public boolean get() {
-        return m_comparator;
+        return m_joystick.getPOV() == m_bind;
     }
 
 }

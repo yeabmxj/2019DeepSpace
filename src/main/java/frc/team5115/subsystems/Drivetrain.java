@@ -48,7 +48,7 @@ public class Drivetrain extends Subsystem{
         backleft = new TalonSRX(Konstanten.BACK_LEFT_DRIVE);
         backright = new TalonSRX(Konstanten.BACK_RIGHT_DRIVE);
 
-        //navX = new AHRS(SPI.Port.kMXP);
+        navX = new AHRS(SPI.Port.kMXP);
 
         //front left and front right motors will do the same thing that the back left and back right motor does
         frontleft.set(ControlMode.Follower, Konstanten.BACK_LEFT_DRIVE);

@@ -17,8 +17,6 @@ public class Climber extends Subsystem {
 
     public Climber(){
         dictionary = new ArrayList<>(Arrays.asList("Moving Up",
-                "Retract Back",
-                "Retract Front",
                 "Stopped"));
         front = new TalonSRX(Konstanten.FRONT_CLIMBER);
         back = new VictorSPX(Konstanten.BACK_CLIMBER);
@@ -37,23 +35,8 @@ public class Climber extends Subsystem {
             case "Moving Up":
                 moveFront(0.5);
                 moveBack(0.5);
-                if(compareTime(10)){
-                    setState("Retract Back");
-                }
-                break;
-            case "Retract Back":
-                moveFront(0);
-                moveBack(-0.5);
-                if(DrivetrainLooper.system.currentState().equals("Climber Buffer")){
-                    getTimestamp();
-                    setState("Retract Front");
-                }
-                break;
-            case "Retract Front":
-                moveFront(-0.5);
-                moveBack(0);
                 if(compareTime(5)){
-                    setState("Stopped");
+                    setState("Retract Back");
                 }
                 break;
             case "Stopped":

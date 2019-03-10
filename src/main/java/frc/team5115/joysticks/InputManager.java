@@ -1,9 +1,11 @@
 package frc.team5115.joysticks;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.team5115.Debug;
 import frc.team5115.Konstanten;
 import frc.team5115.commands.arm.*;
+import frc.team5115.commands.climber.StartClimb;
 import frc.team5115.commands.succ.ToggleSucc;
 import frc.team5115.commands.wrist.MoveX;
 import frc.team5115.commands.wrist.MoveY;
@@ -107,10 +109,9 @@ public class InputManager {
         ButtonWrapper succ = new ButtonWrapper(joystick, succBind);
         succ.toggleWhenPressed(new ToggleSucc());
 
-//        JoystickButton climb = new JoystickButton(joystick, scanBind);
+//        JoystickButton climb = new JoystickButton(joystick, 7);
 //        climb.whileHeld(new StartClimb());
 
-        //TEMPORARY, TO BE SWITCHED
         ButtonWrapper moveLeft = new ButtonWrapper(joystick, moveLeftBind);
         moveLeft.whileHeld(new MoveX("Move Left"));
 

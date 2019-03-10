@@ -126,6 +126,10 @@ public class Debug implements Runnable{
                 case 12:
                 case 13:
                     break;
+                case 7:
+                    if(current[i] >  PDP.getCurrent(i) + 3 || current[i] < PDP.getCurrent(i) - 3){
+                        reportWarning("Current at PDP port: " + i + "spiked, and not within our thresholds!");
+                    }
                 default:
                     if(current[i] >  PDP.getCurrent(i) + currentThreshold || current[i] < PDP.getCurrent(i) - currentThreshold){
                         reportWarning("Current at PDP port: " + i + "spiked, and not within our thresholds!");

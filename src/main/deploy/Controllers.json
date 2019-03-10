@@ -14,7 +14,7 @@
   "Throttle Decrease" : "7",
   "Scan Bind" : "1"
 },
-"Controller (Gamepad F310)" : {
+"Logitech Dual Action" : {
   "Forward" : "1",
   "Turn" : "4",
   "Throttle Method" : "Analog Triggers",
@@ -54,6 +54,7 @@
   "Move Left Bind" : "270",
   "Move Right Bind" : "90",
   "Move Y Bind" : "0",
+
   "Toggle Vacuum" : "2"
 }
 }

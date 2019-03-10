@@ -36,8 +36,11 @@ public class Arm extends Subsystem{
     }
 
     public void update(){
-//        System.out.println(getCurrentPosition());
-//        System.out.println(ArmLooper.returnTarget() + " " + returnTarget());
+//        System.out.println(navX.getRoll());
+        System.out.println(getCurrentPosition());
+        System.out.println(ArmLooper.returnTarget() + " " + returnTarget());
+//        System.out.println("up" + top.get());
+//        System.out.println("bottom" + bottom.get());+
         switch(state){
             case "Moving Up":
                 if(threshold(returnTarget())){

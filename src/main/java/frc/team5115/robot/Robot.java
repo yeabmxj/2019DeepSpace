@@ -25,12 +25,12 @@ public class Robot extends TimedRobot {
 
     //Joystick joy;
 
-    //Thread thread = new Thread(new Debug());
+    Thread thread = new Thread(new Debug());
 
     public void robotInit() {
         arm = new Arm();
         succ = new Vacuum();
-        //climb = new Climber();
+        climb = new Climber();
         wrist = new Wrist();
         drive = new Drivetrain();
         limelight = new Limelight();
@@ -39,7 +39,7 @@ public class Robot extends TimedRobot {
 
         Scheduler.getInstance().add(new startLoopers());
 
-        //thread.start();
+        thread.start();
     }
 
     public void teleopInit(){
@@ -59,7 +59,22 @@ public class Robot extends TimedRobot {
         if (RobotState.isEnabled()) {
             Scheduler.getInstance().run();
         }
+
     }
+//
+//    public void teleopPeriodic(){
+//        if(Robot.im.debugRawButton(1)){
+//            System.out.println("up");
+//            climb.moveBack(0.5);
+//        } else if(Robot.im.debugRawButton(2)){
+//            System.out.println("down");
+//            climb.moveBack(-0.5);
+//        } else {
+//            System.out.println("neutral");
+//            climb.moveFront(0);
+//            climb.moveBack(0);
+//        }
+//    }
 
 //                                                                                               WX0OkxxxO0KN
 //                                                                                            WN0xollllllccld0N

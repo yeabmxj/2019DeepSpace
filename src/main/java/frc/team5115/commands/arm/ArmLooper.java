@@ -33,7 +33,7 @@ public class ArmLooper extends Command {
                 .withProperties(settings) // specify widget properties here
                 .getEntry();
         levelDisplay.setNumber(Math.round(Robot.arm.getCurrentPosition()));
-        system.setState("Moving Up");
+        //system.setState("Moving Up");
     }
 
     protected void execute(){

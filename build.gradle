@@ -5,6 +5,10 @@ plugins {
 	id "com.snobot.simulator.plugin.SnobotSimulatorPlugin" version "2019-0.2.0" apply false // Should point to the latest version at https://login.gradle.org/plugin/com.snobot.simulator.plugin.SnobotSimulatorPlugin
 }
 
+repositories {
+    maven { url 'https://jitpack.io' }
+}
+
 def ROBOT_MAIN_CLASS = "frc.team5115.robot.Main"
 
 // Define my targets (RoboRIO) and artifacts (deployable files)
@@ -55,6 +59,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
     snobotSimCompile snobotSimJava()
     simulation "edu.wpi.first.halsim:halsim_ds_socket:${wpi.wpilibVersion}:${wpi.platforms.desktop}@zip"
+    implementation 'com.github.Oblarg.Oblog:lib:2.8.1'
 }
 
 // Setting up my Jar File. In this case, adding all libraries into the main jar ('fat jar')

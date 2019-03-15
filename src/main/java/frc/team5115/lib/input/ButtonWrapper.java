@@ -1,4 +1,4 @@
-package frc.team5115.joysticks;
+package frc.team5115.lib.input;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.buttons.Button;

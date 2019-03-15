@@ -5,13 +5,17 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.SerialPort;
+import edu.wpi.first.wpilibj.Timer;
 import frc.team5115.Konstanten;
 import frc.team5115.commands.arm.ArmLooper;
+import frc.team5115.lib.control.SynchronousPIDF;
+import io.github.oblarg.oblog.Loggable;
+import io.github.oblarg.oblog.annotations.Log;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Arm extends Subsystem{
+public class Arm extends Subsystem {
 
     VictorSPX DART;
 
@@ -20,35 +24,49 @@ public class Arm extends Subsystem{
     DigitalInput top;
     DigitalInput bottom;
 
-
+    SynchronousPIDF loop;
+    double time;
 
     public Arm(){
         dictionary = new ArrayList<>(Arrays.asList("Moving Up",
                 "Moving Down",
                 "Manual Up",
                 "Manual Down",
+                "Transition",
+                "PID",
                 "Stopped"));
         DART = new VictorSPX(Konstanten.DART_ID);
         navX = new AHRS(SerialPort.Port.kUSB);
 
         top = new DigitalInput(Konstanten.TOP_SWITCH);
         bottom = new DigitalInput(Konstanten.BOTTOM_SWITCH);
+
+        loop = new SynchronousPIDF(1, 0 ,0);
+        loop.setInputRange(Konstanten.MIN_SCALED, Konstanten.MAX_SCALED);
+        loop.setOutputRange(0, 1);
     }
 
     public void update(){
-//        System.out.println(navX.getRoll());
-        System.out.println(getCurrentPosition());
-        System.out.println(ArmLooper.returnTarget() + " " + returnTarget());
-//        System.out.println("up" + top.get());
-//        System.out.println("bottom" + bottom.get());+
         switch(state){
+            case "Transition":
+                loop.setSetpoint(returnTarget());
+                time = Timer.getFPGATimestamp();
+                setState("PID");
+                break;
+            case "PID":
+                move(loop.calculate(getCurrentPosition(), Timer.getFPGATimestamp() - time));
+                time = Timer.getFPGATimestamp();
+                if(loop.onTarget(Konstanten.ARM_THRESHOLD)){
+                    setState("Stopped");
+                }
+                break;
             case "Moving Up":
                 if(threshold(returnTarget())){
                   setState("Stopped");
                 } else if(getCurrentPosition() > returnTarget()){
                     setState("Moving Down");
                 } else {
-                    //System.out.println("moving up");
+                    System.out.println("moving up");
                     move(0.6);
                 }
                 break;
@@ -58,7 +76,7 @@ public class Arm extends Subsystem{
                 } else if(getCurrentPosition() < returnTarget()){
                     setState("Moving Up");
                 } else {
-                    //System.out.println("moving down");
+                    System.out.println("moving down");
                     move(-0.5);
                 }
                 break;
@@ -74,6 +92,7 @@ public class Arm extends Subsystem{
         }
     }
 
+    @Log
     public boolean verifyGyro(){
         return navX.isConnected();
     }
@@ -102,13 +121,17 @@ public class Arm extends Subsystem{
                 target = Konstanten.MIN_SCALED;
                 break;
             case 1:
-                target = Konstanten.LEVEL1;
+                if(ArmLooper.returnLastTarget() == 0){
+                    target = Konstanten.LEVEL1BOTTOM;
+                } else {
+                    target = Konstanten.LEVEL1TOP;
+                }
                 break;
             case 2:
                 target = Konstanten.LEVEL2;
                 break;
             case 3:
-                target = Konstanten.BALLPICKUP;
+                target = Konstanten.BALL_PICKUP;
                 break;
             case 4:
                 target = Konstanten.LEVEL3;

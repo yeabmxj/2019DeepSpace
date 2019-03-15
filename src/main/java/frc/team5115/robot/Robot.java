@@ -7,9 +7,11 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.team5115.Debug;
 import frc.team5115.commands.startLoopers;
-import frc.team5115.joysticks.InputManager;
+import frc.team5115.InputManager;
 import frc.team5115.subsystems.*;
+import io.github.oblarg.oblog.Logger;
 import org.json.JSONException;
+
 
 public class Robot extends TimedRobot {
 
@@ -25,7 +27,7 @@ public class Robot extends TimedRobot {
 
     //Joystick joy;
 
-    Thread thread = new Thread(new Debug());
+//    Thread thread = new Thread(new Debug());
 
     public void robotInit() {
         arm = new Arm();
@@ -39,7 +41,7 @@ public class Robot extends TimedRobot {
 
         Scheduler.getInstance().add(new startLoopers());
 
-        thread.start();
+        //thread.start();
     }
 
     public void teleopInit(){
@@ -59,22 +61,22 @@ public class Robot extends TimedRobot {
         if (RobotState.isEnabled()) {
             Scheduler.getInstance().run();
         }
+    }
+
+    public void testInit(){
+        drive.generatePath();
+        drive.setState("Following");
+        //limelight.scannerMode();
 
     }
-//
-//    public void teleopPeriodic(){
-//        if(Robot.im.debugRawButton(1)){
-//            System.out.println("up");
-//            climb.moveBack(0.5);
-//        } else if(Robot.im.debugRawButton(2)){
-//            System.out.println("down");
-//            climb.moveBack(-0.5);
-//        } else {
-//            System.out.println("neutral");
-//            climb.moveFront(0);
-//            climb.moveBack(0);
-//        }
-//    }
+
+    public void testPeriodic(){
+
+        //System.out.println("Distance " + limelight.getDistance());
+        //System.out.println("Horiztonal offset " + limelight.getHorizontalOffset());
+        drive.update();
+    }
+
 
 //                                                                                               WX0OkxxxO0KN
 //                                                                                            WN0xollllllccld0N
@@ -162,9 +164,5 @@ public class Robot extends TimedRobot {
 //                                                                                                                      N0xdoooooooooooooooo:'...oX
 //                                                                                                                       WNKkdoooooooooooooo:',lON
 //                                                                                                                         WX0kxdoooooooooddxKW
-
-
-
-
 }
 

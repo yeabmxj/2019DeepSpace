@@ -18,6 +18,7 @@ public class ArmLooper extends Command {
     public static Subsystem system;
     private boolean kill = false;
     private static boolean manual;
+    public static int lastTarget;
 
 
     protected void initialize() {
@@ -32,7 +33,7 @@ public class ArmLooper extends Command {
                 .withWidget(BuiltInWidgets.kNumberBar)
                 .withProperties(settings) // specify widget properties here
                 .getEntry();
-        levelDisplay.setNumber(Math.round(Robot.arm.getCurrentPosition()));
+        levelDisplay.setNumber(0);
         //system.setState("Moving Up");
     }
 
@@ -41,6 +42,7 @@ public class ArmLooper extends Command {
     }
 
     public static void addLevel(double level){
+        lastTarget = returnTarget();
         if(!(returnTarget() + level > 7) && !(returnTarget() + level < 0)){
             levelDisplay.setNumber(returnTarget() + level);
         }
@@ -49,6 +51,8 @@ public class ArmLooper extends Command {
     public static int returnTarget(){
         return levelDisplay.getNumber(0).intValue();
     }
+
+    public static int returnLastTarget(){return lastTarget;}
 
     public static boolean isManual(){ return manual;}
 

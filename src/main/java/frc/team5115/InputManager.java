@@ -1,14 +1,11 @@
-package frc.team5115.joysticks;
+package frc.team5115;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import frc.team5115.Debug;
-import frc.team5115.Konstanten;
 import frc.team5115.commands.arm.*;
-import frc.team5115.commands.climber.StartClimb;
 import frc.team5115.commands.succ.ToggleSucc;
 import frc.team5115.commands.wrist.MoveX;
 import frc.team5115.commands.wrist.MoveY;
+import frc.team5115.lib.input.ButtonWrapper;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -41,6 +38,9 @@ public class InputManager {
     private int moveYBind;
 
     private JSONObject controllerData;
+
+    ButtonWrapper MoveUp;
+    ButtonWrapper MoveDown;
 
     public InputManager() {
         try {
@@ -93,23 +93,21 @@ public class InputManager {
     
     public void createBinds(){
         System.out.println("buttons rebound!");
-        ButtonWrapper moveUp = new ButtonWrapper(joystick, moveUpBind);
-        ButtonWrapper moveDown = new ButtonWrapper(joystick, moveDownBind);
+        MoveUp = new ButtonWrapper(joystick, moveUpBind);
+        MoveDown = new ButtonWrapper(joystick, moveDownBind);
 
         if(ArmLooper.isManual()){
-            System.out.println("using manual");
-            moveUp.whileHeld(new ManualUp());
-            moveDown.whileHeld(new ManualDown());
+            MoveUp.whileHeld(new ManualUp());
+            MoveDown.whileHeld(new ManualDown());
         } else {
-            System.out.println("using automatic");
-            moveUp.whenPressed(new MoveUp());
-            moveDown.whenPressed(new MoveDown());
+            MoveUp.whenPressed(new MoveUp());
+            MoveDown.whenPressed(new MoveDown());
         }
 
         ButtonWrapper succ = new ButtonWrapper(joystick, succBind);
         succ.toggleWhenPressed(new ToggleSucc());
 
-//        JoystickButton climb = new JoystickButton(joystick, 7);
+//        ButtonWrapper climb = new ButtonWrapper(joystick, 7);
 //        climb.whileHeld(new StartClimb());
 
         ButtonWrapper moveLeft = new ButtonWrapper(joystick, moveLeftBind);

@@ -3,8 +3,6 @@ package frc.team5115.robot;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.team5115.Debug;
 import frc.team5115.commands.startLoopers;
 import frc.team5115.InputManager;
@@ -16,7 +14,6 @@ import org.json.JSONException;
 public class Robot extends TimedRobot {
 
     public static InputManager im;
-    public static ShuffleboardTab tab = Shuffleboard.getTab("main");
 
     public static Arm arm;
     public static Vacuum succ;
@@ -42,6 +39,8 @@ public class Robot extends TimedRobot {
         Scheduler.getInstance().add(new startLoopers());
 
         //thread.start();
+
+        //Logger.configureLoggingAndConfig(this, false);
     }
 
     public void teleopInit(){
@@ -58,23 +57,35 @@ public class Robot extends TimedRobot {
     }
 
     public void robotPeriodic() {
-        if (RobotState.isEnabled()) {
-            Scheduler.getInstance().run();
-        }
+        //Logger.updateEntries();
+//        if (RobotState.isEnabled()) {
+//            Scheduler.getInstance().run();
+//        }
     }
 
     public void testInit(){
-        drive.generatePath();
-        drive.setState("Following");
-        //limelight.scannerMode();
-
+//        drive.generatePath();
+//        drive.setState("Following");
+//        limelight.scannerMode();
+        teleopInit();
     }
 
     public void testPeriodic(){
-
+        if(im.debugRawButton(1)){
+            climb.moveFront(1);
+        } else if(im.debugRawButton(2)){
+            climb.moveFront(-1);
+        } else if(im.debugRawButton(3)){
+            climb.moveBack(1);
+        } else if(im.debugRawButton(4)){
+            climb.moveBack(-1);
+        } else {
+            climb.moveFront(0);
+            climb.moveBack(0);
+        }
         //System.out.println("Distance " + limelight.getDistance());
         //System.out.println("Horiztonal offset " + limelight.getHorizontalOffset());
-        drive.update();
+//        drive.update();
     }
 
 

@@ -1,15 +1,22 @@
 package frc.team5115.commands.arm;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.team5115.robot.Robot;
 
 public class ManualDown extends Command {
 
     protected void initialize(){
-        ArmLooper.system.setState("Manual Down");
+        if(Robot.arm.isManual()){
+            System.out.println("executed (other)");
+            ArmLooper.system.setState("Manual Down");
+        }
     }
 
-    protected void end(){
-        ArmLooper.system.setState("Stopped");
+    protected void interrupted(){
+        if(Robot.arm.isManual()){
+            System.out.println("interrupted by manual");
+            ArmLooper.system.setState("Stopped");
+        }
     }
 
     protected boolean isFinished(){return false;}

@@ -1,6 +1,8 @@
 package frc.team5115.lib.control;
 
 import edu.wpi.first.hal.util.BoundaryException;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
 /**
  * This class implements a PID Control Loop.
@@ -35,6 +37,10 @@ public class SynchronousPIDF {
     // then treat error for the proportional
     // term as 0
 
+    private NetworkTableEntry liveP;
+    private NetworkTableEntry liveI;
+    private NetworkTableEntry liveD;
+
     public SynchronousPIDF() {
     }
 
@@ -53,6 +59,31 @@ public class SynchronousPIDF {
         m_I = Ki;
         m_D = Kd;
         m_F = 0;
+    }
+
+    /**
+     * Allocate a PID object with the given constants for P, I, D
+     *
+     * @param Kp
+     *            the proportional coefficient
+     * @param Ki
+     *            the integral coefficient
+     * @param Kd
+     *            the derivative coefficient
+     * @param loopName
+     *            name of the loop object to differentiate on shuffleboard
+     * @param tab
+     *            shuffleboard tab to add live value widgets
+     */
+    public SynchronousPIDF(double Kp, double Ki, double Kd, String loopName, ShuffleboardTab tab) {
+        m_P = Kp;
+        m_I = Ki;
+        m_D = Kd;
+        m_F = 0;
+
+        liveP = tab.add("P " + loopName, 0).getEntry();
+        liveI = tab.add("I " + loopName, 0).getEntry();
+        liveD = tab.add("D " + loopName, 0).getEntry();
     }
 
     /**
@@ -152,6 +183,17 @@ public class SynchronousPIDF {
         m_I = i;
         m_D = d;
         m_F = f;
+    }
+
+    /**
+     * Set the PID controller gain parameters. Set the proportional, integral, and differential coefficients using live values
+     */
+    public void setPIDLive() {
+        if(liveP != null && liveI != null && liveD != null){
+            m_P = liveP.getDouble(0);
+            m_I = liveI.getDouble(0);
+            m_D = liveD.getDouble(0);
+        }
     }
 
     /**

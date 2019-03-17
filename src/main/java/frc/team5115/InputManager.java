@@ -2,6 +2,7 @@ package frc.team5115;
 
 import edu.wpi.first.wpilibj.Joystick;
 import frc.team5115.commands.arm.*;
+import frc.team5115.commands.climber.StartClimb;
 import frc.team5115.commands.succ.ToggleSucc;
 import frc.team5115.commands.wrist.MoveX;
 import frc.team5115.commands.wrist.MoveY;
@@ -96,19 +97,17 @@ public class InputManager {
         MoveUp = new ButtonWrapper(joystick, moveUpBind);
         MoveDown = new ButtonWrapper(joystick, moveDownBind);
 
-        if(ArmLooper.isManual()){
-            MoveUp.whileHeld(new ManualUp());
-            MoveDown.whileHeld(new ManualDown());
-        } else {
-            MoveUp.whenPressed(new MoveUp());
-            MoveDown.whenPressed(new MoveDown());
-        }
+        MoveUp.whenPressed(new MoveUp());
+        MoveDown.whenPressed(new MoveDown());
+
+        MoveUp.whileHeld(new ManualUp());
+        MoveDown.whileHeld(new ManualDown());
 
         ButtonWrapper succ = new ButtonWrapper(joystick, succBind);
         succ.toggleWhenPressed(new ToggleSucc());
 
-//        ButtonWrapper climb = new ButtonWrapper(joystick, 7);
-//        climb.whileHeld(new StartClimb());
+        ButtonWrapper climb = new ButtonWrapper(joystick, 7);
+        climb.whenPressed(new StartClimb());
 
         ButtonWrapper moveLeft = new ButtonWrapper(joystick, moveLeftBind);
         moveLeft.whileHeld(new MoveX("Move Left"));

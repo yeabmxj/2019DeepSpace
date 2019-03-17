@@ -33,10 +33,10 @@ public class Climber extends Subsystem {
     public void update(){
         switch(state){
             case "Moving Up":
-                moveFront(0.5);
-                moveBack(0.5);
+                moveFront(1);
+                moveBack(1);
                 if(compareTime(5)){
-                    setState("Retract Back");
+                    setState("Stopped");
                 }
                 break;
             case "Stopped":

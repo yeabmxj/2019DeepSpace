@@ -15,17 +15,19 @@ import io.github.oblarg.oblog.annotations.Log;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Arm extends Subsystem {
+public class Arm extends Subsystem{
 
-    VictorSPX DART;
+    private VictorSPX DART;
 
-    AHRS navX;
+    private AHRS navX;
 
-    DigitalInput top;
-    DigitalInput bottom;
+    private DigitalInput top;
+    private DigitalInput bottom;
 
-    SynchronousPIDF loop;
-    double time;
+    private SynchronousPIDF loop;
+    private double time;
+
+    public boolean manual = false;//verifyGyro();
 
     public Arm(){
         dictionary = new ArrayList<>(Arrays.asList("Moving Up",
@@ -41,22 +43,26 @@ public class Arm extends Subsystem {
         top = new DigitalInput(Konstanten.TOP_SWITCH);
         bottom = new DigitalInput(Konstanten.BOTTOM_SWITCH);
 
-        loop = new SynchronousPIDF(1, 0 ,0);
+        loop = new SynchronousPIDF(1, 0 ,0, "arm", Konstanten.tab);
         loop.setInputRange(Konstanten.MIN_SCALED, Konstanten.MAX_SCALED);
-        loop.setOutputRange(0, 1);
+        loop.setOutputRange(-1, 1);
     }
 
     public void update(){
         switch(state){
             case "Transition":
+                loop.setPIDLive();
                 loop.setSetpoint(returnTarget());
                 time = Timer.getFPGATimestamp();
                 setState("PID");
                 break;
             case "PID":
-                move(loop.calculate(getCurrentPosition(), Timer.getFPGATimestamp() - time));
+                //move(loop.calculate(getCurrentPosition(), Timer.getFPGATimestamp() - time));
+                System.out.println(getCurrentPosition() + " " + returnTarget());
+                System.out.println(loop.calculate(getCurrentPosition(), Timer.getFPGATimestamp() - time));
                 time = Timer.getFPGATimestamp();
                 if(loop.onTarget(Konstanten.ARM_THRESHOLD)){
+                    System.out.println("finished!");
                     setState("Stopped");
                 }
                 break;
@@ -147,5 +153,13 @@ public class Arm extends Subsystem {
                 break;
         }
         return target;
+    }
+
+    public void toggleManual(){
+        manual = !manual;
+    }
+
+    public boolean isManual(){
+        return manual;
     }
 }

@@ -71,7 +71,7 @@ public class Drivetrain extends Subsystem {
 
         settings.put("min", 0);
         settings.put("max", 1);
-        throttleDisplay = Robot.tab.add("Max Speed", 0.5)
+        throttleDisplay = Konstanten.tab.add("Max Speed", 0.5)
                 .withWidget(BuiltInWidgets.kNumberSlider)
                 .withProperties(settings) // specify widget properties here
                 .getEntry();
@@ -120,22 +120,26 @@ public class Drivetrain extends Subsystem {
 
     @Log
     public boolean generatePath(){
-        Waypoint[] points = new Waypoint[]{
-                new Waypoint(0,0, 0),
-                new Waypoint(3, 2, Pathfinder.d2r(0))
-        };
-        trajectory = Pathfinder.generate(points, config);
+        if(Robot.limelight.isValid()){
+            Waypoint[] points = new Waypoint[]{
+                    new Waypoint(0,0, 0),
+                    new Waypoint(Robot.limelight.getDistance() * 0.0254, Robot.limelight.getHorizontalOffset() * 0.0254, Pathfinder.d2r(0))
+            };
+            trajectory = Pathfinder.generate(points, config);
 
 
-        modifier = new TankModifier(trajectory).modify(Konstanten.BASE_WIDTH);
+            modifier = new TankModifier(trajectory).modify(Konstanten.BASE_WIDTH);
 
-        left = new EncoderFollower(modifier.getLeftTrajectory());
-        right = new EncoderFollower(modifier.getRightTrajectory());
-        left.configureEncoder(getLeftEncoder(), Konstanten.TICK_COUNT, Konstanten.WHEEL_RADIUS);
-        right.configureEncoder(getRightEncoder(), Konstanten.TICK_COUNT, Konstanten.WHEEL_RADIUS);
-        left.configurePIDVA(.5, 0.0, 0, 1 / 1.7, 0);
-        right.configurePIDVA(.5, 0.0, 0, 1 /1.7, 0);
-        return true;
+            left = new EncoderFollower(modifier.getLeftTrajectory());
+            right = new EncoderFollower(modifier.getRightTrajectory());
+            left.configureEncoder(getLeftEncoder(), Konstanten.TICK_COUNT, Konstanten.WHEEL_RADIUS);
+            right.configureEncoder(getRightEncoder(), Konstanten.TICK_COUNT, Konstanten.WHEEL_RADIUS);
+            left.configurePIDVA(.5, 0.0, 0, 1 / 1.7, 0);
+            right.configurePIDVA(.5, 0.0, 0, 1 /1.7, 0);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Log
@@ -154,20 +158,14 @@ public class Drivetrain extends Subsystem {
                         Robot.im.processThrottle());
                 break;
             case "Following":
-                double outputLeft = left.calculate(getLeftEncoder());
-                double outputRight = right.calculate(getRightEncoder());
-
-                double gyro_heading = returnYaw();
-                double desired_heading = Pathfinder.r2d(right.getHeading());
-
-                double angleDifference = Pathfinder.boundHalfDegrees(desired_heading - gyro_heading);
+                double angleDifference = Pathfinder.boundHalfDegrees(Pathfinder.r2d((left.getHeading() + right.getHeading())/2) - returnYaw());
                 if (Math.abs(angleDifference) > 180.0) {
                     angleDifference = (angleDifference > 0) ? angleDifference - 360 : angleDifference + 360;
                 }
 
                 double turn = 0.8 * (-1.0 / 80.0) * angleDifference;
 
-                drive(outputLeft + turn, outputRight - turn, .5);
+                drive(left.calculate(getLeftEncoder()) + turn, right.calculate(getRightEncoder()) - turn, 1);
                 break;
             case "Stopped":
                 drive(0,0,0);

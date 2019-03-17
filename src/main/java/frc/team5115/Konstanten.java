@@ -1,12 +1,16 @@
 package frc.team5115;
 
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+
 public class Konstanten {
+
+    public static ShuffleboardTab tab = Shuffleboard.getTab("main");
 
     //Input
     public static final double TRIGGER_RATE = 0.005;
     public static final double ANALOG_RATE = 0.01;
     public static final double DEADBAND = 0.125;
-
 
     //Arm
     public static final int DART_ID = 2;
@@ -30,8 +34,9 @@ public class Konstanten {
     public static final double Y_INTERCEPT = MAX_SCALED - (SLOPE * MAX_HEIGHT);
 
     //Climber
-    public static final int FRONT_CLIMBER = 6;
-    public static final int BACK_CLIMBER = 5;
+    //relative to the back of the bot(direction we climb)
+    public static final int FRONT_CLIMBER = 5;
+    public static final int BACK_CLIMBER = 6;
 
     //Drivetrain
     public static final int FRONT_LEFT_DRIVE = 2;
@@ -43,6 +48,11 @@ public class Konstanten {
     public static final int TICK_COUNT = 1440;
     public static final double WHEEL_RADIUS = .1524;
 
+    //Limelight
+    public static final double CAMERA_HEIGHT = 7.5; // Height of limelight relative to the ground
+    public static final double TARGET_HEIGHT = 36; //Height of the target(s) in IN relative to the ground
+    public static final double CAMERA_ANGLE = 24; // Angle of limelight
+
     //Vacuum
     public static final int VACUUM_SPARK = 9;
     public static final int SOLENOID_RELAY = 3;
@@ -52,4 +62,9 @@ public class Konstanten {
     public static final int WRIST_Y = 0;
     public static final int LEFT_SWITCH = 7;
     public static final int RIGHT_SWTICH = 6;
+
+    //Debug
+    public static final int CAN_COUNT = 9;
+    public static final double VOLTAGE_THRESHOLD = 2.5;
+    public static final double MOTOR_VOLTAGE_THRESHOLD = 4;
 }

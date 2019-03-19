@@ -27,7 +27,7 @@ public class Arm extends Subsystem{
     private SynchronousPIDF loop;
     private double time;
 
-    public boolean manual = false;//verifyGyro();
+    private boolean manual;
 
     public Arm(){
         dictionary = new ArrayList<>(Arrays.asList("Moving Up",
@@ -46,6 +46,8 @@ public class Arm extends Subsystem{
         loop = new SynchronousPIDF(1, 0 ,0, "arm", Konstanten.tab);
         loop.setInputRange(Konstanten.MIN_SCALED, Konstanten.MAX_SCALED);
         loop.setOutputRange(-1, 1);
+
+        manual = verifyGyro();
     }
 
     public void update(){
@@ -87,9 +89,11 @@ public class Arm extends Subsystem{
                 }
                 break;
             case "Manual Up":
+                System.out.println("upping");
                 move(0.6);
                 break;
             case "Manual Down":
+                System.out.println("downing");
                 move(-0.5);
                 break;
             case "Stopped":

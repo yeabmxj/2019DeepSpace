@@ -7,14 +7,12 @@ public class ManualDown extends Command {
 
     protected void initialize(){
         if(Robot.arm.isManual()){
-            System.out.println("executed (other)");
             ArmLooper.system.setState("Manual Down");
         }
     }
 
     protected void interrupted(){
         if(Robot.arm.isManual()){
-            System.out.println("interrupted by manual");
             ArmLooper.system.setState("Stopped");
         }
     }

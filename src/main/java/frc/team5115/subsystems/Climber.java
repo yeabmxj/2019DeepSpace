@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Talon;
 import frc.team5115.Konstanten;
 import frc.team5115.commands.drivetrain.DrivetrainLooper;
 
@@ -13,13 +14,12 @@ import java.util.Arrays;
 public class Climber extends Subsystem {
 
     TalonSRX front;
-    VictorSPX back;
-
+    TalonSRX back;
     public Climber(){
         dictionary = new ArrayList<>(Arrays.asList("Moving Up",
                 "Stopped"));
         front = new TalonSRX(Konstanten.FRONT_CLIMBER);
-        back = new VictorSPX(Konstanten.BACK_CLIMBER);
+        back = new TalonSRX(Konstanten.BACK_CLIMBER);
     }
 
     public void moveFront(double speed){

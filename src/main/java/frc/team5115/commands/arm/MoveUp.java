@@ -7,9 +7,8 @@ public class MoveUp extends Command {
 
     protected void initialize() {
         if(!Robot.arm.isManual()){
-            System.out.println("executed");
             ArmLooper.addLevel(1);
-            ArmLooper.system.setState("Transition");
+            ArmLooper.system.setState("Moving Up");
         }
     }
 

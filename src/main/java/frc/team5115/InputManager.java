@@ -109,6 +109,9 @@ public class InputManager {
         ButtonWrapper climb = new ButtonWrapper(joystick, 7);
         climb.whenPressed(new StartClimb());
 
+        ButtonWrapper toggleMode = new ButtonWrapper(joystick, 3);
+        toggleMode.whenPressed(new ToggleMode());
+
         ButtonWrapper moveLeft = new ButtonWrapper(joystick, moveLeftBind);
         moveLeft.whileHeld(new MoveX("Move Left"));
 

@@ -38,7 +38,7 @@ public class Robot extends TimedRobot {
 
         Scheduler.getInstance().add(new startLoopers());
 
-        //thread.start();
+//        thread.start();
 
         //Logger.configureLoggingAndConfig(this, false);
     }
@@ -58,9 +58,9 @@ public class Robot extends TimedRobot {
 
     public void robotPeriodic() {
         //Logger.updateEntries();
-//        if (RobotState.isEnabled()) {
-//            Scheduler.getInstance().run();
-//        }
+        if (RobotState.isEnabled()) {
+            Scheduler.getInstance().run();
+        }
     }
 
     public void testInit(){
@@ -71,18 +71,18 @@ public class Robot extends TimedRobot {
     }
 
     public void testPeriodic(){
-        if(im.debugRawButton(1)){
-            climb.moveFront(1);
-        } else if(im.debugRawButton(2)){
-            climb.moveFront(-1);
-        } else if(im.debugRawButton(3)){
-            climb.moveBack(1);
-        } else if(im.debugRawButton(4)){
-            climb.moveBack(-1);
-        } else {
-            climb.moveFront(0);
-            climb.moveBack(0);
-        }
+//        if(im.debugRawButton(1)){
+//            climb.moveFront(1);
+//        } else if(im.debugRawButton(2)){
+//            climb.moveFront(-1);
+//        } else if(im.debugRawButton(3)){
+//            climb.moveBack(1);
+//        } else if(im.debugRawButton(4)){
+//            climb.moveBack(-1);
+//        } else {
+//            climb.moveFront(0);
+//            climb.moveBack(0);
+//        }
         //System.out.println("Distance " + limelight.getDistance());
         //System.out.println("Horiztonal offset " + limelight.getHorizontalOffset());
 //        drive.update();

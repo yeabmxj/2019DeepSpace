@@ -1,17 +1,17 @@
 package frc.team5115.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.DigitalInput;
 import frc.team5115.Konstanten;
+import frc.team5115.lib.drivers.VictorWrapper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Wrist extends Subsystem {
 
-    VictorSPX xAxis;
-    VictorSPX yAxis;
+    VictorWrapper xAxis;
+    VictorWrapper yAxis;
 
     DigitalInput left;
     DigitalInput right;
@@ -21,8 +21,8 @@ public class Wrist extends Subsystem {
                 "Move Right",
                 "Toggle Y",
                 "Stopped"));
-        xAxis = new VictorSPX(Konstanten.WRIST_X);
-        yAxis = new VictorSPX(Konstanten.WRIST_Y);
+        xAxis = new VictorWrapper(Konstanten.WRIST_X);
+        yAxis = new VictorWrapper(Konstanten.WRIST_Y);
 
         left = new DigitalInput(Konstanten.LEFT_SWITCH);
         right = new DigitalInput(Konstanten.RIGHT_SWTICH);

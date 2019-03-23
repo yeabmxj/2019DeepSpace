@@ -10,13 +10,13 @@ public class Konstanten {
     //Input
     public static final double TRIGGER_RATE = 0.005;
     public static final double ANALOG_RATE = 0.01;
-    public static final double DEADBAND = 0.125;
+    public static final double DEADBAND = 0.2;
 
     //Arm
     public static final int DART_ID = 2;
     public static final int TOP_SWITCH = 8;
     public static final int BOTTOM_SWITCH = 9;
-    public static final double ARM_THRESHOLD = 0.05;
+    public static final double ARM_THRESHOLD = 0.0075;
     private static final double MAX_HEIGHT = 55;
     public static final double MAX_SCALED = 3;
     private static final double MIN_HEIGHT = -60;

@@ -36,6 +36,10 @@ public class ArmLooper extends Command {
         }
     }
 
+    public static void setLevel(double level){
+        levelDisplay.setNumber(level);
+    }
+
     public static int returnTarget(){
         return levelDisplay.getNumber(0).intValue();
     }

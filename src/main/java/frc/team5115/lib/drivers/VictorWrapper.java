@@ -2,9 +2,10 @@ package frc.team5115.lib.drivers;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.DigitalInput;
 
-public class TalonWrapper extends TalonSRX{
+public class VictorWrapper extends VictorSPX {
 
     //stolen from https://github.com/Team254/FRC-2018-Public
 
@@ -14,11 +15,11 @@ public class TalonWrapper extends TalonSRX{
     private DigitalInput upper;
     private DigitalInput lower;
 
-    public TalonWrapper(int deviceNumber) {
+    public VictorWrapper(int deviceNumber) {
         super(deviceNumber);
     }
 
-    public TalonWrapper(int deviceNumber, int upperID, int lowerID){
+    public VictorWrapper(int deviceNumber, int upperID, int lowerID){
         super(deviceNumber);
         this.upper = new DigitalInput(upperID);
         this.lower = new DigitalInput(lowerID);

@@ -1,14 +1,13 @@
 package frc.team5115.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.Timer;
 import frc.team5115.Konstanten;
 import frc.team5115.commands.arm.ArmLooper;
 import frc.team5115.lib.control.SynchronousPIDF;
+import frc.team5115.lib.drivers.VictorWrapper;
 import io.github.oblarg.oblog.Loggable;
 import io.github.oblarg.oblog.annotations.Log;
 
@@ -17,17 +16,14 @@ import java.util.Arrays;
 
 public class Arm extends Subsystem{
 
-    private VictorSPX DART;
+    private VictorWrapper DART;
 
     private AHRS navX;
 
-    private DigitalInput top;
-    private DigitalInput bottom;
-
     private SynchronousPIDF loop;
-    private double time;
+    private double timeDifference;
 
-    private boolean manual;
+    private boolean manual = true;
 
     public Arm(){
         dictionary = new ArrayList<>(Arrays.asList("Moving Up",
@@ -37,11 +33,8 @@ public class Arm extends Subsystem{
                 "Transition",
                 "PID",
                 "Stopped"));
-        DART = new VictorSPX(Konstanten.DART_ID);
+        DART = new VictorWrapper(Konstanten.DART_ID, Konstanten.TOP_SWITCH, Konstanten.BOTTOM_SWITCH);
         navX = new AHRS(SerialPort.Port.kUSB);
-
-        top = new DigitalInput(Konstanten.TOP_SWITCH);
-        bottom = new DigitalInput(Konstanten.BOTTOM_SWITCH);
 
         loop = new SynchronousPIDF(1, 0 ,0, "arm", Konstanten.tab);
         loop.setInputRange(Konstanten.MIN_SCALED, Konstanten.MAX_SCALED);
@@ -53,16 +46,17 @@ public class Arm extends Subsystem{
     public void update(){
         switch(state){
             case "Transition":
-                loop.setPIDLive();
+                //loop.setPIDLive();
+                loop.setPID(1.2, 0.1, 0, 0.15);
                 loop.setSetpoint(returnTarget());
-                time = Timer.getFPGATimestamp();
+                timeDifference = Timer.getFPGATimestamp();
                 setState("PID");
                 break;
             case "PID":
-                //move(loop.calculate(getCurrentPosition(), Timer.getFPGATimestamp() - time));
+                move(loop.calculate(getCurrentPosition(), Timer.getFPGATimestamp() - timeDifference));
                 System.out.println(getCurrentPosition() + " " + returnTarget());
-                System.out.println(loop.calculate(getCurrentPosition(), Timer.getFPGATimestamp() - time));
-                time = Timer.getFPGATimestamp();
+                System.out.println(loop.calculate(getCurrentPosition(), Timer.getFPGATimestamp() - timeDifference));
+                timeDifference = Timer.getFPGATimestamp();
                 if(loop.onTarget(Konstanten.ARM_THRESHOLD)){
                     System.out.println("finished!");
                     setState("Stopped");
@@ -108,12 +102,7 @@ public class Arm extends Subsystem{
     }
 
     private void move(double percent){
-        double temp = percent;
-        DigitalInput controller = Math.signum(percent) == 1 ? top : bottom;
-        if(!controller.get()){
-            temp = 0;
-        }
-        DART.set(ControlMode.PercentOutput, temp);
+        DART.set(ControlMode.PercentOutput, percent);
     }
 
     private boolean threshold(double val){

@@ -1,5 +1,6 @@
 package frc.team5115.robot;
 
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -22,6 +23,9 @@ public class Robot extends TimedRobot {
     public static Drivetrain drive;
     public static Limelight limelight;
 
+    AnalogInput test;
+    AnalogInput test2;
+
     //Joystick joy;
 
 //    Thread thread = new Thread(new Debug());
@@ -37,6 +41,9 @@ public class Robot extends TimedRobot {
         im = new InputManager();
 
         Scheduler.getInstance().add(new startLoopers());
+
+        test = new AnalogInput(2);
+        test2 = new AnalogInput(3);
 
 //        thread.start();
 
@@ -71,18 +78,30 @@ public class Robot extends TimedRobot {
     }
 
     public void testPeriodic(){
-//        if(im.debugRawButton(1)){
-//            climb.moveFront(1);
-//        } else if(im.debugRawButton(2)){
-//            climb.moveFront(-1);
-//        } else if(im.debugRawButton(3)){
-//            climb.moveBack(1);
-//        } else if(im.debugRawButton(4)){
-//            climb.moveBack(-1);
-//        } else {
-//            climb.moveFront(0);
-//            climb.moveBack(0);
-//        }
+//        System.out.println("port 1 " + test.getValue());
+//        System.out.println("port 2 " + test2.getValue());
+//        drive.runTalon(0.3);
+        if(im.debugRawButton(1)){
+            climb.moveFront(0.5);
+        }
+        if(im.debugRawButton(2)){
+            climb.moveFront(-0.5);
+        }
+        if(im.debugRawButton(3)){
+            climb.moveBack(1);
+        }
+        if(im.debugRawButton(4)){
+            climb.moveBack(-1);
+        }
+        if(!im.debugRawButton(1) && !im.debugRawButton(2)){
+            climb.moveFront(0);
+        }
+        if(!im.debugRawButton(3) && !im.debugRawButton(4)){
+            climb.moveBack(0);
+        }
+        if(im.debugRawButton(8)){
+            climb.moveWheels(0.5);
+        }
         //System.out.println("Distance " + limelight.getDistance());
         //System.out.println("Horiztonal offset " + limelight.getHorizontalOffset());
 //        drive.update();

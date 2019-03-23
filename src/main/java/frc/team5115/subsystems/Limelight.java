@@ -31,7 +31,7 @@ public class Limelight {
 
     @Log
     public boolean isValid(){
-        return tv.getNumber(1).equals(1);
+        return tv.getNumber(0).equals(1);
     }
 
     public double getXOffset(){

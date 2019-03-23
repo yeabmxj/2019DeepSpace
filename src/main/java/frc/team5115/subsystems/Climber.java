@@ -1,25 +1,24 @@
 package frc.team5115.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Talon;
 import frc.team5115.Konstanten;
-import frc.team5115.commands.drivetrain.DrivetrainLooper;
+import frc.team5115.lib.drivers.TalonWrapper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Climber extends Subsystem {
 
-    TalonSRX front;
-    TalonSRX back;
+    TalonWrapper front;
+    TalonWrapper back;
+    TalonWrapper wheels;
+
     public Climber(){
         dictionary = new ArrayList<>(Arrays.asList("Moving Up",
                 "Stopped"));
-        front = new TalonSRX(Konstanten.FRONT_CLIMBER);
-        back = new TalonSRX(Konstanten.BACK_CLIMBER);
+        front = new TalonWrapper(Konstanten.FRONT_CLIMBER);
+        back = new TalonWrapper(Konstanten.BACK_CLIMBER);
+        wheels = new TalonWrapper(7);
     }
 
     public void moveFront(double speed){
@@ -29,6 +28,8 @@ public class Climber extends Subsystem {
     public void moveBack(double speed){
         back.set(ControlMode.PercentOutput, speed);
     }
+
+    public void moveWheels(double speed){ wheels.set(ControlMode.PercentOutput, speed);}
 
     public void update(){
         switch(state){

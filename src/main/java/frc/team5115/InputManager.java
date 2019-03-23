@@ -149,18 +149,17 @@ public class InputManager {
     }
 
     public double getLeft(){
-        return deadband(-joystick.getRawAxis(forwardAxis) + joystick.getRawAxis(turnAxis));
+        return -joystick.getRawAxis(forwardAxis) + deadband(joystick.getRawAxis(turnAxis), Konstanten.DEADBAND);
     }
 
     public double getRight(){
-        return deadband(-joystick.getRawAxis(forwardAxis) - joystick.getRawAxis(turnAxis));
+        return -joystick.getRawAxis(forwardAxis) - deadband(joystick.getRawAxis(turnAxis), Konstanten.DEADBAND);
     }
 
-    private double deadband(double val){
-        if(val <= Konstanten.DEADBAND && val >= Konstanten.DEADBAND){
+    private double deadband(double val, double deadband){
+        if(val < deadband && val > -deadband){
             return 0;
         }
-
         return val;
     }
 

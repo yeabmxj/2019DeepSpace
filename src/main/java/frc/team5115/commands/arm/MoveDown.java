@@ -8,6 +8,7 @@ public class MoveDown extends Command {
     protected void initialize() {
         if(!Robot.arm.isManual()){
             ArmLooper.addLevel(-1);
+            //ArmLooper.setLevel(2);
             ArmLooper.system.setState("Moving Down");
         }
     }

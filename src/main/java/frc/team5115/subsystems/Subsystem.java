@@ -34,16 +34,16 @@ public class Subsystem {
 
     public void setState(String state){
         if(dictionary.contains(state)){
-            lastState = currentState();
+            lastState = this.state;
             this.state = state;
         }
     }
 
-    public String currentState(){
-        return state;
+    public boolean compareState(String comparator){
+        return state.equals(comparator);
     }
 
-    public String getLastState(){return lastState; }
+    public boolean compareLastState(String comparator){return lastState.equals(comparator); }
 
     public void update(){
         switch(state){

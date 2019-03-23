@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 
 import frc.team5115.Konstanten;
+import frc.team5115.commands.climber.ClimberLooper;
 import frc.team5115.lib.control.SynchronousPIDF;
 import frc.team5115.lib.drivers.TalonWrapper;
 import frc.team5115.robot.Robot;
@@ -49,6 +50,9 @@ public class Drivetrain extends Subsystem {
     public Drivetrain(){
         dictionary = new ArrayList<>(Arrays.asList("Driving",
                 "PID",
+                "Climber Start",
+                "Platform Drive",
+                "Climber Buffer",
                 "Stopped"));
 
         //instantiate the things
@@ -100,6 +104,20 @@ public class Drivetrain extends Subsystem {
                 double output = loop.calculate(Robot.limelight.getXOffset(), Timer.getFPGATimestamp() - timeDifference);
                 drive(0.5 + output, 0.5 - output, 1);
                 timeDifference = Timer.getFPGATimestamp();
+                break;
+            case "Climber Start":
+                if(ClimberLooper.system.compareState("Driving Back")){
+                    setState("Platform Drive");
+                    getTimestamp();
+                }
+                break;
+            case "Platform Drive":
+                if(compareTime(3)){
+                    setState("Climber Buffer");
+                }
+                break;
+            case "Climber Buffer":
+                setState("Driving");
                 break;
             case "Stopped":
                 drive(0,0,0);

@@ -1,6 +1,5 @@
 package frc.team5115.robot;
 
-import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -23,12 +22,7 @@ public class Robot extends TimedRobot {
     public static Drivetrain drive;
     public static Limelight limelight;
 
-    AnalogInput test;
-    AnalogInput test2;
-
-    //Joystick joy;
-
-//    Thread thread = new Thread(new Debug());
+    Thread thread = new Thread(new Debug());
 
     public void robotInit() {
         arm = new Arm();
@@ -42,10 +36,7 @@ public class Robot extends TimedRobot {
 
         Scheduler.getInstance().add(new startLoopers());
 
-        test = new AnalogInput(2);
-        test2 = new AnalogInput(3);
-
-//        thread.start();
+        thread.start();
 
         //Logger.configureLoggingAndConfig(this, false);
     }
@@ -78,27 +69,25 @@ public class Robot extends TimedRobot {
     }
 
     public void testPeriodic(){
-//        System.out.println("port 1 " + test.getValue());
-//        System.out.println("port 2 " + test2.getValue());
+        System.out.println("front " + climb.getFrontPos());
+        System.out.println("back " + climb.getBackPos());
 //        drive.runTalon(0.3);
         if(im.debugRawButton(1)){
             climb.moveFront(0.5);
-        }
-        if(im.debugRawButton(2)){
+        } else if(im.debugRawButton(2)){
             climb.moveFront(-0.5);
-        }
-        if(im.debugRawButton(3)){
-            climb.moveBack(1);
-        }
-        if(im.debugRawButton(4)){
-            climb.moveBack(-1);
-        }
-        if(!im.debugRawButton(1) && !im.debugRawButton(2)){
+        } else {
             climb.moveFront(0);
         }
-        if(!im.debugRawButton(3) && !im.debugRawButton(4)){
+
+        if(im.debugRawButton(3)){
+            climb.moveBack(1);
+        } else if(im.debugRawButton(4)){
+            climb.moveBack(-1);
+        } else {
             climb.moveBack(0);
         }
+
         if(im.debugRawButton(8)){
             climb.moveWheels(0.5);
         }

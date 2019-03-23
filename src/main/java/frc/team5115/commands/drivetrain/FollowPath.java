@@ -7,9 +7,9 @@ public class FollowPath extends Command {
 
     protected void initialize(){
         Robot.limelight.scannerMode();
-        if(!Robot.drive.generatePath()){
-            this.cancel();
-        }
+//        if(!Robot.drive.generatePath()){
+//            this.cancel();
+//        }
         Robot.limelight.cameraMode();
     }
 
@@ -22,7 +22,7 @@ public class FollowPath extends Command {
     }
 
     protected boolean isFinished(){
-        return Robot.drive.pathFinished();
+        return false;
     }
 
 }

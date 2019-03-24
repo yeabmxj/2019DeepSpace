@@ -34,16 +34,18 @@ public class Arm extends Subsystem{
                 "PID",
                 "Stopped"));
         DART = new VictorWrapper(Konstanten.DART_ID, Konstanten.TOP_SWITCH, Konstanten.BOTTOM_SWITCH);
-        navX = new AHRS(SerialPort.Port.kUSB);
+        navX = new AHRS(SerialPort.Port.kUSB2);
 
         loop = new SynchronousPIDF(1, 0 ,0, "arm", Konstanten.tab);
         loop.setInputRange(Konstanten.MIN_SCALED, Konstanten.MAX_SCALED);
         loop.setOutputRange(-1, 1);
 
-        manual = verifyGyro();
     }
 
     public void update(){
+        System.out.println("raw " + navX.getRoll());
+        System.out.println("processed" + getCurrentPosition());
+        System.out.println("processed is within threshold of " + returnTarget() + " " + threshold(returnTarget()));
         switch(state){
             case "Transition":
                 //loop.setPIDLive();
@@ -68,7 +70,7 @@ public class Arm extends Subsystem{
                 } else if(getCurrentPosition() > returnTarget()){
                     setState("Moving Down");
                 } else {
-                    System.out.println("moving up");
+                    System.out.println("up auto");
                     move(0.6);
                 }
                 break;
@@ -78,16 +80,16 @@ public class Arm extends Subsystem{
                 } else if(getCurrentPosition() < returnTarget()){
                     setState("Moving Up");
                 } else {
-                    System.out.println("moving down");
+                    System.out.println("down auto");
                     move(-0.5);
                 }
                 break;
             case "Manual Up":
-                System.out.println("upping");
+                System.out.println("up manual");
                 move(0.6);
                 break;
             case "Manual Down":
-                System.out.println("downing");
+                System.out.println("down manual");
                 move(-0.5);
                 break;
             case "Stopped":
@@ -106,7 +108,7 @@ public class Arm extends Subsystem{
     }
 
     private boolean threshold(double val){
-        return getCurrentPosition() <= val + Konstanten.ARM_THRESHOLD && getCurrentPosition() >= val - Konstanten.ARM_THRESHOLD;
+        return (getCurrentPosition() <= val + Konstanten.ARM_THRESHOLD) && (getCurrentPosition() >= val - Konstanten.ARM_THRESHOLD);
     }
 
     public double getCurrentPosition(){

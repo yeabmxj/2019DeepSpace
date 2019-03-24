@@ -1,5 +1,6 @@
 package frc.team5115.robot;
 
+import edu.wpi.first.hal.can.CANJNI;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -62,9 +63,9 @@ public class Robot extends TimedRobot {
     }
 
     public void testInit(){
-//        drive.generatePath();
-//        drive.setState("Following");
-//        limelight.scannerMode();
+        //drive.generatePath();
+        drive.setState("Following");
+        limelight.scannerMode();
         teleopInit();
     }
 
@@ -72,25 +73,25 @@ public class Robot extends TimedRobot {
         System.out.println("front " + climb.getFrontPos());
         System.out.println("back " + climb.getBackPos());
 //        drive.runTalon(0.3);
+        if(im.debugRawButton(3)){
+            climb.moveFront(1);
+        }
+        if(im.debugRawButton(4)){
+            climb.moveFront(-1);
+        }
         if(im.debugRawButton(1)){
-            climb.moveFront(0.5);
-        } else if(im.debugRawButton(2)){
-            climb.moveFront(-0.5);
+            climb.moveBack(.6);
+        }
+        if(im.debugRawButton(2)){
+            climb.moveBack(-0.6);
         } else {
             climb.moveFront(0);
-        }
-
-        if(im.debugRawButton(3)){
-            climb.moveBack(1);
-        } else if(im.debugRawButton(4)){
-            climb.moveBack(-1);
-        } else {
             climb.moveBack(0);
         }
 
-        if(im.debugRawButton(8)){
-            climb.moveWheels(0.5);
-        }
+//        if(im.debugRawButton(8)){
+//            climb.moveWheels(0.5);
+//        }
         //System.out.println("Distance " + limelight.getDistance());
         //System.out.println("Horiztonal offset " + limelight.getHorizontalOffset());
 //        drive.update();

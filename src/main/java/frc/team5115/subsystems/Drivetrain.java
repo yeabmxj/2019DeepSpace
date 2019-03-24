@@ -63,20 +63,20 @@ public class Drivetrain extends Subsystem {
 
         navX = new AHRS(SPI.Port.kMXP);
 
-        //front left and front right motors will do the same thing that the back left and back right motor does
+//        front left and front right motors will do the same thing that the back left and back right motor does
         frontleft.set(ControlMode.Follower, Konstanten.BACK_LEFT_DRIVE);
         frontright.set(ControlMode.Follower, Konstanten.BACK_RIGHT_DRIVE);
 
         //assign encoder data to back left and back right motors respectively
         frontright.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 5);
         frontleft.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 5);
-
+//
         frontright.setInverted(true);
         backright.setInverted(true);
 
         settings.put("min", 0);
         settings.put("max", 1);
-        throttleDisplay = Konstanten.tab.add("Max Speed", 0.5)
+        throttleDisplay = Konstanten.tab.add("Max Speed", 1)
                 .withWidget(BuiltInWidgets.kNumberSlider)
                 .withProperties(settings) // specify widget properties here
                 .getEntry();
@@ -102,7 +102,7 @@ public class Drivetrain extends Subsystem {
                 break;
             case "PID":
                 double output = loop.calculate(Robot.limelight.getXOffset(), Timer.getFPGATimestamp() - timeDifference);
-                drive(0.5 + output, 0.5 - output, 1);
+                drive(0.5 + output, 0.5 - output, 0.5);
                 timeDifference = Timer.getFPGATimestamp();
                 break;
             case "Climber Start":

@@ -10,26 +10,37 @@ public class Konstanten {
     //Input
     public static final double TRIGGER_RATE = 0.005;
     public static final double ANALOG_RATE = 0.01;
-    public static final double DEADBAND = 0.2;
+    public static final double DEADBAND = 0.1;
+
+    /*
+    H1
+    H2
+    H3
+    B1 .73
+    B2  1.68
+    B3 2.75
+
+     */
+
 
     //Arm
     public static final int DART_ID = 2;
     public static final int TOP_SWITCH = 8;
     public static final int BOTTOM_SWITCH = 9;
-    public static final double ARM_THRESHOLD = 0.0075;
-    private static final double MAX_HEIGHT = 55;
+    public static final double ARM_THRESHOLD = 0.02;
+    private static final double MAX_HEIGHT = 66;
     public static final double MAX_SCALED = 3;
-    private static final double MIN_HEIGHT = -60;
+    private static final double MIN_HEIGHT = -57;
     public static final double MIN_SCALED = 0;
-    public static final double LEVEL1BOTTOM = 0.25;
+    public static final double LEVEL1BOTTOM = 0.50; //.39   .56  .47
     //actual level 1 .45
-    public static final double LEVEL1TOP = 0.4;
-    public static final double LEVEL2 = 0.75;
+    public static final double LEVEL1TOP = 0.45;
+    public static final double LEVEL2 = .79; //.75
     public static final double BALL_PICKUP = 1.45;
-    public static final double LEVEL3 = 1.6;
-    public static final double LEVEL4 = 1.75;
-    public static final double LEVEL5 = 2.65;
-    public static final double LEVEL6 = 2.85;
+    public static final double LEVEL3 = 1.45; //1.45
+    public static final double LEVEL4 = 1.71;
+    public static final double LEVEL5 = 2.5; //2.43  2.5
+    public static final double LEVEL6 = 2.75;
     public static final double SLOPE = (MAX_SCALED - MIN_SCALED) / (MAX_HEIGHT - MIN_HEIGHT);
     public static final double Y_INTERCEPT = MAX_SCALED - (SLOPE * MAX_HEIGHT);
 

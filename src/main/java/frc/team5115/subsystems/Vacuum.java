@@ -35,7 +35,7 @@ public class Vacuum extends Subsystem {
 
 
     public void update(){
-        System.out.println(blower.get());
+//        System.out.println(blower.get());
         switch(state){
             case "Succ":
                 //solenoidOpen();

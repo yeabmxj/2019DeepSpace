@@ -2,6 +2,7 @@ package frc.team5115.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import frc.team5115.Konstanten;
 import frc.team5115.lib.drivers.TalonWrapper;
 import frc.team5115.robot.Robot;
@@ -11,9 +12,9 @@ import java.util.Arrays;
 
 public class Climber extends Subsystem {
 
-    TalonWrapper front;
-    TalonWrapper back;
-    TalonWrapper wheels;
+    TalonSRX front;
+    TalonSRX back;
+    TalonSRX wheels;
 
     public Climber(){
         dictionary = new ArrayList<>(Arrays.asList("Going Up",
@@ -21,9 +22,9 @@ public class Climber extends Subsystem {
                 "Retract Front",
                 "Retract Back",
                 "Stopped"));
-        front = new TalonWrapper(Konstanten.FRONT_CLIMBER);
-        back = new TalonWrapper(Konstanten.BACK_CLIMBER);
-        wheels = new TalonWrapper(7);
+        front = new TalonSRX(Konstanten.FRONT_CLIMBER);
+        back = new TalonSRX(Konstanten.BACK_CLIMBER);
+        wheels = new TalonSRX(7);
 
         front.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
         back.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
@@ -62,7 +63,7 @@ public class Climber extends Subsystem {
                     moveFront(1);
                 }
 
-                if(getBackPos() > 200){
+                if(getBackPos() > 19261){
                     moveBack(0);
                     backfinished = true;
                 } else {

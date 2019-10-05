@@ -34,7 +34,7 @@ public class Robot extends TimedRobot {
 
         thread.start();
 
-        wrist = new Wrist();
+        //wrist = new Wrist();
 
         armSubsystem = new Arm();
         armdomination = new ArmStateMachine();

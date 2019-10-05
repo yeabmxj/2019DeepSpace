@@ -16,7 +16,7 @@ public class Arm {
     public double level = 0;
 
     public Arm(){
-        arm = new VictorSPX(0);
+        arm = new VictorSPX(2);
         navX = new AHRS(SerialPort.Port.kUSB);
     }
 
